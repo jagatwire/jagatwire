@@ -27,7 +27,6 @@
     <div id="news-grid" class="loading">Loading the latest stories...</div>
 
     <script>
-        // Your Verified GNews API Key
         const API_KEY = 'bf1b60294a75756aabaf0f52e4ba7412';
 
         async function fetchNews() {
@@ -36,7 +35,9 @@
                 const response = await fetch(`https://gnews.io/api/v4/top-headlines?category=general&lang=en&apikey=${API_KEY}`);
                 const data = await response.json();
 
-                if (!data.articles) throw new Error("API Limit reached or key issue.");
+                if (!data.articles) {
+                    throw new Error(data.errors ? data.errors[0] : "Check API Key or Daily Limit");
+                }
 
                 grid.classList.remove('loading');
                 grid.innerHTML = '';
@@ -44,4 +45,19 @@
                 data.articles.forEach(article => {
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${article.image || '
+                            <img src="${article.image || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="News">
+                            <div class="content">
+                                <a href="${article.url}" target="_blank" class="title">${article.title}</a>
+                                <p class="desc">${article.description || 'Click to read the full story.'}</p>
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                grid.innerHTML = `<p style="color:red; text-align:center;">Error: ${error.message}</p>`;
+            }
+        }
+
+        fetchNews();
+    </script>
+</body>
+</html>
