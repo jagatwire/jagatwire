@@ -3,80 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JagatWire | Live Global News</title>
+    <title>JagatWire | Global News Portal</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .header { text-align: center; padding: 20px; background: #1a73e8; color: white; border-radius: 10px; margin-bottom: 20px; }
-        .controls { text-align: center; margin-bottom: 20px; }
-        select { padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; }
-        #news-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .news-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; }
-        .news-card:hover { transform: translateY(-5px); }
-        .news-content { padding: 15px; flex-grow: 1; }
-        .news-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #333; }
-        .news-description { color: #666; font-size: 0.9rem; line-height: 1.4; }
-        .news-footer { padding: 15px; border-top: 1px solid #eee; }
-        .read-more { text-decoration: none; color: #1a73e8; font-weight: bold; font-size: 0.9rem; }
-        .loading { text-align: center; font-size: 1.2rem; color: #666; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-8px); }
+        .card img { width: 100%; height: 210px; object-fit: cover; background-color: #eee; }
+        .content { padding: 20px; flex-grow: 1; }
+        .title { font-size: 1.2rem; font-weight: bold; color: #1a73e8; text-decoration: none; line-height: 1.4; display: block; margin-bottom: 10px; }
+        .desc { font-size: 0.95rem; color: #5f6368; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .footer { padding: 15px 20px; background: #fafafa; border-top: 1px solid #eee; font-size: 0.8rem; color: #70757a; }
+        .loading { text-align: center; font-size: 1.5rem; margin-top: 100px; color: #1a73e8; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>JagatWire Live News 🌍</h1>
-        <p>Real-time updates from around the world</p>
+        <h1>JagatWire News Portal 📰</h1>
+        <p>Live global headlines delivered instantly</p>
     </div>
 
-    <div class="controls">
-        <label for="category">Choose Category: </label>
-        <select id="category" onchange="fetchNews()">
-            <option value="general">General</option>
-            <option value="business">Business</option>
-            <option value="technology">Technology</option>
-            <option value="science">Science</option>
-            <option value="sports">Sports</option>
-        </select>
-    </div>
-
-    <div id="news-container" class="loading">Fetching the latest headlines...</div>
+    <div id="news-grid" class="loading">Fetching latest stories...</div>
 
     <script>
-        const API_KEY = '6a897d44743a40cea63038829bd13f19'; 
-        
-        async function fetchNews() {
-            const container = document.getElementById('news-container');
-            const category = document.getElementById('category').value;
-            container.innerHTML = '<div class="loading">Updating news...</div>';
-            
+        // Your Verified GNews API Key
+        const API_KEY = 'bf1b60294a75756aabaf0f52e4ba7412';
+
+        async function loadNews() {
+            const grid = document.getElementById('news-grid');
             try {
-                const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`);
+                const response = await fetch(`https://gnews.io/api/v4/top-headlines?category=general&lang=en&apikey=${API_KEY}`);
                 const data = await response.json();
-                
-                if (data.status !== 'ok') throw new Error(data.message);
-                
-                container.innerHTML = '';
-                
+
+                if (!data.articles || data.articles.length === 0) {
+                    throw new Error("No articles found or API limit reached.");
+                }
+
+                grid.classList.remove('loading');
+                grid.innerHTML = '';
+
                 data.articles.forEach(article => {
-                    if(!article.title || article.title === '[Removed]') return;
-                    
-                    container.innerHTML += `
-                        <div class="news-card">
-                            <div class="news-content">
-                                <h3 class="news-title">${article.title}</h3>
-                                <p class="news-description">${article.description || 'No description available for this article.'}</p>
+                    grid.innerHTML += `
+                        <div class="card">
+                            <img src="${article.image || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="News">
+                            <div class="content">
+                                <a href="${article.url}" target="_blank" class="title">${article.title}</a>
+                                <p class="desc">${article.description || 'Click to read the full story on the original website.'}</p>
                             </div>
-                            <div class="news-footer">
-                                <a href="${article.url}" target="_blank" class="read-more">Read Full Story →</a>
+                            <div class="footer">
+                                Published: ${new Date(article.publishedAt).toLocaleDateString()}
                             </div>
                         </div>`;
                 });
-            } catch (error) {
-                container.innerHTML = `<div class="loading" style="color:red;">Error: ${error.message}<br>Please check your API key or connection.</div>`;
+            } catch (err) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:red; padding:50px;">
+                    <h3>Oops! Something went wrong.</h3>
+                    <p>${err.message}</p>
+                    <p>Make sure your email is verified on GNews.io</p>
+                </div>`;
             }
         }
 
-        // Run on load
-        fetchNews();
+        loadNews();
     </script>
 </body>
 </html>
