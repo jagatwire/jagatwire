@@ -56,15 +56,16 @@
   </style>
  </head>
  <body class="h-full">
-  <div id="app-root" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);">
-   <!-- Toast Notification -->
+  <div id="app-root" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);"><!-- Toast Notification -->
    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium opacity-0 pointer-events-none toast-msg" style="background: rgba(16,185,129,0.9);"></div><!-- Login/Signup Modal -->
    <div id="auth-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
-    <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);"><!-- Close Button --> <button id="auth-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+    <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);">
+     <!-- Close Button --> <button id="auth-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
      <div class="clear-both">
       <h2 id="auth-title" class="text-2xl font-bold text-white mb-2">Welcome Back</h2>
       <p class="text-sm mb-6" style="color:#94a3b8;">Sign in to save your favorite cities</p><!-- Signup Form (Initially Hidden) -->
-      <div id="signup-form" class="hidden"><input id="signup-username" type="text" placeholder="Username" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-email" type="email" placeholder="Email address" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-phone" type="tel" placeholder="Phone (optional)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-location" type="text" placeholder="City/Location" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <select id="signup-country" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <option value="">Select Country</option> <option value="India">🇮🇳 India</option> <option value="USA">🇺🇸 USA</option> <option value="UK">🇬🇧 UK</option> <option value="Canada">🇨🇦 Canada</option> <option value="Australia">🇦🇺 Australia</option> </select> <input id="signup-password" type="password" placeholder="Password (min 6 chars)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <label class="flex items-center gap-2 mb-3" style="color:#e2e8f0;"> <input id="signup-notifications" type="checkbox" checked class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-sm">Enable notifications</span> </label> <!-- Privacy Policy Agreement -->
+      <div id="signup-form" class="hidden">
+       <input id="signup-username" type="text" placeholder="Username" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-email" type="email" placeholder="Email address" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-phone" type="tel" placeholder="Phone (optional)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-location" type="text" placeholder="City/Location" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <select id="signup-country" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <option value="">Select Country</option> <option value="India">🇮🇳 India</option> <option value="USA">🇺🇸 USA</option> <option value="UK">🇬🇧 UK</option> <option value="Canada">🇨🇦 Canada</option> <option value="Australia">🇦🇺 Australia</option> </select> <input id="signup-password" type="password" placeholder="Password (min 6 chars)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <label class="flex items-center gap-2 mb-3" style="color:#e2e8f0;"> <input id="signup-notifications" type="checkbox" checked class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-sm">Enable notifications</span> </label> <!-- Privacy Policy Agreement -->
        <div class="mb-4 p-3 rounded-xl" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
         <div class="max-h-32 overflow-y-auto mb-3 text-xs" style="color:#cbd5e1;">
          <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 Privacy Policy &amp; Data Usage</p>
@@ -78,25 +79,20 @@
          </ul>
         </div><!-- Donation Modal (Indian Users Only) -->
         <div id="donation-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
-         <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);">
-          <button id="donation-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+         <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);"><button id="donation-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
           <div class="clear-both">
            <h2 class="text-2xl font-bold text-white mb-2">🎁 Support JagatWire</h2>
            <p class="text-sm mb-4" style="color:#94a3b8;">Help us deliver better weather services</p><!-- India Check -->
            <div id="india-check" class="mb-4 p-3 rounded-xl" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
-            <div class="flex items-center gap-2 text-green-400 text-sm">
-             <i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available for Indian users</span>
+            <div class="flex items-center gap-2 text-green-400 text-sm"><i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available for Indian users</span>
             </div>
            </div><!-- Non-India Message -->
            <div id="non-india-msg" class="mb-4 p-3 rounded-xl hidden" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">
-            <div class="flex items-center gap-2 text-red-400 text-sm">
-             <i data-lucide="info" style="width:18px;height:18px;"></i> <span>Donations available only in India</span>
+            <div class="flex items-center gap-2 text-red-400 text-sm"><i data-lucide="info" style="width:18px;height:18px;"></i> <span>Donations available only in India</span>
             </div>
            </div><!-- Donation Form (India Only) -->
-           <div id="donation-form" class="space-y-3">
-            <label class="block"> <span class="text-sm font-medium text-white mb-2 block">Amount (₹)</span> <input id="donation-amount" type="number" placeholder="Enter amount" min="1" max="100000" class="w-full py-3 px-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> </label>
-            <div class="grid grid-cols-3 gap-2">
-             <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="100" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹100</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="500" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹500</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="1000" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹1000</button>
+           <div id="donation-form" class="space-y-3"><label class="block"> <span class="text-sm font-medium text-white mb-2 block">Amount (₹)</span> <input id="donation-amount" type="number" placeholder="Enter amount" min="1" max="100000" class="w-full py-3 px-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> </label>
+            <div class="grid grid-cols-3 gap-2"><button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="100" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹100</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="500" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹500</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="1000" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹1000</button>
             </div><!-- RBI Compliant Info -->
             <div class="p-3 rounded-xl text-xs" style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color:#cbd5e1;">
              <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 RBI Guidelines Notice</p>
@@ -115,18 +111,19 @@
        </div><button id="signup-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Create Account</button>
        <p class="text-center text-sm" style="color:#94a3b8;">Already have an account? <button id="toggle-signin" class="text-blue-400 hover:underline font-semibold">Sign In</button></p>
       </div><!-- Signin Form -->
-      <div id="signin-form"><input id="signin-email" type="email" placeholder="Email" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signin-password" type="password" placeholder="Password" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <button id="signin-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Sign In</button>
+      <div id="signin-form">
+       <input id="signin-email" type="email" placeholder="Email" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signin-password" type="password" placeholder="Password" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <button id="signin-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Sign In</button>
        <p class="text-center text-sm" style="color:#94a3b8;">New user? <button id="toggle-signup" class="text-blue-400 hover:underline font-semibold">Create Account</button></p>
       </div><!-- Guest Option --> <button id="guest-btn" class="w-full py-3 rounded-xl font-semibold transition-all hover:bg-white/15 mt-2" style="color:#e2e8f0; border: 1px solid rgba(255,255,255,0.2);">Continue as Guest</button>
      </div>
     </div>
    </div><!-- Main App Content -->
-   <div id="main-content" class="max-w-lg mx-auto px-4 py-6"><!-- Header with Logo & User Menu -->
+   <div id="main-content" class="max-w-lg mx-auto px-4 py-6">
+    <!-- Header with Logo & User Menu -->
     <div class="fade-up flex items-center justify-between mb-8">
      <div class="flex items-center gap-3">
       <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">
-       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5" class="sun-glow"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5" class="sun-glow"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
        </svg>
       </div>
       <div>
@@ -134,8 +131,10 @@
        <p class="text-xs" style="color: #94a3b8;">Live Weather Updates</p>
       </div>
      </div>
-     <div class="flex gap-2"><button id="refresh-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Refresh Weather"> <i data-lucide="refresh-cw" style="width:20px;height:20px;color:#e2e8f0;"></i> </button><button id="donate-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Donate"> <i data-lucide="heart" style="width:20px;height:20px;color:#ef4444;"></i> </button>
-      <div class="relative"><button id="notification-btn" class="p-2 rounded-xl transition-all hover:scale-110 relative" style="background: rgba(255,255,255,0.1);" title="Notifications"> <i data-lucide="bell" style="width:20px;height:20px;color:#e2e8f0;"></i> <span id="notif-badge" class="notification-badge hidden">0</span> </button>
+     <div class="flex gap-2">
+      <button id="refresh-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Refresh Weather"> <i data-lucide="refresh-cw" style="width:20px;height:20px;color:#e2e8f0;"></i> </button><button id="donate-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Donate"> <i data-lucide="heart" style="width:20px;height:20px;color:#ef4444;"></i> </button>
+      <div class="relative">
+       <button id="notification-btn" class="p-2 rounded-xl transition-all hover:scale-110 relative" style="background: rgba(255,255,255,0.1);" title="Notifications"> <i data-lucide="bell" style="width:20px;height:20px;color:#e2e8f0;"></i> <span id="notif-badge" class="notification-badge hidden">0</span> </button>
        <div id="notif-panel" class="hidden absolute right-0 mt-2 w-72 weather-card rounded-xl p-3 max-h-48 overflow-y-auto z-40" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);">
         <h3 class="text-sm font-bold text-white mb-2">Recent Updates</h3>
         <div id="notif-list" class="text-xs space-y-2" style="color:#94a3b8;"></div>
@@ -145,8 +144,7 @@
     </div><!-- Search Bar -->
     <div class="fade-up delay-1 relative mb-6">
      <div class="flex gap-2">
-      <div class="flex-1 relative">
-       <i data-lucide="search" style="width:18px;height:18px;color:#94a3b8;" class="absolute left-3 top-1/2 -translate-y-1/2"></i> <input id="city-input" type="text" placeholder="Search cities..." class="search-input w-full py-3 pl-10 pr-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
+      <div class="flex-1 relative"><i data-lucide="search" style="width:18px;height:18px;color:#94a3b8;" class="absolute left-3 top-1/2 -translate-y-1/2"></i> <input id="city-input" type="text" placeholder="Search cities..." class="search-input w-full py-3 pl-10 pr-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
       </div><button id="search-btn" class="px-5 rounded-xl font-medium text-sm transition-all hover:scale-105" style="background: #3b82f6; color: white;">Search</button>
      </div>
      <div id="suggestions" class="absolute w-full mt-1 rounded-xl overflow-hidden z-30 hidden max-h-48 overflow-y-auto" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);"></div>
@@ -154,8 +152,7 @@
     <div id="current-weather" class="fade-up delay-2 weather-card rounded-3xl p-8 mb-6 relative overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
      <div class="flex justify-between items-start">
       <div class="flex-1">
-       <div class="flex items-center gap-2 mb-2">
-        <i data-lucide="map-pin" style="width:16px;height:16px;color:#06b6d4;"></i> <span id="city-display" class="text-xl font-bold text-white">Loading...</span>
+       <div class="flex items-center gap-2 mb-2"><i data-lucide="map-pin" style="width:16px;height:16px;color:#06b6d4;"></i> <span id="city-display" class="text-xl font-bold text-white">Loading...</span>
        </div>
        <div id="weather-desc" class="text-sm mb-6" style="color: #94a3b8; font-weight: 500;">
         --
@@ -189,8 +186,7 @@
     </div><!-- Quick Info Grid -->
     <div class="fade-up delay-3 grid grid-cols-2 gap-3 mb-6">
      <div class="weather-card rounded-2xl p-4" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="wind" style="width:16px;height:16px;color:#3b82f6;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Wind Speed</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="wind" style="width:16px;height:16px;color:#3b82f6;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Wind Speed</span>
       </div>
       <div id="wind-val" class="text-xl font-bold text-white">
        -- km/h
@@ -200,8 +196,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="droplets" style="width:16px;height:16px;color:#10b981;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Humidity</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="droplets" style="width:16px;height:16px;color:#10b981;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Humidity</span>
       </div>
       <div id="humid-val" class="text-xl font-bold text-white">
        --%
@@ -211,8 +206,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="eye" style="width:16px;height:16px;color:#06b6d4;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Visibility</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="eye" style="width:16px;height:16px;color:#06b6d4;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Visibility</span>
       </div>
       <div id="vis-val" class="text-xl font-bold text-white">
        -- km
@@ -222,8 +216,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="gauge" style="width:16px;height:16px;color:#a855f7;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Pressure</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="gauge" style="width:16px;height:16px;color:#a855f7;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Pressure</span>
       </div>
       <div id="press-val" class="text-xl font-bold text-white">
        -- hPa
@@ -233,15 +226,13 @@
       </div>
      </div><!-- Hourly Forecast -->
      <div class="fade-up delay-4 mb-6">
-      <div class="flex items-center gap-2 mb-3">
-       <i data-lucide="clock" style="width:16px;height:16px;color:#3b82f6;"></i>
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="clock" style="width:16px;height:16px;color:#3b82f6;"></i>
        <h3 class="text-sm font-bold text-white">Today's Hourly Forecast</h3>
       </div>
       <div id="hourly-scroll" class="flex gap-2 overflow-x-auto pb-2"></div>
      </div><!-- 7-Day Forecast -->
      <div class="fade-up delay-5 mb-8">
-      <div class="flex items-center gap-2 mb-3">
-       <i data-lucide="calendar" style="width:16px;height:16px;color:#10b981;"></i>
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="calendar" style="width:16px;height:16px;color:#10b981;"></i>
        <h3 class="text-sm font-bold text-white">7-Day Forecast</h3>
       </div>
       <div id="daily-forecast" class="space-y-2"></div>
@@ -302,7 +293,7 @@
 
   document.getElementById('auth-close-btn').addEventListener('click', hideAuthModal);
 
-  // Signup handler - FIXED
+  // Signup handler - FIXED WITH PROPER DATA COLLECTION
   document.getElementById('signup-btn').addEventListener('click', async (e) => {
     e.preventDefault();
     
@@ -311,13 +302,18 @@
     const phone = document.getElementById('signup-phone').value.trim();
     const location = document.getElementById('signup-location').value.trim();
     const country = document.getElementById('signup-country').value.trim();
-    const password = document.getElementById('signup-password').value;
+    const password = document.getElementById('signup-password').value.trim();
     const notificationsEnabled = document.getElementById('signup-notifications').checked;
     const policyAccepted = document.getElementById('signup-policy').checked;
 
     // Validation
-    if (!username || !email || !password || password.length < 6 || !location || !country) {
-      showToast('⚠️ Please fill all required fields (min 6 char password)');
+    if (!username || username.length < 2) {
+      showToast('⚠️ Username must be at least 2 characters');
+      return;
+    }
+
+    if (!email) {
+      showToast('⚠️ Email is required');
       return;
     }
 
@@ -325,6 +321,21 @@
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       showToast('⚠️ Please enter a valid email address');
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      showToast('⚠️ Password must be at least 6 characters');
+      return;
+    }
+
+    if (!location || location.length < 2) {
+      showToast('⚠️ Location is required');
+      return;
+    }
+
+    if (!country) {
+      showToast('⚠️ Please select a country');
       return;
     }
 
@@ -346,52 +357,60 @@
     signupBtn.textContent = '⏳ Creating account...';
     signupBtn.disabled = true;
 
-    const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    
-    const result = await window.dataSdk.create({
-      user_id: userId,
-      username: username,
-      email: email,
-      password: password,
-      phone: phone || 'N/A',
-      location: location,
-      country: country,
-      favorite_cities: 'delhi',
-      notifications_enabled: notificationsEnabled ? 'true' : 'false',
-      created_at: new Date().toISOString(),
-      donation_amount: '0',
-    });
+    try {
+      const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      
+      const result = await window.dataSdk.create({
+        user_id: userId,
+        username: username,
+        email: email,
+        password: password,
+        phone: phone || 'N/A',
+        location: location,
+        country: country,
+        favorite_cities: 'delhi',
+        notifications_enabled: notificationsEnabled ? 'true' : 'false',
+        created_at: new Date().toISOString(),
+        donation_amount: '0',
+      });
 
-    signupBtn.textContent = originalText;
-    signupBtn.disabled = false;
+      signupBtn.textContent = originalText;
+      signupBtn.disabled = false;
 
-    if (result.isOk) {
-      currentUser = { 
-        user_id: userId, 
-        username, 
-        email, 
-        phone: phone || 'N/A', 
-        location,
-        country,
-        notifications_enabled: notificationsEnabled 
-      };
-      showToast(`✅ Welcome ${username}! Account created successfully`);
-      setTimeout(() => {
-        hideAuthModal();
-        updateUserUI();
-        // Clear form
-        document.getElementById('signup-username').value = '';
-        document.getElementById('signup-email').value = '';
-        document.getElementById('signup-phone').value = '';
-        document.getElementById('signup-location').value = '';
-        document.getElementById('signup-country').value = '';
-        document.getElementById('signup-password').value = '';
-        document.getElementById('signup-policy').checked = false;
-        document.getElementById('signup-notifications').checked = true;
-        renderWeather();
-      }, 500);
-    } else {
-      showToast('❌ Signup failed: ' + (result.error?.message || 'Please try again'));
+      if (result.isOk) {
+        currentUser = { 
+          user_id: userId, 
+          username, 
+          email, 
+          phone: phone || 'N/A', 
+          location,
+          country,
+          notifications_enabled: notificationsEnabled 
+        };
+        showToast(`✅ Welcome ${username}! Account created successfully`);
+        setTimeout(() => {
+          hideAuthModal();
+          updateUserUI();
+          // Clear form completely
+          document.getElementById('signup-username').value = '';
+          document.getElementById('signup-email').value = '';
+          document.getElementById('signup-phone').value = '';
+          document.getElementById('signup-location').value = '';
+          document.getElementById('signup-country').value = '';
+          document.getElementById('signup-password').value = '';
+          document.getElementById('signup-policy').checked = false;
+          document.getElementById('signup-notifications').checked = true;
+          renderWeather();
+        }, 500);
+      } else {
+        showToast('❌ Signup failed: ' + (result.error?.message || 'Please try again'));
+        signupBtn.textContent = originalText;
+        signupBtn.disabled = false;
+      }
+    } catch (err) {
+      showToast('❌ Error: ' + err.message);
+      signupBtn.textContent = originalText;
+      signupBtn.disabled = false;
     }
   });
 
@@ -484,23 +503,26 @@
 
   // ==================== DONATION FEATURE ====================
   document.getElementById('donate-btn').addEventListener('click', () => {
-    if (!currentUser) {
-      showToast('🔒 Please sign in first to donate');
-      return;
-    }
-    
     const donationModal = document.getElementById('donation-modal');
     donationModal.style.display = 'flex';
     
-    // Check if user is from India
-    if (currentUser.country === 'India') {
+    // Check if user is from India (only if logged in)
+    if (currentUser && currentUser.country === 'India') {
       document.getElementById('india-check').classList.remove('hidden');
       document.getElementById('non-india-msg').classList.add('hidden');
       document.getElementById('donation-form').classList.remove('hidden');
-    } else {
+    } else if (currentUser) {
+      // User logged in but not from India
       document.getElementById('india-check').classList.add('hidden');
       document.getElementById('non-india-msg').classList.remove('hidden');
       document.getElementById('donation-form').classList.add('hidden');
+    } else {
+      // Guest user - show donation available globally
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+      document.getElementById('india-check').innerHTML = '<div class="flex items-center gap-2 text-green-400 text-sm"><i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available worldwide for guests</span></div>';
+      lucide.createIcons();
     }
   });
 
@@ -531,24 +553,20 @@
       return;
     }
 
-    // Generate UPI link following RBI standards
-    const upiID = '9142595543@upi';
+    // Generate UPI link - Direct to 9142595543@upi
     const payeeName = 'JagatWire';
     const transactionRef = 'JW' + Date.now();
-    const upiLink = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(payeeName)}&am=${amount}&tn=Support%20JagatWire%20Weather&tr=${transactionRef}`;
-    
-    // Fallback for web
-    const fallbackLink = `https://upi.payfort.com/pay/${upiID}?amount=${amount}&name=${encodeURIComponent(payeeName)}&note=Support%20JagatWire`;
+    const upiLink = `upi://pay?pa=9142595543@upi&pn=${encodeURIComponent(payeeName)}&am=${amount}&tn=Support%20JagatWire%20Weather&tr=${transactionRef}`;
 
     showToast(`💝 Opening UPI with ₹${amount}...`);
     
-    // Try opening UPI app first
-    window.open(upiLink, '_blank');
+    // Open UPI link
+    window.location.href = upiLink;
     
-    // Fallback after delay
+    // If UPI app doesn't respond, show manual entry option
     setTimeout(() => {
-      window.open(fallbackLink, '_blank');
-    }, 1000);
+      showToast('📱 Send ₹' + amount + ' to 9142595543@upi');
+    }, 500);
   });
 
   // ==================== WEATHER LOGIC ====================
@@ -915,5 +933,5 @@
   lucide.createIcons();
   </script>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3012b727ca21f3',t:'MTc3NDYzMjEwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e302338d4ac21f3',t:'MTc3NDYzMjc4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
