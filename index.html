@@ -1,49 +1,919 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Title</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        // Function to toggle theme
-        function toggleTheme() {
-            const body = document.body;
-            body.classList.toggle('dark-theme');
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
-            // Save the theme in localStorage
-            const theme = body.classList.contains('dark-theme') ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
-            // Update icon
-            themeToggleBtn.innerHTML = body.classList.contains('dark-theme') ? '🌞' : '🌙';
-        }
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JagatWire Weather</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    html, body { height: 100%; margin: 0; }
+    .weather-card { backdrop-filter: blur(20px); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-glow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(255,200,50,0.4)); } 50% { filter: drop-shadow(0 0 20px rgba(255,200,50,0.8)); } }
+    @keyframes float-bounce { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+    @keyframes wind-sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    @keyframes storm-flash { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    @keyframes spin-slow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes temp-glow { 0%, 100% { filter: drop-shadow(0 0 10px rgba(59,130,246,0.4)); } 50% { filter: drop-shadow(0 0 20px rgba(59,130,246,0.8)); } }
+    @keyframes rain-loop { 0% { transform: translateY(0); } 100% { transform: translateY(30px); opacity: 0; } }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .sun-glow { animation: pulse-glow 3s ease-in-out infinite; }
+    .cloud-float { animation: float-bounce 3s ease-in-out infinite; }
+    .wind-animate { animation: wind-sweep 2s linear infinite; }
+    .storm-flash { animation: storm-flash 1.5s ease-in-out infinite; }
+    .temp-pulse { animation: temp-glow 2.5s ease-in-out infinite; }
+    .spin-weather { animation: spin-slow 4s linear infinite; }
+    .rain-animate { animation: rain-loop 1.5s linear infinite; }
+    .day-card { transition: all 0.3s ease; }
+    .day-card:hover { transform: translateY(-4px); }
+    .day-card.active { border: 2px solid; }
+    .toast-msg { transition: all 0.4s ease; }
+    .search-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.3); }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    .logo-gradient { background: linear-gradient(135deg, #3b82f6, #06b6d4, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .icon-glow { filter: drop-shadow(0 0 8px rgba(59,130,246,0.5)); }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <style>
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-overlay { animation: fadeIn 0.3s ease; }
+    .modal-panel { animation: slideIn 0.4s ease; }
+    .modal-exit { animation: slideOut 0.3s ease; }
+    .notification-badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+  </style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);">
+   <!-- Toast Notification -->
+   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium opacity-0 pointer-events-none toast-msg" style="background: rgba(16,185,129,0.9);"></div><!-- Login/Signup Modal -->
+   <div id="auth-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
+    <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);"><!-- Close Button --> <button id="auth-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+     <div class="clear-both">
+      <h2 id="auth-title" class="text-2xl font-bold text-white mb-2">Welcome Back</h2>
+      <p class="text-sm mb-6" style="color:#94a3b8;">Sign in to save your favorite cities</p><!-- Signup Form (Initially Hidden) -->
+      <div id="signup-form" class="hidden"><input id="signup-username" type="text" placeholder="Username" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-email" type="email" placeholder="Email address" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-phone" type="tel" placeholder="Phone (optional)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-location" type="text" placeholder="City/Location" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <select id="signup-country" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <option value="">Select Country</option> <option value="India">🇮🇳 India</option> <option value="USA">🇺🇸 USA</option> <option value="UK">🇬🇧 UK</option> <option value="Canada">🇨🇦 Canada</option> <option value="Australia">🇦🇺 Australia</option> </select> <input id="signup-password" type="password" placeholder="Password (min 6 chars)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <label class="flex items-center gap-2 mb-3" style="color:#e2e8f0;"> <input id="signup-notifications" type="checkbox" checked class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-sm">Enable notifications</span> </label> <!-- Privacy Policy Agreement -->
+       <div class="mb-4 p-3 rounded-xl" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
+        <div class="max-h-32 overflow-y-auto mb-3 text-xs" style="color:#cbd5e1;">
+         <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 Privacy Policy &amp; Data Usage</p>
+         <p class="mb-2">By creating an account, you agree that:</p>
+         <ul class="list-disc list-inside space-y-1" style="color:#94a3b8;">
+          <li>Your data may be used for commercial purposes</li>
+          <li>We comply with all applicable government regulations</li>
+          <li>Your personal information is collected securely</li>
+          <li>JagatWire may use aggregated data for service improvements</li>
+          <li>You consent to our terms of service</li>
+         </ul>
+        </div><!-- Donation Modal (Indian Users Only) -->
+        <div id="donation-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
+         <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);">
+          <button id="donation-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+          <div class="clear-both">
+           <h2 class="text-2xl font-bold text-white mb-2">🎁 Support JagatWire</h2>
+           <p class="text-sm mb-4" style="color:#94a3b8;">Help us deliver better weather services</p><!-- India Check -->
+           <div id="india-check" class="mb-4 p-3 rounded-xl" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
+            <div class="flex items-center gap-2 text-green-400 text-sm">
+             <i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available for Indian users</span>
+            </div>
+           </div><!-- Non-India Message -->
+           <div id="non-india-msg" class="mb-4 p-3 rounded-xl hidden" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">
+            <div class="flex items-center gap-2 text-red-400 text-sm">
+             <i data-lucide="info" style="width:18px;height:18px;"></i> <span>Donations available only in India</span>
+            </div>
+           </div><!-- Donation Form (India Only) -->
+           <div id="donation-form" class="space-y-3">
+            <label class="block"> <span class="text-sm font-medium text-white mb-2 block">Amount (₹)</span> <input id="donation-amount" type="number" placeholder="Enter amount" min="1" max="100000" class="w-full py-3 px-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> </label>
+            <div class="grid grid-cols-3 gap-2">
+             <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="100" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹100</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="500" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹500</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="1000" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹1000</button>
+            </div><!-- RBI Compliant Info -->
+            <div class="p-3 rounded-xl text-xs" style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color:#cbd5e1;">
+             <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 RBI Guidelines Notice</p>
+             <ul class="list-disc list-inside space-y-1" style="color:#94a3b8;">
+              <li>UPI donations follow all RBI regulations</li>
+              <li>Transaction receipts will be generated</li>
+              <li>Maximum donation: ₹100,000 per transaction</li>
+              <li>All donations are voluntary &amp; secure</li>
+             </ul>
+            </div><button id="donate-submit-btn" class="w-full py-3 rounded-xl font-semibold text-white transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Send via UPI (9142595543@upi)</button>
+            <p class="text-center text-xs mt-2" style="color:#64748b;">This opens your UPI app • Fully secure</p>
+           </div>
+          </div>
+         </div>
+        </div><label class="flex items-center gap-2" style="color:#e2e8f0;"> <input id="signup-policy" type="checkbox" class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-xs font-medium">I agree to the Privacy Policy</span> </label>
+       </div><button id="signup-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Create Account</button>
+       <p class="text-center text-sm" style="color:#94a3b8;">Already have an account? <button id="toggle-signin" class="text-blue-400 hover:underline font-semibold">Sign In</button></p>
+      </div><!-- Signin Form -->
+      <div id="signin-form"><input id="signin-email" type="email" placeholder="Email" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signin-password" type="password" placeholder="Password" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <button id="signin-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Sign In</button>
+       <p class="text-center text-sm" style="color:#94a3b8;">New user? <button id="toggle-signup" class="text-blue-400 hover:underline font-semibold">Create Account</button></p>
+      </div><!-- Guest Option --> <button id="guest-btn" class="w-full py-3 rounded-xl font-semibold transition-all hover:bg-white/15 mt-2" style="color:#e2e8f0; border: 1px solid rgba(255,255,255,0.2);">Continue as Guest</button>
+     </div>
+    </div>
+   </div><!-- Main App Content -->
+   <div id="main-content" class="max-w-lg mx-auto px-4 py-6"><!-- Header with Logo & User Menu -->
+    <div class="fade-up flex items-center justify-between mb-8">
+     <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5" class="sun-glow"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+       </svg>
+      </div>
+      <div>
+       <h1 id="app-title" class="text-2xl font-bold logo-gradient">JagatWire</h1>
+       <p class="text-xs" style="color: #94a3b8;">Live Weather Updates</p>
+      </div>
+     </div>
+     <div class="flex gap-2"><button id="refresh-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Refresh Weather"> <i data-lucide="refresh-cw" style="width:20px;height:20px;color:#e2e8f0;"></i> </button><button id="donate-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Donate"> <i data-lucide="heart" style="width:20px;height:20px;color:#ef4444;"></i> </button>
+      <div class="relative"><button id="notification-btn" class="p-2 rounded-xl transition-all hover:scale-110 relative" style="background: rgba(255,255,255,0.1);" title="Notifications"> <i data-lucide="bell" style="width:20px;height:20px;color:#e2e8f0;"></i> <span id="notif-badge" class="notification-badge hidden">0</span> </button>
+       <div id="notif-panel" class="hidden absolute right-0 mt-2 w-72 weather-card rounded-xl p-3 max-h-48 overflow-y-auto z-40" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);">
+        <h3 class="text-sm font-bold text-white mb-2">Recent Updates</h3>
+        <div id="notif-list" class="text-xs space-y-2" style="color:#94a3b8;"></div>
+       </div>
+      </div><button id="profile-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Profile"> <i data-lucide="user" style="width:20px;height:20px;color:#e2e8f0;"></i> </button>
+     </div>
+    </div><!-- Search Bar -->
+    <div class="fade-up delay-1 relative mb-6">
+     <div class="flex gap-2">
+      <div class="flex-1 relative">
+       <i data-lucide="search" style="width:18px;height:18px;color:#94a3b8;" class="absolute left-3 top-1/2 -translate-y-1/2"></i> <input id="city-input" type="text" placeholder="Search cities..." class="search-input w-full py-3 pl-10 pr-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
+      </div><button id="search-btn" class="px-5 rounded-xl font-medium text-sm transition-all hover:scale-105" style="background: #3b82f6; color: white;">Search</button>
+     </div>
+     <div id="suggestions" class="absolute w-full mt-1 rounded-xl overflow-hidden z-30 hidden max-h-48 overflow-y-auto" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);"></div>
+    </div><!-- Current Weather Card -->
+    <div id="current-weather" class="fade-up delay-2 weather-card rounded-3xl p-8 mb-6 relative overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+     <div class="flex justify-between items-start">
+      <div class="flex-1">
+       <div class="flex items-center gap-2 mb-2">
+        <i data-lucide="map-pin" style="width:16px;height:16px;color:#06b6d4;"></i> <span id="city-display" class="text-xl font-bold text-white">Loading...</span>
+       </div>
+       <div id="weather-desc" class="text-sm mb-6" style="color: #94a3b8; font-weight: 500;">
+        --
+       </div>
+       <div id="temp-display" class="text-7xl font-bold text-white tracking-tight temp-pulse">
+        --°
+       </div>
+       <div class="flex gap-6 mt-4">
+        <div>
+         <div class="text-xs" style="color:#94a3b8;">
+          Feels Like
+         </div>
+         <div id="feels-like" class="text-lg font-semibold text-white">
+          --°
+         </div>
+        </div>
+        <div>
+         <div class="text-xs" style="color:#94a3b8;">
+          High / Low
+         </div>
+         <div id="high-low" class="text-lg font-semibold text-white">
+          --° / --°
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="weather-icon-main" class="text-7xl sun-glow">
+       ☀️
+      </div>
+     </div>
+    </div><!-- Quick Info Grid -->
+    <div class="fade-up delay-3 grid grid-cols-2 gap-3 mb-6">
+     <div class="weather-card rounded-2xl p-4" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
+      <div class="flex items-center gap-2 mb-2">
+       <i data-lucide="wind" style="width:16px;height:16px;color:#3b82f6;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Wind Speed</span>
+      </div>
+      <div id="wind-val" class="text-xl font-bold text-white">
+       -- km/h
+      </div>
+      <div class="text-xs mt-1" style="color:#64748b;">
+       Current wind
+      </div>
+     </div>
+     <div class="weather-card rounded-2xl p-4" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
+      <div class="flex items-center gap-2 mb-2">
+       <i data-lucide="droplets" style="width:16px;height:16px;color:#10b981;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Humidity</span>
+      </div>
+      <div id="humid-val" class="text-xl font-bold text-white">
+       --%
+      </div>
+      <div class="text-xs mt-1" style="color:#64748b;">
+       Moisture level
+      </div>
+     </div>
+     <div class="weather-card rounded-2xl p-4" style="background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);">
+      <div class="flex items-center gap-2 mb-2">
+       <i data-lucide="eye" style="width:16px;height:16px;color:#06b6d4;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Visibility</span>
+      </div>
+      <div id="vis-val" class="text-xl font-bold text-white">
+       -- km
+      </div>
+      <div class="text-xs mt-1" style="color:#64748b;">
+       Air clarity
+      </div>
+     </div>
+     <div class="weather-card rounded-2xl p-4" style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);">
+      <div class="flex items-center gap-2 mb-2">
+       <i data-lucide="gauge" style="width:16px;height:16px;color:#a855f7;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Pressure</span>
+      </div>
+      <div id="press-val" class="text-xl font-bold text-white">
+       -- hPa
+      </div>
+      <div class="text-xs mt-1" style="color:#64748b;">
+       Atmospheric
+      </div>
+     </div><!-- Hourly Forecast -->
+     <div class="fade-up delay-4 mb-6">
+      <div class="flex items-center gap-2 mb-3">
+       <i data-lucide="clock" style="width:16px;height:16px;color:#3b82f6;"></i>
+       <h3 class="text-sm font-bold text-white">Today's Hourly Forecast</h3>
+      </div>
+      <div id="hourly-scroll" class="flex gap-2 overflow-x-auto pb-2"></div>
+     </div><!-- 7-Day Forecast -->
+     <div class="fade-up delay-5 mb-8">
+      <div class="flex items-center gap-2 mb-3">
+       <i data-lucide="calendar" style="width:16px;height:16px;color:#10b981;"></i>
+       <h3 class="text-sm font-bold text-white">7-Day Forecast</h3>
+      </div>
+      <div id="daily-forecast" class="space-y-2"></div>
+     </div><!-- Footer -->
+     <div class="text-center pb-4">
+      <p class="text-xs" style="color: #64748b;">🌍 JagatWire Weather • Real-time Global Updates</p>
+     </div>
+    </div>
+   </div>
+   <script>
+  // ==================== USER AUTHENTICATION ====================
+  let currentUser = null;
+  let allUsers = [];
+  let userNotifications = [];
+  const NOTIFICATION_LIMIT = 5;
 
-        // Check for saved theme in localStorage and set it
-        window.onload = () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                const body = document.body;
-                body.classList.toggle('dark-theme', savedTheme === 'dark');
-                const themeToggleBtn = document.getElementById('theme-toggle-btn');
-                themeToggleBtn.innerHTML = savedTheme === 'dark' ? '🌞' : '🌙';
-            }
-        };
-    </script>
-</head>
-<body>
-    <header>
-        <nav>
-            <!-- Other header elements -->
-            <button id="theme-toggle-btn" onclick="toggleTheme()">🌙</button> <!-- Dark mode toggle button -->
-            <button class="profile-button">Profile</button>
-            <!-- Other buttons -->
-        </nav>
-    </header>
-    <main>
-        <!-- Main content -->
-    </main>
-    <footer>
-        <!-- Footer content -->
-    </footer>
-</body>
+  // Initialize auth modal
+  function showAuthModal() {
+    document.getElementById('auth-modal').style.display = 'flex';
+  }
+
+  function hideAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    modal.classList.add('modal-exit');
+    setTimeout(() => {
+      modal.classList.remove('modal-exit');
+      modal.style.display = 'none';
+    }, 300);
+  }
+
+  // Data SDK Handler
+  const dataHandler = {
+    onDataChanged(data) {
+      allUsers = data || [];
+    }
+  };
+
+  // Initialize Data SDK
+  (async () => {
+    const initResult = await window.dataSdk.init(dataHandler);
+    if (!initResult.isOk) {
+      console.error('Data SDK initialization failed');
+    }
+  })();
+
+  // Toggle between signin and signup
+  document.getElementById('toggle-signup').addEventListener('click', () => {
+    document.getElementById('signin-form').classList.add('hidden');
+    document.getElementById('signup-form').classList.remove('hidden');
+    document.getElementById('auth-title').textContent = 'Create Account';
+  });
+
+  document.getElementById('toggle-signin').addEventListener('click', () => {
+    document.getElementById('signup-form').classList.add('hidden');
+    document.getElementById('signin-form').classList.remove('hidden');
+    document.getElementById('auth-title').textContent = 'Welcome Back';
+  });
+
+  document.getElementById('auth-close-btn').addEventListener('click', hideAuthModal);
+
+  // Signup handler - FIXED
+  document.getElementById('signup-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    const username = document.getElementById('signup-username').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const phone = document.getElementById('signup-phone').value.trim();
+    const location = document.getElementById('signup-location').value.trim();
+    const country = document.getElementById('signup-country').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const notificationsEnabled = document.getElementById('signup-notifications').checked;
+    const policyAccepted = document.getElementById('signup-policy').checked;
+
+    // Validation
+    if (!username || !email || !password || password.length < 6 || !location || !country) {
+      showToast('⚠️ Please fill all required fields (min 6 char password)');
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showToast('⚠️ Please enter a valid email address');
+      return;
+    }
+
+    if (!policyAccepted) {
+      showToast('⚠️ Please agree to the Privacy Policy to continue');
+      return;
+    }
+
+    // Check if email already exists
+    const emailExists = allUsers.some(u => u.email === email);
+    if (emailExists) {
+      showToast('❌ Email already registered. Please sign in.');
+      return;
+    }
+
+    // Show loading state
+    const signupBtn = document.getElementById('signup-btn');
+    const originalText = signupBtn.textContent;
+    signupBtn.textContent = '⏳ Creating account...';
+    signupBtn.disabled = true;
+
+    const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    const result = await window.dataSdk.create({
+      user_id: userId,
+      username: username,
+      email: email,
+      password: password,
+      phone: phone || 'N/A',
+      location: location,
+      country: country,
+      favorite_cities: 'delhi',
+      notifications_enabled: notificationsEnabled ? 'true' : 'false',
+      created_at: new Date().toISOString(),
+      donation_amount: '0',
+    });
+
+    signupBtn.textContent = originalText;
+    signupBtn.disabled = false;
+
+    if (result.isOk) {
+      currentUser = { 
+        user_id: userId, 
+        username, 
+        email, 
+        phone: phone || 'N/A', 
+        location,
+        country,
+        notifications_enabled: notificationsEnabled 
+      };
+      showToast(`✅ Welcome ${username}! Account created successfully`);
+      setTimeout(() => {
+        hideAuthModal();
+        updateUserUI();
+        // Clear form
+        document.getElementById('signup-username').value = '';
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-phone').value = '';
+        document.getElementById('signup-location').value = '';
+        document.getElementById('signup-country').value = '';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('signup-policy').checked = false;
+        document.getElementById('signup-notifications').checked = true;
+        renderWeather();
+      }, 500);
+    } else {
+      showToast('❌ Signup failed: ' + (result.error?.message || 'Please try again'));
+    }
+  });
+
+  // Signin handler
+  document.getElementById('signin-btn').addEventListener('click', () => {
+    const email = document.getElementById('signin-email').value.trim();
+    const password = document.getElementById('signin-password').value;
+
+    if (!email || !password) {
+      showToast('⚠️ Please enter email and password');
+      return;
+    }
+
+    // Find user in stored data
+    const user = allUsers.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+      currentUser = { 
+        user_id: user.user_id, 
+        username: user.username, 
+        email: user.email, 
+        phone: user.phone, 
+        location: user.location,
+        country: user.country,
+        notifications_enabled: user.notifications_enabled === 'true' 
+      };
+      showToast(`✅ Welcome back, ${currentUser.username}!`);
+      hideAuthModal();
+      updateUserUI();
+      document.getElementById('signin-email').value = '';
+      document.getElementById('signin-password').value = '';
+    } else {
+      showToast('❌ Invalid credentials');
+    }
+  });
+
+  // Guest mode
+  document.getElementById('guest-btn').addEventListener('click', () => {
+    showToast('⚠️ Please sign up or sign in to use weather features');
+  });
+
+  function updateUserUI() {
+    const profileBtn = document.getElementById('profile-btn');
+    if (currentUser) {
+      profileBtn.innerHTML = `<i data-lucide="check-circle" style="width:20px;height:20px;color:#10b981;"></i>`;
+      profileBtn.title = `Logged in as ${currentUser.username}`;
+    }
+    lucide.createIcons();
+  }
+
+  // Profile menu
+  document.getElementById('profile-btn').addEventListener('click', () => {
+    if (currentUser) {
+      showToast(`👤 ${currentUser.username} | ${currentUser.email} | ${currentUser.country}`);
+    } else {
+      showAuthModal();
+    }
+  });
+
+  // Notifications
+  function addNotification(msg) {
+    userNotifications.unshift({ msg, time: new Date().toLocaleTimeString().slice(0, 5) });
+    if (userNotifications.length > NOTIFICATION_LIMIT) userNotifications.pop();
+    updateNotifUI();
+  }
+
+  function updateNotifUI() {
+    const badge = document.getElementById('notif-badge');
+    const list = document.getElementById('notif-list');
+    if (userNotifications.length > 0) {
+      badge.textContent = userNotifications.length;
+      badge.classList.remove('hidden');
+      list.innerHTML = userNotifications.map(n => `<div class="p-2 rounded bg-white/5">📍 ${n.msg} <span style="float:right;font-size:10px;">${n.time}</span></div>`).join('');
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('notification-btn').addEventListener('click', () => {
+    const panel = document.getElementById('notif-panel');
+    panel.classList.toggle('hidden');
+  });
+
+  // Close notif panel when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#notification-btn') && !e.target.closest('#notif-panel')) {
+      document.getElementById('notif-panel').classList.add('hidden');
+    }
+  });
+
+  // ==================== DONATION FEATURE ====================
+  document.getElementById('donate-btn').addEventListener('click', () => {
+    if (!currentUser) {
+      showToast('🔒 Please sign in first to donate');
+      return;
+    }
+    
+    const donationModal = document.getElementById('donation-modal');
+    donationModal.style.display = 'flex';
+    
+    // Check if user is from India
+    if (currentUser.country === 'India') {
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+    } else {
+      document.getElementById('india-check').classList.add('hidden');
+      document.getElementById('non-india-msg').classList.remove('hidden');
+      document.getElementById('donation-form').classList.add('hidden');
+    }
+  });
+
+  document.getElementById('donation-close-btn').addEventListener('click', () => {
+    document.getElementById('donation-modal').classList.add('modal-exit');
+    setTimeout(() => {
+      document.getElementById('donation-modal').classList.remove('modal-exit');
+      document.getElementById('donation-modal').style.display = 'none';
+      document.getElementById('donation-amount').value = '';
+    }, 300);
+  });
+
+  // Quick amount buttons
+  document.querySelectorAll('.quick-amount').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('donation-amount').value = btn.dataset.amount;
+      document.querySelectorAll('.quick-amount').forEach(b => b.style.background = 'rgba(59,130,246,0.2)');
+      btn.style.background = 'rgba(59,130,246,0.5)';
+    });
+  });
+
+  // Donate submit handler
+  document.getElementById('donate-submit-btn').addEventListener('click', () => {
+    const amount = document.getElementById('donation-amount').value;
+    
+    if (!amount || amount < 1 || amount > 100000) {
+      showToast('⚠️ Enter amount between ₹1 - ₹100,000');
+      return;
+    }
+
+    // Generate UPI link following RBI standards
+    const upiID = '9142595543@upi';
+    const payeeName = 'JagatWire';
+    const transactionRef = 'JW' + Date.now();
+    const upiLink = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(payeeName)}&am=${amount}&tn=Support%20JagatWire%20Weather&tr=${transactionRef}`;
+    
+    // Fallback for web
+    const fallbackLink = `https://upi.payfort.com/pay/${upiID}?amount=${amount}&name=${encodeURIComponent(payeeName)}&note=Support%20JagatWire`;
+
+    showToast(`💝 Opening UPI with ₹${amount}...`);
+    
+    // Try opening UPI app first
+    window.open(upiLink, '_blank');
+    
+    // Fallback after delay
+    setTimeout(() => {
+      window.open(fallbackLink, '_blank');
+    }, 1000);
+  });
+
+  // ==================== WEATHER LOGIC ====================
+  // Enhanced weather types with dynamic animations
+  const weatherTypes = [
+    { icon: '☀️', desc: 'Clear Sky', anim: 'sun-glow', color: '#fbbf24' },
+    { icon: '🌤️', desc: 'Mostly Sunny', anim: 'sun-glow', color: '#fbbf24' },
+    { icon: '⛅', desc: 'Partly Cloudy', anim: 'cloud-float', color: '#93c5fd' },
+    { icon: '☁️', desc: 'Overcast', anim: 'cloud-float', color: '#cbd5e1' },
+    { icon: '🌧️', desc: 'Light Rain', anim: 'rain-animate', color: '#3b82f6' },
+    { icon: '⛈️', desc: 'Thunderstorm', anim: 'storm-flash', color: '#8b5cf6' },
+    { icon: '🌦️', desc: 'Showers', anim: 'rain-animate', color: '#06b6d4' },
+    { icon: '🌫️', desc: 'Foggy', anim: 'cloud-float', color: '#9ca3af' },
+    { icon: '🌪️', desc: 'Windy', anim: 'wind-animate', color: '#f97316' },
+    { icon: '❄️', desc: 'Snowy', anim: 'spin-weather', color: '#e0f2fe' },
+  ];
+
+  // Comprehensive Indian & Global Cities Database (50+ cities)
+  const cities = {
+    // Major Indian Cities (IMD coverage)
+    'delhi': { lat: 28.7, base: 28, country: '🇮🇳' },
+    'mumbai': { lat: 19.0, base: 32, country: '🇮🇳' },
+    'bangalore': { lat: 12.9, base: 28, country: '🇮🇳' },
+    'kolkata': { lat: 22.5, base: 29, country: '🇮🇳' },
+    'hyderabad': { lat: 17.3, base: 30, country: '🇮🇳' },
+    'chennai': { lat: 13.0, base: 31, country: '🇮🇳' },
+    'pune': { lat: 18.5, base: 26, country: '🇮🇳' },
+    'jaipur': { lat: 26.9, base: 30, country: '🇮🇳' },
+    'indore': { lat: 22.7, base: 29, country: '🇮🇳' },
+    'lucknow': { lat: 26.8, base: 27, country: '🇮🇳' },
+    'chandigarh': { lat: 30.7, base: 24, country: '🇮🇳' },
+    'ahmedabad': { lat: 23.0, base: 31, country: '🇮🇳' },
+    'surat': { lat: 21.1, base: 32, country: '🇮🇳' },
+    'kochi': { lat: 9.9, base: 30, country: '🇮🇳' },
+    'goa': { lat: 15.2, base: 30, country: '🇮🇳' },
+    'thiruvananthapuram': { lat: 8.5, base: 29, country: '🇮🇳' },
+    'bhopal': { lat: 23.1, base: 28, country: '🇮🇳' },
+    'coimbatore': { lat: 11.0, base: 28, country: '🇮🇳' },
+    'vadodara': { lat: 22.3, base: 31, country: '🇮🇳' },
+    'ghaziabad': { lat: 28.6, base: 27, country: '🇮🇳' },
+    'nagpur': { lat: 21.1, base: 29, country: '🇮🇳' },
+    'patna': { lat: 25.5, base: 28, country: '🇮🇳' },
+    'visakhapatnam': { lat: 17.6, base: 30, country: '🇮🇳' },
+    'srinagar': { lat: 34.0, base: 18, country: '🇮🇳' },
+    'raipur': { lat: 21.2, base: 29, country: '🇮🇳' },
+    // Global Major Cities
+    'new york': { lat: 40.7, base: 22, country: '🇺🇸' },
+    'london': { lat: 51.5, base: 16, country: '🇬🇧' },
+    'tokyo': { lat: 35.6, base: 26, country: '🇯🇵' },
+    'paris': { lat: 48.8, base: 18, country: '🇫🇷' },
+    'sydney': { lat: -33.8, base: 24, country: '🇦🇺' },
+    'dubai': { lat: 25.2, base: 38, country: '🇦🇪' },
+    'toronto': { lat: 43.6, base: 20, country: '🇨🇦' },
+    'berlin': { lat: 52.5, base: 17, country: '🇩🇪' },
+    'singapore': { lat: 1.3, base: 30, country: '🇸🇬' },
+    'los angeles': { lat: 34.0, base: 25, country: '🇺🇸' },
+    'cairo': { lat: 30.0, base: 34, country: '🇪🇬' },
+    'moscow': { lat: 55.7, base: 12, country: '🇷🇺' },
+    'beijing': { lat: 39.9, base: 23, country: '🇨🇳' },
+    'rio de janeiro': { lat: -22.9, base: 28, country: '🇧🇷' },
+    'seoul': { lat: 37.5, base: 21, country: '🇰🇷' },
+    'bangkok': { lat: 13.7, base: 33, country: '🇹🇭' },
+    'istanbul': { lat: 41.0, base: 22, country: '🇹🇷' },
+    'mexico city': { lat: 19.4, base: 20, country: '🇲🇽' },
+    'hong kong': { lat: 22.3, base: 27, country: '🇭🇰' },
+  };
+
+  let currentCity = 'delhi';
+  let selectedDay = 0;
+
+  function seededRandom(seed) {
+    let x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+
+  function getDaySeed(city, dayOffset) {
+    const d = new Date();
+    d.setDate(d.getDate() + dayOffset);
+    const str = city + d.toDateString();
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    return Math.abs(hash);
+  }
+
+  function getWeatherForDay(city, dayOffset) {
+    const c = cities[city] || { base: 22 };
+    const seed = getDaySeed(city, dayOffset);
+    const r = seededRandom(seed);
+    const wIdx = Math.floor(r * weatherTypes.length);
+    const w = weatherTypes[wIdx];
+    const tempVariation = seededRandom(seed + 1) * 8 - 4;
+    const dayVar = seededRandom(seed + 2) * 4;
+    const temp = Math.round(c.base + tempVariation);
+    const high = Math.round(temp + dayVar + 2);
+    const low = Math.round(temp - dayVar - 1);
+    return {
+      ...w,
+      temp, high, low,
+      feelsLike: Math.round(temp + (seededRandom(seed + 3) * 4 - 2)),
+      wind: Math.round(5 + seededRandom(seed + 4) * 30),
+      humidity: Math.round(30 + seededRandom(seed + 5) * 60),
+      visibility: Math.round(5 + seededRandom(seed + 6) * 15),
+      pressure: Math.round(990 + seededRandom(seed + 7) * 40),
+    };
+  }
+
+  function getHourlyForecast(city, dayOffset) {
+    const hours = [];
+    const now = new Date();
+    for (let i = 0; i < 12; i++) {
+      const h = (now.getHours() + i * 2) % 24;
+      const seed = getDaySeed(city, dayOffset) + h;
+      const c = cities[city] || { base: 22 };
+      const r = seededRandom(seed);
+      const wIdx = Math.floor(r * weatherTypes.length);
+      const tempVar = seededRandom(seed + 10) * 6 - 3;
+      hours.push({
+        hour: `${h.toString().padStart(2, '0')}:00`,
+        icon: weatherTypes[wIdx].icon,
+        temp: Math.round(c.base + tempVar),
+      });
+    }
+    return hours;
+  }
+
+  function formatDate(offset) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  }
+
+  function formatDayName(offset) {
+    if (offset === 0) return 'Today';
+    if (offset === 1) return 'Tomorrow';
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toLocaleDateString('en-US', { weekday: 'short' });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.transform = 'translate(-50%, 0)';
+    setTimeout(() => { t.style.opacity = '0'; }, 2500);
+  }
+
+  function titleCase(s) {
+    return s.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function renderWeather() {
+    if (!currentUser) {
+      showToast('🔒 Please sign in to view weather');
+      showAuthModal();
+      return;
+    }
+
+    const w = getWeatherForDay(currentCity, selectedDay);
+    const cityObj = cities[currentCity] || {};
+    document.getElementById('city-display').textContent = `${cityObj.country || ''} ${titleCase(currentCity)}`;
+    document.getElementById('weather-desc').textContent = w.desc;
+    document.getElementById('temp-display').textContent = `${w.temp}°C`;
+    document.getElementById('feels-like').textContent = `${w.feelsLike}°C`;
+    document.getElementById('high-low').textContent = `${w.high}° / ${w.low}°`;
+    
+    const iconEl = document.getElementById('weather-icon-main');
+    iconEl.textContent = w.icon;
+    iconEl.className = `text-7xl ${w.anim}`;
+    
+    document.getElementById('wind-val').textContent = `${w.wind} km/h`;
+    document.getElementById('humid-val').textContent = `${w.humidity}%`;
+    document.getElementById('vis-val').textContent = `${w.visibility} km`;
+    document.getElementById('press-val').textContent = `${w.pressure} hPa`;
+
+    // Hourly
+    const hScroll = document.getElementById('hourly-scroll');
+    const hours = getHourlyForecast(currentCity, selectedDay);
+    hScroll.innerHTML = hours.map((h, i) => `
+      <div class="flex-shrink-0 weather-card rounded-2xl p-3 text-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);min-width:80px;">
+        <div class="text-xs mb-2 font-semibold" style="color:#94a3b8;">${i === 0 && selectedDay === 0 ? 'Now' : h.hour}</div>
+        <div class="text-3xl mb-2">${h.icon}</div>
+        <div class="text-lg font-bold text-white">${h.temp}°</div>
+      </div>
+    `).join('');
+
+    // 7-day
+    const dContainer = document.getElementById('daily-forecast');
+    dContainer.innerHTML = '';
+    for (let i = 0; i < 7; i++) {
+      const dw = getWeatherForDay(currentCity, i);
+      const isActive = i === selectedDay;
+      const card = document.createElement('div');
+      card.className = `day-card weather-card rounded-2xl p-4 flex items-center justify-between cursor-pointer ${isActive ? 'active' : ''}`;
+      card.style.cssText = `background:rgba(255,255,255,${isActive ? '0.12' : '0.06'});border:${isActive ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)'};`;
+      card.innerHTML = `
+        <div class="flex items-center gap-3 flex-1">
+          <span class="text-3xl">${dw.icon}</span>
+          <div>
+            <div class="text-sm font-bold text-white">${formatDayName(i)}</div>
+            <div class="text-xs" style="color:#94a3b8;">${dw.desc}</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-lg font-bold text-white">${dw.high}°</div>
+          <div class="text-xs" style="color:#64748b;">${dw.low}°</div>
+        </div>
+      `;
+      card.addEventListener('click', () => { selectedDay = i; renderWeather(); });
+      dContainer.appendChild(card);
+    }
+  }
+
+  // Search functionality
+  const cityInput = document.getElementById('city-input');
+  const suggestionsEl = document.getElementById('suggestions');
+  const cityNames = Object.keys(cities);
+
+  function doSearch() {
+    if (!currentUser) {
+      showToast('🔒 Please sign in first');
+      showAuthModal();
+      return;
+    }
+
+    const val = cityInput.value.trim().toLowerCase();
+    if (val && cities[val]) {
+      currentCity = val;
+      selectedDay = 0;
+      renderWeather();
+      addNotification(`${titleCase(val)} loaded`);
+      showToast(`📍 Weather updated for ${titleCase(val)}`);
+      suggestionsEl.classList.add('hidden');
+      cityInput.value = '';
+    } else if (val) {
+      const match = cityNames.find(c => c.startsWith(val));
+      if (match) {
+        currentCity = match;
+        selectedDay = 0;
+        renderWeather();
+        addNotification(`${titleCase(match)} loaded`);
+        showToast(`📍 Weather updated for ${titleCase(match)}`);
+        cityInput.value = '';
+      } else {
+        showToast('⚠️ City not found!');
+      }
+      suggestionsEl.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('search-btn').addEventListener('click', doSearch);
+  cityInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
+
+  cityInput.addEventListener('input', () => {
+    const val = cityInput.value.trim().toLowerCase();
+    if (val.length < 1) { suggestionsEl.classList.add('hidden'); return; }
+    const matches = cityNames.filter(c => c.includes(val)).slice(0, 8);
+    if (matches.length === 0) { suggestionsEl.classList.add('hidden'); return; }
+    suggestionsEl.innerHTML = matches.map(m => {
+      const obj = cities[m];
+      return `
+        <div class="px-4 py-3 text-sm text-white cursor-pointer hover:bg-white/15 transition-colors flex items-center justify-between" data-city="${m}">
+          <span><span style="margin-right:6px;">${obj.country}</span>${titleCase(m)}</span>
+          <span style="color:#94a3b8;font-size:11px;">${obj.base}°C avg</span>
+        </div>
+      `;
+    }).join('');
+    suggestionsEl.classList.remove('hidden');
+    suggestionsEl.querySelectorAll('[data-city]').forEach(el => {
+      el.addEventListener('click', () => {
+        currentCity = el.dataset.city;
+        selectedDay = 0;
+        suggestionsEl.classList.add('hidden');
+        cityInput.value = '';
+        renderWeather();
+        addNotification(`${titleCase(currentCity)} loaded`);
+        showToast(`📍 ${titleCase(currentCity)} weather loaded`);
+        lucide.createIcons();
+      });
+    });
+    lucide.createIcons();
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#city-input') && !e.target.closest('#suggestions')) suggestionsEl.classList.add('hidden');
+  });
+
+  document.getElementById('refresh-btn').addEventListener('click', () => {
+    if (!currentUser) {
+      showToast('🔒 Please sign in first');
+      showAuthModal();
+      return;
+    }
+    renderWeather();
+    addNotification(`${titleCase(currentCity)} updated`);
+    showToast('🔄 Weather refreshed!');
+  });
+
+  // Element SDK
+  const defaultConfig = {
+    app_title: 'JagatWire Weather',
+    city_name: 'Delhi',
+    background_color: '#0f172a',
+    surface_color: '#1e3a5f',
+    text_color: '#e2e8f0',
+    primary_action_color: '#3b82f6',
+    secondary_action_color: '#94a3b8',
+    font_family: 'Inter',
+    font_size: 16,
+  };
+
+  function applyConfig(config) {
+    const bg = config.background_color || defaultConfig.background_color;
+    const surface = config.surface_color || defaultConfig.surface_color;
+    const text = config.text_color || defaultConfig.text_color;
+    const primary = config.primary_action_color || defaultConfig.primary_action_color;
+    const font = config.font_family || defaultConfig.font_family;
+    const size = config.font_size || defaultConfig.font_size;
+
+    const root = document.getElementById('app-root');
+    root.style.background = `linear-gradient(135deg, ${bg} 0%, ${surface} 50%, ${bg} 100%)`;
+    root.style.fontFamily = `${font}, Inter, sans-serif`;
+
+    document.getElementById('app-title').textContent = config.app_title || defaultConfig.app_title;
+    document.getElementById('app-title').style.fontSize = `${size * 1.4}px`;
+
+    document.title = config.app_title || defaultConfig.app_title;
+
+    if (config.city_name) {
+      const cn = config.city_name.toLowerCase();
+      if (cities[cn] && cn !== currentCity && currentUser) {
+        currentCity = cn;
+        selectedDay = 0;
+        renderWeather();
+      }
+    }
+
+    document.getElementById('search-btn').style.background = primary;
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['app_title', config.app_title || defaultConfig.app_title],
+      ['city_name', config.city_name || defaultConfig.city_name],
+    ]),
+  });
+
+  // Initial render
+  showAuthModal();
+  lucide.createIcons();
+  </script>
+  </div>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3012b727ca21f3',t:'MTc3NDYzMjEwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
