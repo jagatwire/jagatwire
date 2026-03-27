@@ -1639,7 +1639,7 @@
     });
   });
 
-  // Donate submit handler - Open UPI directly
+  // Donate submit handler - Open Paytm UPI directly
   document.getElementById('donate-submit-btn').addEventListener('click', () => {
     const amount = document.getElementById('donation-amount').value;
     
@@ -1648,21 +1648,28 @@
       return;
     }
 
-    // UPI payment link format
-    const upiId = '9142595543@upi';
+    // UPI payment link format - Paytm registered number
+    const upiId = '9142595543@PTYES';
     const payeeName = 'JagatWire';
     const transactionRef = 'JW' + Date.now();
     const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&tn=${encodeURIComponent('Donation to JagatWire')}&tr=${transactionRef}`;
     
-    // Try to open UPI app
-    window.open(upiLink, '_blank');
+    showToast('✅ Opening Paytm UPI...');
     
-    showToast('✅ Opening your UPI app...');
+    // Open UPI handler - will launch Paytm app if installed
+    try {
+      window.location.href = upiLink;
+    } catch (e) {
+      console.error('UPI error:', e);
+      showToast('⚠️ Please open Paytm app manually');
+    }
+    
     setTimeout(() => {
       document.getElementById('donation-modal').style.display = 'none';
       document.getElementById('donation-amount').value = '';
+      document.querySelectorAll('.quick-amount').forEach(b => b.style.background = 'rgba(59,130,246,0.2)');
       showToast('💚 Thank you for your support!');
-    }, 1500);
+    }, 2000);
   });
 
   // ==================== WEATHER LOGIC ====================
@@ -2226,5 +2233,5 @@
   }, 2000);
   </script>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e30e004233b79fe',t:'MTc3NDY0MDUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e30f5f6d4ff4430',t:'MTc3NDY0MTQxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
