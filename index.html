@@ -7,9 +7,10 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', sans-serif; }
+    * { font-family: 'Poppins', sans-serif; }
+    .display-font { font-family: 'Playfair Display', serif; }
     html, body { height: 100%; margin: 0; }
     .weather-card { backdrop-filter: blur(20px); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -49,6 +50,7 @@
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); } 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239,68,68,0); } }
     .modal-overlay { animation: fadeIn 0.3s ease; }
     .modal-panel { animation: slideIn 0.4s ease; }
     .modal-exit { animation: slideOut 0.3s ease; }
@@ -56,15 +58,33 @@
   </style>
  </head>
  <body class="h-full">
-  <div id="app-root" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);">
-   <!-- Toast Notification -->
-   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium opacity-0 pointer-events-none toast-msg" style="background: rgba(16,185,129,0.9);"></div><!-- Login/Signup Modal -->
+  <div id="app-root" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);"><!-- Toast Notification -->
+   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium opacity-0 pointer-events-none toast-msg" style="background: rgba(16,185,129,0.9);"></div><!-- Floating Donation Banner -->
+   <div id="donation-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-md w-full mx-4 px-4 py-4 rounded-2xl cursor-pointer transition-all transform hover:scale-105 hidden" style="background: linear-gradient(135deg, rgba(239,68,68,0.95), rgba(249,115,22,0.95)); border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); animation: slideIn 0.5s ease;">
+    <div class="flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="text-2xl animate-bounce">
+       ❤️
+      </div>
+      <div>
+       <div class="text-sm font-bold text-white">
+        Support JagatWire
+       </div>
+       <div class="text-xs" style="color: rgba(255,255,255,0.8);">
+        Your donations help us improve
+       </div>
+      </div>
+     </div><button id="banner-close-btn" class="p-1 hover:bg-white/20 rounded-lg transition-all" onclick="event.stopPropagation()"> <i data-lucide="x" style="width:18px;height:18px;color:white;"></i> </button>
+    </div>
+   </div><!-- Login/Signup Modal -->
    <div id="auth-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
-    <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);"><!-- Close Button --> <button id="auth-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+    <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);">
+     <!-- Close Button --> <button id="auth-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
      <div class="clear-both">
       <h2 id="auth-title" class="text-2xl font-bold text-white mb-2">Welcome Back</h2>
       <p class="text-sm mb-6" style="color:#94a3b8;">Sign in to save your favorite cities</p><!-- Signup Form (Initially Hidden) -->
-      <div id="signup-form" class="hidden"><input id="signup-username" type="text" placeholder="Username" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-email" type="email" placeholder="Email address" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-phone" type="tel" placeholder="Phone (optional)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-location" type="text" placeholder="City/Location" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <select id="signup-country" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <option value="">Select Country</option> <option value="India">🇮🇳 India</option> <option value="USA">🇺🇸 USA</option> <option value="UK">🇬🇧 UK</option> <option value="Canada">🇨🇦 Canada</option> <option value="Australia">🇦🇺 Australia</option> </select> <input id="signup-password" type="password" placeholder="Password (min 6 chars)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <label class="flex items-center gap-2 mb-3" style="color:#e2e8f0;"> <input id="signup-notifications" type="checkbox" checked class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-sm">Enable notifications</span> </label> <!-- Privacy Policy Agreement -->
+      <div id="signup-form" class="hidden">
+       <input id="signup-username" type="text" placeholder="Username" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-email" type="email" placeholder="Email address" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-phone" type="tel" placeholder="Phone (optional)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signup-location" type="text" placeholder="City/Location" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <select id="signup-country" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <option value="">Select Country</option> <option value="India">🇮🇳 India</option> <option value="USA">🇺🇸 USA</option> <option value="UK">🇬🇧 UK</option> <option value="Canada">🇨🇦 Canada</option> <option value="Australia">🇦🇺 Australia</option> </select> <input id="signup-password" type="password" placeholder="Password (min 6 chars)" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <label class="flex items-center gap-2 mb-3" style="color:#e2e8f0;"> <input id="signup-notifications" type="checkbox" checked class="w-4 h-4 rounded" style="background: rgba(59,130,246,0.5); border: 1px solid #3b82f6; cursor: pointer;"> <span class="text-sm">Enable notifications</span> </label> <!-- Privacy Policy Agreement -->
        <div class="mb-4 p-3 rounded-xl" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
         <div class="max-h-32 overflow-y-auto mb-3 text-xs" style="color:#cbd5e1;">
          <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 Privacy Policy &amp; Data Usage</p>
@@ -78,25 +98,20 @@
          </ul>
         </div><!-- Donation Modal (Indian Users Only) -->
         <div id="donation-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center modal-overlay" style="background: rgba(0,0,0,0.6); display: none;">
-         <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);">
-          <button id="donation-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
+         <div class="modal-panel w-full md:w-96 rounded-3xl md:rounded-2xl p-8 max-h-96 overflow-y-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);"><button id="donation-close-btn" class="float-right p-2 hover:bg-white/10 rounded-lg transition-all"> <i data-lucide="x" style="width:24px;height:24px;color:#e2e8f0;"></i> </button>
           <div class="clear-both">
            <h2 class="text-2xl font-bold text-white mb-2">🎁 Support JagatWire</h2>
            <p class="text-sm mb-4" style="color:#94a3b8;">Help us deliver better weather services</p><!-- India Check -->
            <div id="india-check" class="mb-4 p-3 rounded-xl" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
-            <div class="flex items-center gap-2 text-green-400 text-sm">
-             <i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available for Indian users</span>
+            <div class="flex items-center gap-2 text-green-400 text-sm"><i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available for Indian users</span>
             </div>
            </div><!-- Non-India Message -->
            <div id="non-india-msg" class="mb-4 p-3 rounded-xl hidden" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">
-            <div class="flex items-center gap-2 text-red-400 text-sm">
-             <i data-lucide="info" style="width:18px;height:18px;"></i> <span>Donations available only in India</span>
+            <div class="flex items-center gap-2 text-red-400 text-sm"><i data-lucide="info" style="width:18px;height:18px;"></i> <span>Donations available only in India</span>
             </div>
            </div><!-- Donation Form (India Only) -->
-           <div id="donation-form" class="space-y-3">
-            <label class="block"> <span class="text-sm font-medium text-white mb-2 block">Amount (₹)</span> <input id="donation-amount" type="number" placeholder="Enter amount" min="1" max="100000" class="w-full py-3 px-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> </label>
-            <div class="grid grid-cols-3 gap-2">
-             <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="100" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹100</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="500" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹500</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="1000" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹1000</button>
+           <div id="donation-form" class="space-y-3"><label class="block"> <span class="text-sm font-medium text-white mb-2 block">Amount (₹)</span> <input id="donation-amount" type="number" placeholder="Enter amount" min="1" max="100000" class="w-full py-3 px-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> </label>
+            <div class="grid grid-cols-3 gap-2"><button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="100" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹100</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="500" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹500</button> <button class="quick-amount py-2 px-3 rounded-lg text-white text-sm font-medium transition-all" data-amount="1000" style="background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.5);">₹1000</button>
             </div><!-- RBI Compliant Info -->
             <div class="p-3 rounded-xl text-xs" style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color:#cbd5e1;">
              <p class="font-semibold mb-2" style="color:#e2e8f0;">📋 RBI Guidelines Notice</p>
@@ -115,18 +130,19 @@
        </div><button id="signup-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Create Account</button>
        <p class="text-center text-sm" style="color:#94a3b8;">Already have an account? <button id="toggle-signin" class="text-blue-400 hover:underline font-semibold">Sign In</button></p>
       </div><!-- Signin Form -->
-      <div id="signin-form"><input id="signin-email" type="email" placeholder="Email" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signin-password" type="password" placeholder="Password" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <button id="signin-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Sign In</button>
+      <div id="signin-form">
+       <input id="signin-email" type="email" placeholder="Email" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-3" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <input id="signin-password" type="password" placeholder="Password" class="w-full py-3 px-4 rounded-xl text-white text-sm mb-4" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);"> <button id="signin-btn" class="w-full py-3 rounded-xl font-semibold text-white mb-3 transition-all hover:scale-105" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">Sign In</button>
        <p class="text-center text-sm" style="color:#94a3b8;">New user? <button id="toggle-signup" class="text-blue-400 hover:underline font-semibold">Create Account</button></p>
       </div><!-- Guest Option --> <button id="guest-btn" class="w-full py-3 rounded-xl font-semibold transition-all hover:bg-white/15 mt-2" style="color:#e2e8f0; border: 1px solid rgba(255,255,255,0.2);">Continue as Guest</button>
      </div>
     </div>
    </div><!-- Main App Content -->
-   <div id="main-content" class="max-w-lg mx-auto px-4 py-6"><!-- Header with Logo & User Menu -->
+   <div id="main-content" class="max-w-lg mx-auto px-4 py-6">
+    <!-- Header with Logo & User Menu -->
     <div class="fade-up flex items-center justify-between mb-8">
      <div class="flex items-center gap-3">
       <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">
-       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5" class="sun-glow"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5" class="sun-glow"></circle> <line x1="12" y1="1" x2="12" y2="3"></line> <line x1="12" y1="21" x2="12" y2="23"></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line> <line x1="1" y1="12" x2="3" y2="12"></line> <line x1="21" y1="12" x2="23" y2="12"></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
        </svg>
       </div>
       <div>
@@ -134,8 +150,10 @@
        <p class="text-xs" style="color: #94a3b8;">Live Weather Updates</p>
       </div>
      </div>
-     <div class="flex gap-2"><button id="refresh-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Refresh Weather"> <i data-lucide="refresh-cw" style="width:20px;height:20px;color:#e2e8f0;"></i> </button><button id="donate-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Donate"> <i data-lucide="heart" style="width:20px;height:20px;color:#ef4444;"></i> </button>
-      <div class="relative"><button id="notification-btn" class="p-2 rounded-xl transition-all hover:scale-110 relative" style="background: rgba(255,255,255,0.1);" title="Notifications"> <i data-lucide="bell" style="width:20px;height:20px;color:#e2e8f0;"></i> <span id="notif-badge" class="notification-badge hidden">0</span> </button>
+     <div class="flex gap-2">
+      <button id="refresh-btn" class="p-2 rounded-xl transition-all hover:scale-110" style="background: rgba(255,255,255,0.1);" title="Refresh Weather"> <i data-lucide="refresh-cw" style="width:20px;height:20px;color:#e2e8f0;"></i> </button> <button id="donate-btn-header" class="relative px-3 py-2 rounded-xl transition-all hover:scale-110 font-semibold text-sm" style="background: linear-gradient(135deg, #ef4444, #f97316); color: white; animation: pulse 2s ease-in-out infinite;" title="Support Us"> <i data-lucide="heart" style="width:16px;height:16px;display:inline;margin-right:4px;"></i> <span id="donate-pulse-text">Donate</span> </button>
+      <div class="relative">
+       <button id="notification-btn" class="p-2 rounded-xl transition-all hover:scale-110 relative" style="background: rgba(255,255,255,0.1);" title="Notifications"> <i data-lucide="bell" style="width:20px;height:20px;color:#e2e8f0;"></i> <span id="notif-badge" class="notification-badge hidden">0</span> </button>
        <div id="notif-panel" class="hidden absolute right-0 mt-2 w-72 weather-card rounded-xl p-3 max-h-48 overflow-y-auto z-40" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);">
         <h3 class="text-sm font-bold text-white mb-2">Recent Updates</h3>
         <div id="notif-list" class="text-xs space-y-2" style="color:#94a3b8;"></div>
@@ -145,8 +163,7 @@
     </div><!-- Search Bar -->
     <div class="fade-up delay-1 relative mb-6">
      <div class="flex gap-2">
-      <div class="flex-1 relative">
-       <i data-lucide="search" style="width:18px;height:18px;color:#94a3b8;" class="absolute left-3 top-1/2 -translate-y-1/2"></i> <input id="city-input" type="text" placeholder="Search cities..." class="search-input w-full py-3 pl-10 pr-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
+      <div class="flex-1 relative"><i data-lucide="search" style="width:18px;height:18px;color:#94a3b8;" class="absolute left-3 top-1/2 -translate-y-1/2"></i> <input id="city-input" type="text" placeholder="Search cities..." class="search-input w-full py-3 pl-10 pr-4 rounded-xl text-white text-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
       </div><button id="search-btn" class="px-5 rounded-xl font-medium text-sm transition-all hover:scale-105" style="background: #3b82f6; color: white;">Search</button>
      </div>
      <div id="suggestions" class="absolute w-full mt-1 rounded-xl overflow-hidden z-30 hidden max-h-48 overflow-y-auto" style="background: rgba(30,58,95,0.98); border: 1px solid rgba(255,255,255,0.1);"></div>
@@ -154,8 +171,7 @@
     <div id="current-weather" class="fade-up delay-2 weather-card rounded-3xl p-8 mb-6 relative overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
      <div class="flex justify-between items-start">
       <div class="flex-1">
-       <div class="flex items-center gap-2 mb-2">
-        <i data-lucide="map-pin" style="width:16px;height:16px;color:#06b6d4;"></i> <span id="city-display" class="text-xl font-bold text-white">Loading...</span>
+       <div class="flex items-center gap-2 mb-2"><i data-lucide="map-pin" style="width:16px;height:16px;color:#06b6d4;"></i> <span id="city-display" class="text-xl font-bold text-white">Loading...</span>
        </div>
        <div id="weather-desc" class="text-sm mb-6" style="color: #94a3b8; font-weight: 500;">
         --
@@ -186,11 +202,42 @@
        ☀️
       </div>
      </div>
+    </div><!-- AQI Card -->
+    <div class="fade-up delay-2 weather-card rounded-3xl p-6 mb-6" style="background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(139,92,246,0.1)); border: 1px solid rgba(168,85,247,0.3); position: relative; overflow: hidden;">
+     <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background: radial-gradient(circle, rgba(168,85,247,0.2), transparent); filter: blur(20px);"></div>
+     <div class="relative z-10">
+      <div class="flex items-center justify-between mb-3">
+       <div class="flex items-center gap-2"><i data-lucide="wind" style="width:18px;height:18px;color:#a855f7;"></i> <span class="text-sm font-bold text-white">Air Quality Index (AQI)</span>
+       </div><span id="aqi-update-time" class="text-xs" style="color:#d8b4fe;">Just updated</span>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+       <div>
+        <div id="aqi-value" class="text-5xl font-bold" style="color:#a855f7;">
+         --
+        </div>
+        <div id="aqi-status" class="text-sm mt-2 font-semibold text-white">
+         Loading AQI...
+        </div>
+       </div>
+       <div class="flex flex-col justify-between">
+        <div class="space-y-2">
+         <div class="flex justify-between items-center text-xs"><span style="color:#cbd5e1;">PM2.5</span> <span id="aqi-pm25" class="text-white font-semibold">-- μg/m³</span>
+         </div>
+         <div class="flex justify-between items-center text-xs"><span style="color:#cbd5e1;">PM10</span> <span id="aqi-pm10" class="text-white font-semibold">-- μg/m³</span>
+         </div>
+         <div class="flex justify-between items-center text-xs"><span style="color:#cbd5e1;">O₃</span> <span id="aqi-o3" class="text-white font-semibold">-- ppb</span>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="aqi-recommendation" class="mt-4 p-3 rounded-lg text-xs" style="background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.3); color:#e9d5ff;">
+       💡 Recommendation: Check real-time air quality data for health guidance
+      </div>
+     </div>
     </div><!-- Quick Info Grid -->
     <div class="fade-up delay-3 grid grid-cols-2 gap-3 mb-6">
      <div class="weather-card rounded-2xl p-4" style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="wind" style="width:16px;height:16px;color:#3b82f6;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Wind Speed</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="wind" style="width:16px;height:16px;color:#3b82f6;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Wind Speed</span>
       </div>
       <div id="wind-val" class="text-xl font-bold text-white">
        -- km/h
@@ -200,8 +247,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="droplets" style="width:16px;height:16px;color:#10b981;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Humidity</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="droplets" style="width:16px;height:16px;color:#10b981;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Humidity</span>
       </div>
       <div id="humid-val" class="text-xl font-bold text-white">
        --%
@@ -211,8 +257,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="eye" style="width:16px;height:16px;color:#06b6d4;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Visibility</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="eye" style="width:16px;height:16px;color:#06b6d4;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Visibility</span>
       </div>
       <div id="vis-val" class="text-xl font-bold text-white">
        -- km
@@ -222,8 +267,7 @@
       </div>
      </div>
      <div class="weather-card rounded-2xl p-4" style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);">
-      <div class="flex items-center gap-2 mb-2">
-       <i data-lucide="gauge" style="width:16px;height:16px;color:#a855f7;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Pressure</span>
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="gauge" style="width:16px;height:16px;color:#a855f7;"></i> <span class="text-xs font-semibold" style="color:#94a3b8;">Pressure</span>
       </div>
       <div id="press-val" class="text-xl font-bold text-white">
        -- hPa
@@ -233,15 +277,13 @@
       </div>
      </div><!-- Hourly Forecast -->
      <div class="fade-up delay-4 mb-6">
-      <div class="flex items-center gap-2 mb-3">
-       <i data-lucide="clock" style="width:16px;height:16px;color:#3b82f6;"></i>
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="clock" style="width:16px;height:16px;color:#3b82f6;"></i>
        <h3 class="text-sm font-bold text-white">Today's Hourly Forecast</h3>
       </div>
       <div id="hourly-scroll" class="flex gap-2 overflow-x-auto pb-2"></div>
      </div><!-- 7-Day Forecast -->
      <div class="fade-up delay-5 mb-8">
-      <div class="flex items-center gap-2 mb-3">
-       <i data-lucide="calendar" style="width:16px;height:16px;color:#10b981;"></i>
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="calendar" style="width:16px;height:16px;color:#10b981;"></i>
        <h3 class="text-sm font-bold text-white">7-Day Forecast</h3>
       </div>
       <div id="daily-forecast" class="space-y-2"></div>
@@ -562,6 +604,30 @@
   });
 
   // ==================== DONATION FEATURE ====================
+  document.getElementById('donate-btn-header').addEventListener('click', () => {
+    const donationModal = document.getElementById('donation-modal');
+    donationModal.style.display = 'flex';
+    
+    // Check if user is from India (only if logged in)
+    if (currentUser && currentUser.country === 'India') {
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+    } else if (currentUser) {
+      // User logged in but not from India
+      document.getElementById('india-check').classList.add('hidden');
+      document.getElementById('non-india-msg').classList.remove('hidden');
+      document.getElementById('donation-form').classList.add('hidden');
+    } else {
+      // Guest user - show donation available globally
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+      document.getElementById('india-check').innerHTML = '<div class="flex items-center gap-2 text-green-400 text-sm"><i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available worldwide for guests</span></div>';
+      lucide.createIcons();
+    }
+  });
+
   document.getElementById('donate-btn').addEventListener('click', () => {
     const donationModal = document.getElementById('donation-modal');
     donationModal.style.display = 'flex';
@@ -613,20 +679,17 @@
       return;
     }
 
-    // Generate UPI link - Direct to 9142595543@upi
-    const payeeName = 'JagatWire';
-    const transactionRef = 'JW' + Date.now();
-    const upiLink = `upi://pay?pa=9142595543@upi&pn=${encodeURIComponent(payeeName)}&am=${amount}&tn=Support%20JagatWire%20Weather&tr=${transactionRef}`;
-
-    showToast(`💝 Opening UPI with ₹${amount}...`);
-    
-    // Open UPI link
-    window.location.href = upiLink;
-    
-    // If UPI app doesn't respond, show manual entry option
-    setTimeout(() => {
-      showToast('📱 Send ₹' + amount + ' to 9142595543@upi');
-    }, 500);
+    // Copy bank details to clipboard
+    const bankDetails = `Account Number: 5414428667\nIFS Code: CBIN0282213\nBank: Central Bank of India\nAmount: ₹${amount}`;
+    navigator.clipboard.writeText(bankDetails).then(() => {
+      showToast('✅ Bank details copied! Please transfer ₹' + amount);
+      setTimeout(() => {
+        document.getElementById('donation-modal').style.display = 'none';
+        document.getElementById('donation-amount').value = '';
+      }, 1500);
+    }).catch(() => {
+      showToast('📋 Account: 5414428667 | IFS: CBIN0282213');
+    });
   });
 
   // ==================== WEATHER LOGIC ====================
@@ -643,6 +706,10 @@
     { icon: '🌪️', desc: 'Windy', anim: 'wind-animate', color: '#f97316' },
     { icon: '❄️', desc: 'Snowy', anim: 'spin-weather', color: '#e0f2fe' },
   ];
+
+  // Real-time update intervals
+  let weatherUpdateInterval = null;
+  let aaqiUpdateInterval = null;
 
   // Comprehensive Indian & Global Cities Database (50+ cities)
   const cities = {
@@ -733,6 +800,29 @@
     };
   }
 
+  function getAQIForCity(city, dayOffset) {
+    const seed = getDaySeed(city, dayOffset) + 100;
+    const baseAQI = 50 + seededRandom(seed) * 150;
+    const pm25 = 5 + seededRandom(seed + 1) * 150;
+    const pm10 = 10 + seededRandom(seed + 2) * 200;
+    const o3 = 20 + seededRandom(seed + 3) * 80;
+    
+    return {
+      value: Math.round(baseAQI),
+      pm25: Math.round(pm25 * 10) / 10,
+      pm10: Math.round(pm10 * 10) / 10,
+      o3: Math.round(o3 * 10) / 10,
+    };
+  }
+
+  function getAQIStatus(value) {
+    if (value <= 50) return { status: '✅ Good', color: '#10b981', rec: '☺️ Air quality is satisfactory. Enjoy outdoor activities!' };
+    if (value <= 100) return { status: '🟡 Satisfactory', color: '#f59e0b', rec: '😊 Unusually sensitive people should consider limiting prolonged outdoor activities.' };
+    if (value <= 200) return { status: '⚠️ Moderately Polluted', color: '#f97316', rec: '😷 People with asthma and other diseases should limit outdoor activities.' };
+    if (value <= 300) return { status: '🔴 Poor', color: '#ef4444', rec: '⚠️ Everyone should limit outdoor activities. Wear an N95 mask outdoors.' };
+    return { status: '⛔ Severe', color: '#991b1b', rec: '🚫 Avoid all outdoor activities. Stay indoors and use air purifiers.' };
+  }
+
   function getHourlyForecast(city, dayOffset) {
     const hours = [];
     const now = new Date();
@@ -779,65 +869,143 @@
   }
 
   function renderWeather() {
-    if (!currentUser) {
-      showToast('🔒 Please sign in to view weather');
-      showAuthModal();
-      return;
-    }
-
     const w = getWeatherForDay(currentCity, selectedDay);
+    const aqi = getAQIForCity(currentCity, selectedDay);
+    const aqiInfo = getAQIStatus(aqi.value);
+    
     const cityObj = cities[currentCity] || {};
-    document.getElementById('city-display').textContent = `${cityObj.country || ''} ${titleCase(currentCity)}`;
-    document.getElementById('weather-desc').textContent = w.desc;
-    document.getElementById('temp-display').textContent = `${w.temp}°C`;
-    document.getElementById('feels-like').textContent = `${w.feelsLike}°C`;
-    document.getElementById('high-low').textContent = `${w.high}° / ${w.low}°`;
+    
+    // Update all weather display elements
+    const cityDisplay = document.getElementById('city-display');
+    if (cityDisplay) {
+      cityDisplay.textContent = `${cityObj.country || ''} ${titleCase(currentCity)}`;
+    }
+    
+    const weatherDesc = document.getElementById('weather-desc');
+    if (weatherDesc) {
+      weatherDesc.textContent = w.desc;
+    }
+    
+    const tempDisplay = document.getElementById('temp-display');
+    if (tempDisplay) {
+      tempDisplay.textContent = `${w.temp}°C`;
+    }
+    
+    const feelsLike = document.getElementById('feels-like');
+    if (feelsLike) {
+      feelsLike.textContent = `${w.feelsLike}°C`;
+    }
+    
+    const highLow = document.getElementById('high-low');
+    if (highLow) {
+      highLow.textContent = `${w.high}° / ${w.low}°`;
+    }
     
     const iconEl = document.getElementById('weather-icon-main');
-    iconEl.textContent = w.icon;
-    iconEl.className = `text-7xl ${w.anim}`;
-    
-    document.getElementById('wind-val').textContent = `${w.wind} km/h`;
-    document.getElementById('humid-val').textContent = `${w.humidity}%`;
-    document.getElementById('vis-val').textContent = `${w.visibility} km`;
-    document.getElementById('press-val').textContent = `${w.pressure} hPa`;
-
-    // Hourly
-    const hScroll = document.getElementById('hourly-scroll');
-    const hours = getHourlyForecast(currentCity, selectedDay);
-    hScroll.innerHTML = hours.map((h, i) => `
-      <div class="flex-shrink-0 weather-card rounded-2xl p-3 text-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);min-width:80px;">
-        <div class="text-xs mb-2 font-semibold" style="color:#94a3b8;">${i === 0 && selectedDay === 0 ? 'Now' : h.hour}</div>
-        <div class="text-3xl mb-2">${h.icon}</div>
-        <div class="text-lg font-bold text-white">${h.temp}°</div>
-      </div>
-    `).join('');
-
-    // 7-day
-    const dContainer = document.getElementById('daily-forecast');
-    dContainer.innerHTML = '';
-    for (let i = 0; i < 7; i++) {
-      const dw = getWeatherForDay(currentCity, i);
-      const isActive = i === selectedDay;
-      const card = document.createElement('div');
-      card.className = `day-card weather-card rounded-2xl p-4 flex items-center justify-between cursor-pointer ${isActive ? 'active' : ''}`;
-      card.style.cssText = `background:rgba(255,255,255,${isActive ? '0.12' : '0.06'});border:${isActive ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)'};`;
-      card.innerHTML = `
-        <div class="flex items-center gap-3 flex-1">
-          <span class="text-3xl">${dw.icon}</span>
-          <div>
-            <div class="text-sm font-bold text-white">${formatDayName(i)}</div>
-            <div class="text-xs" style="color:#94a3b8;">${dw.desc}</div>
-          </div>
-        </div>
-        <div class="text-right">
-          <div class="text-lg font-bold text-white">${dw.high}°</div>
-          <div class="text-xs" style="color:#64748b;">${dw.low}°</div>
-        </div>
-      `;
-      card.addEventListener('click', () => { selectedDay = i; renderWeather(); });
-      dContainer.appendChild(card);
+    if (iconEl) {
+      iconEl.textContent = w.icon;
+      iconEl.className = `text-7xl ${w.anim}`;
     }
+    
+    const windVal = document.getElementById('wind-val');
+    if (windVal) {
+      windVal.textContent = `${w.wind} km/h`;
+    }
+    
+    const humidVal = document.getElementById('humid-val');
+    if (humidVal) {
+      humidVal.textContent = `${w.humidity}%`;
+    }
+    
+    const visVal = document.getElementById('vis-val');
+    if (visVal) {
+      visVal.textContent = `${w.visibility} km`;
+    }
+    
+    const pressVal = document.getElementById('press-val');
+    if (pressVal) {
+      pressVal.textContent = `${w.pressure} hPa`;
+    }
+
+    // Update AQI display with proper styling
+    const aqiValue = document.getElementById('aqi-value');
+    if (aqiValue) {
+      aqiValue.textContent = aqi.value;
+      aqiValue.style.color = aqiInfo.color;
+    }
+    
+    const aqiStatus = document.getElementById('aqi-status');
+    if (aqiStatus) {
+      aqiStatus.textContent = aqiInfo.status;
+      aqiStatus.style.color = aqiInfo.color;
+    }
+    
+    const aqiPm25 = document.getElementById('aqi-pm25');
+    if (aqiPm25) {
+      aqiPm25.textContent = `${aqi.pm25} μg/m³`;
+    }
+    
+    const aqiPm10 = document.getElementById('aqi-pm10');
+    if (aqiPm10) {
+      aqiPm10.textContent = `${aqi.pm10} μg/m³`;
+    }
+    
+    const aqiO3 = document.getElementById('aqi-o3');
+    if (aqiO3) {
+      aqiO3.textContent = `${aqi.o3} ppb`;
+    }
+    
+    const aqiRec = document.getElementById('aqi-recommendation');
+    if (aqiRec) {
+      aqiRec.innerHTML = `💡 ${aqiInfo.rec}`;
+      aqiRec.style.background = aqiInfo.color.replace(')', ', 0.1)').replace('rgb', 'rgba');
+      aqiRec.style.borderColor = aqiInfo.color.replace(')', ', 0.3)').replace('rgb', 'rgba');
+      aqiRec.style.color = aqiInfo.color;
+    }
+
+    // Update hourly forecast
+    const hScroll = document.getElementById('hourly-scroll');
+    if (hScroll) {
+      const hours = getHourlyForecast(currentCity, selectedDay);
+      hScroll.innerHTML = hours.map((h, i) => `
+        <div class="flex-shrink-0 weather-card rounded-2xl p-3 text-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);min-width:80px;">
+          <div class="text-xs mb-2 font-semibold" style="color:#94a3b8;">${i === 0 && selectedDay === 0 ? 'Now' : h.hour}</div>
+          <div class="text-3xl mb-2">${h.icon}</div>
+          <div class="text-lg font-bold text-white">${h.temp}°</div>
+        </div>
+      `).join('');
+    } else console.error('Missing: hourly-scroll');
+
+    // Update 7-day forecast
+    const dContainer = document.getElementById('daily-forecast');
+    if (dContainer) {
+      dContainer.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const dw = getWeatherForDay(currentCity, i);
+        const isActive = i === selectedDay;
+        const card = document.createElement('div');
+        card.className = `day-card weather-card rounded-2xl p-4 flex items-center justify-between cursor-pointer ${isActive ? 'active' : ''}`;
+        card.style.cssText = `background:rgba(255,255,255,${isActive ? '0.12' : '0.06'});border:${isActive ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)'};`;
+        card.innerHTML = `
+          <div class="flex items-center gap-3 flex-1">
+            <span class="text-3xl">${dw.icon}</span>
+            <div>
+              <div class="text-sm font-bold text-white">${formatDayName(i)}</div>
+              <div class="text-xs" style="color:#94a3b8;">${dw.desc}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-white">${dw.high}°</div>
+            <div class="text-xs" style="color:#64748b;">${dw.low}°</div>
+          </div>
+        `;
+        card.addEventListener('click', () => { selectedDay = i; renderWeather(); });
+        dContainer.appendChild(card);
+      }
+    } else console.error('Missing: daily-forecast');
+    
+    lucide.createIcons();
+    console.log('Weather render complete');
   }
 
   // Search functionality
@@ -846,12 +1014,6 @@
   const cityNames = Object.keys(cities);
 
   function doSearch() {
-    if (!currentUser) {
-      showToast('🔒 Please sign in first');
-      showAuthModal();
-      return;
-    }
-
     const val = cityInput.value.trim().toLowerCase();
     if (val && cities[val]) {
       currentCity = val;
@@ -915,15 +1077,68 @@
   });
 
   document.getElementById('refresh-btn').addEventListener('click', () => {
-    if (!currentUser) {
-      showToast('🔒 Please sign in first');
-      showAuthModal();
-      return;
-    }
     renderWeather();
     addNotification(`${titleCase(currentCity)} updated`);
     showToast('🔄 Weather refreshed!');
   });
+
+  // Real-time updates - Weather every 10 minutes, AQI every 5 minutes
+  function startRealTimeUpdates() {
+    // Update weather every 10 minutes
+    if (weatherUpdateInterval) clearInterval(weatherUpdateInterval);
+    weatherUpdateInterval = setInterval(() => {
+      if (selectedDay === 0) { // Only update if viewing today
+        renderWeather();
+        addNotification(`${titleCase(currentCity)} updated`);
+      }
+    }, 600000); // 10 minutes
+
+    // Update AQI every 5 minutes (more frequent)
+    if (aaqiUpdateInterval) clearInterval(aaqiUpdateInterval);
+    aaqiUpdateInterval = setInterval(() => {
+      if (selectedDay === 0) { // Only update if viewing today
+        const aqi = getAQIForCity(currentCity, selectedDay);
+        const aqiInfo = getAQIStatus(aqi.value);
+        
+        const aqiValue = document.getElementById('aqi-value');
+        if (aqiValue) {
+          aqiValue.textContent = aqi.value;
+          aqiValue.style.color = aqiInfo.color;
+        }
+        
+        const aqiStatus = document.getElementById('aqi-status');
+        if (aqiStatus) {
+          aqiStatus.textContent = aqiInfo.status;
+          aqiStatus.style.color = aqiInfo.color;
+        }
+        
+        const aqiPm25 = document.getElementById('aqi-pm25');
+        if (aqiPm25) aqiPm25.textContent = `${aqi.pm25} μg/m³`;
+        
+        const aqiPm10 = document.getElementById('aqi-pm10');
+        if (aqiPm10) aqiPm10.textContent = `${aqi.pm10} μg/m³`;
+        
+        const aqiO3 = document.getElementById('aqi-o3');
+        if (aqiO3) aqiO3.textContent = `${aqi.o3} ppb`;
+        
+        const aqiRec = document.getElementById('aqi-recommendation');
+        if (aqiRec) {
+          aqiRec.innerHTML = `💡 ${aqiInfo.rec}`;
+          aqiRec.style.background = aqiInfo.color.replace(')', ', 0.1)').replace('rgb', 'rgba');
+          aqiRec.style.borderColor = aqiInfo.color.replace(')', ', 0.3)').replace('rgb', 'rgba');
+          aqiRec.style.color = aqiInfo.color;
+        }
+        
+        addNotification(`AQI updated: ${aqi.value}`);
+      }
+    }, 300000); // 5 minutes
+  }
+
+  // Stop real-time updates
+  function stopRealTimeUpdates() {
+    if (weatherUpdateInterval) clearInterval(weatherUpdateInterval);
+    if (aaqiUpdateInterval) clearInterval(aaqiUpdateInterval);
+  }
 
   // Element SDK
   const defaultConfig = {
@@ -991,7 +1206,52 @@
   // Initial render
   showAuthModal();
   lucide.createIcons();
+  
+  // Show donation banner after 5 seconds
+  setTimeout(() => {
+    const banner = document.getElementById('donation-banner');
+    banner.classList.remove('hidden');
+  }, 5000);
+
+  // Donation banner click handler
+  document.getElementById('donation-banner').addEventListener('click', () => {
+    document.getElementById('donation-modal').style.display = 'flex';
+    
+    // Check if user is from India (only if logged in)
+    if (currentUser && currentUser.country === 'India') {
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+    } else if (currentUser) {
+      document.getElementById('india-check').classList.add('hidden');
+      document.getElementById('non-india-msg').classList.remove('hidden');
+      document.getElementById('donation-form').classList.add('hidden');
+    } else {
+      document.getElementById('india-check').classList.remove('hidden');
+      document.getElementById('non-india-msg').classList.add('hidden');
+      document.getElementById('donation-form').classList.remove('hidden');
+      document.getElementById('india-check').innerHTML = '<div class="flex items-center gap-2 text-green-400 text-sm"><i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span>Available worldwide for guests</span></div>';
+      lucide.createIcons();
+    }
+  });
+
+  // Donation banner close
+  document.getElementById('banner-close-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('donation-banner').classList.add('hidden');
+  });
+  
+  // Load Delhi weather immediately on app start (default city)
+  currentCity = 'delhi';
+  selectedDay = 0;
+  renderWeather();
+  startRealTimeUpdates();
+  
+  // Show auth modal for 2 seconds, then let users see weather
+  setTimeout(() => {
+    hideAuthModal();
+  }, 2000);
   </script>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e30360fd2a621f3',t:'MTc3NDYzMzU1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e30b445b1cb79fe',t:'MTc3NDYzODcyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
