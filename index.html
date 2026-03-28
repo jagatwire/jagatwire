@@ -71,35 +71,42 @@ html, body { height: 100%; margin: 0; }
   <style>body { box-sizing: border-box; }</style>
  </head>
  <body class="h-full bg-[#0f0f0f] text-white overflow-hidden">
-  <div id="app" class="h-full w-full flex flex-col"><!-- Toast Container -->
+  <div id="app" class="h-full w-full flex flex-col">
+   <!-- Toast Container -->
    <div id="toast-container" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2"></div><!-- HEADER -->
    <header id="main-header" class="h-14 bg-[#0f0f0f] border-b border-[#222] flex items-center px-4 z-50 shrink-0">
-    <div class="flex items-center gap-2"><button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-[#272727]"><i data-lucide="menu" class="w-5 h-5"></i></button>
-     <div class="flex items-center gap-1 cursor-pointer" onclick="navigateTo('home')"><!-- JagatWireTube Logo -->
-      <svg width="32" height="32" viewbox="0 0 32 32"><rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /> <polygon points="13,10 13,22 23,16" fill="white" />
+    <div class="flex items-center gap-2">
+     <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-[#272727]"><i data-lucide="menu" class="w-5 h-5"></i></button>
+     <div class="flex items-center gap-1 cursor-pointer" onclick="navigateTo('home')">
+      <!-- JagatWireTube Logo -->
+      <svg width="32" height="32" viewbox="0 0 32 32">
+       <rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /> <polygon points="13,10 13,22 23,16" fill="white" />
       </svg><span id="logo-text" class="text-lg font-bold tracking-tight hidden sm:inline">JagatWireTube</span>
      </div>
     </div>
     <div class="flex-1 max-w-xl mx-4">
-     <div class="flex"><input id="search-input" type="text" placeholder="Search" class="input-field w-full h-9 px-4 rounded-l-full text-sm" onkeydown="if(event.key==='Enter')performSearch()"> <button onclick="performSearch()" class="h-9 px-5 bg-[#222] border border-l-0 border-[#333] rounded-r-full hover:bg-[#333]"><i data-lucide="search" class="w-4 h-4"></i></button>
+     <div class="flex">
+      <input id="search-input" type="text" placeholder="Search" class="input-field w-full h-9 px-4 rounded-l-full text-sm" onkeydown="if(event.key==='Enter')performSearch()"> <button onclick="performSearch()" class="h-9 px-5 bg-[#222] border border-l-0 border-[#333] rounded-r-full hover:bg-[#333]"><i data-lucide="search" class="w-4 h-4"></i></button>
      </div>
     </div>
-    <div class="flex items-center gap-2">
-     <div id="auth-header-logged-out" class="flex items-center gap-2"><button onclick="showModal('signin')" class="btn-secondary px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-1"><i data-lucide="user" class="w-4 h-4"></i> Sign in</button>
-     </div>
-     <div id="auth-header-logged-in" class="hidden flex items-center gap-2"><button onclick="showModal('upload')" class="p-2 rounded-full hover:bg-[#272727]" title="Upload"><i data-lucide="upload" class="w-5 h-5"></i></button> <button onclick="toggleNotifications()" class="p-2 rounded-full hover:bg-[#272727] relative" title="Notifications"><i data-lucide="bell" class="w-5 h-5"></i><span id="notif-badge" class="notification-badge absolute -top-0.5 -right-0.5 rounded-full flex items-center justify-center hidden">0</span></button> <button id="avatar-btn" onclick="toggleUserMenu()" class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold cursor-pointer"></button>
-     </div>
+    <div class="flex items-center gap-2"><button onclick="showModal('upload')" class="btn-primary px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-1"><i data-lucide="upload" class="w-4 h-4"></i> Upload Video</button> <button onclick="toggleNotifications()" class="p-2 rounded-full hover:bg-[#272727] relative" title="Notifications"><i data-lucide="bell" class="w-5 h-5"></i><span id="notif-badge" class="notification-badge absolute -top-0.5 -right-0.5 rounded-full flex items-center justify-center hidden">0</span></button> <button id="avatar-btn" onclick="toggleUserMenu()" class="p-2 rounded-full hover:bg-[#272727] font-bold text-sm w-9 h-9 flex items-center justify-center"></button>
     </div>
    </header><!-- USER DROPDOWN -->
    <div id="user-dropdown" class="hidden dropdown fixed right-4 top-14 rounded-xl z-50 w-72 py-2">
     <div id="dropdown-user-info" class="px-4 py-3 border-b border-[#333] flex items-center gap-3">
-     <div id="dropdown-avatar" class="w-10 h-10 rounded-full flex items-center justify-center font-bold"></div>
-     <div>
-      <div id="dropdown-username" class="font-medium"></div>
-      <div id="dropdown-email" class="text-xs text-gray-400"></div>
+     <div id="dropdown-avatar" class="w-10 h-10 rounded-full flex items-center justify-center font-bold">
+      U
      </div>
-    </div><button onclick="navigateTo('channel');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="user" class="w-4 h-4"></i> Your channel</button> <button onclick="navigateTo('studio');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="video" class="w-4 h-4"></i> JagatWire Studio</button> <button onclick="navigateTo('history');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="clock" class="w-4 h-4"></i> Watch history</button>
-    <div class="border-t border-[#333] my-1"></div><button onclick="handleSignOut();closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="log-out" class="w-4 h-4"></i> Sign out</button>
+     <div>
+      <div id="dropdown-username" class="font-medium">
+       Anonymous User
+      </div>
+      <div id="dropdown-email" class="text-xs text-gray-400">
+       uploads@jagatwire.local
+      </div>
+     </div>
+    </div><button onclick="navigateTo('channel');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="user" class="w-4 h-4"></i> Your uploads</button> <button onclick="navigateTo('studio');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="video" class="w-4 h-4"></i> Studio</button> <button onclick="navigateTo('history');closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="clock" class="w-4 h-4"></i> Watch history</button>
+    <div class="border-t border-[#333] my-1"></div><button onclick="closeMenus()" class="w-full text-left px-4 py-2.5 hover:bg-[#272727] flex items-center gap-3 text-sm"><i data-lucide="settings" class="w-4 h-4"></i> Settings</button>
    </div><!-- NOTIFICATIONS DROPDOWN -->
    <div id="notif-dropdown" class="hidden dropdown fixed right-14 top-14 rounded-xl z-50 w-80 max-h-96 overflow-auto">
     <div class="px-4 py-3 border-b border-[#333] font-medium">
@@ -109,9 +116,11 @@ html, body { height: 100%; margin: 0; }
      <p class="text-center text-gray-500 py-6 text-sm">No notifications yet</p>
     </div>
    </div><!-- MAIN LAYOUT -->
-   <div class="flex flex-1 overflow-hidden"><!-- SIDEBAR -->
+   <div class="flex flex-1 overflow-hidden">
+    <!-- SIDEBAR -->
     <aside id="sidebar" class="w-56 bg-[#0f0f0f] overflow-y-auto shrink-0 border-r border-[#1a1a1a] hidden lg:block">
-     <nav class="py-2"><button onclick="navigateTo('home')" class="sidebar-item active w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="home"><i data-lucide="home" class="w-5 h-5"></i> Home</button> <button onclick="navigateTo('trending')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="trending"><i data-lucide="trending-up" class="w-5 h-5"></i> Trending</button> <button onclick="navigateTo('subscriptions')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="subscriptions"><i data-lucide="play-square" class="w-5 h-5"></i> Subscriptions</button>
+     <nav class="py-2">
+      <button onclick="navigateTo('home')" class="sidebar-item active w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="home"><i data-lucide="home" class="w-5 h-5"></i> Home</button> <button onclick="navigateTo('trending')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="trending"><i data-lucide="trending-up" class="w-5 h-5"></i> Trending</button> <button onclick="navigateTo('subscriptions')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="subscriptions"><i data-lucide="play-square" class="w-5 h-5"></i> Subscriptions</button>
       <div class="border-t border-[#222] my-2 mx-4"></div><button onclick="navigateTo('library')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="library"><i data-lucide="library" class="w-5 h-5"></i> Library</button> <button onclick="navigateTo('history')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="history"><i data-lucide="clock" class="w-5 h-5"></i> History</button> <button onclick="navigateTo('liked')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm" data-page="liked"><i data-lucide="thumbs-up" class="w-5 h-5"></i> Liked videos</button>
       <div class="border-t border-[#222] my-2 mx-4"></div>
       <div class="px-4 py-2 text-xs text-gray-500 font-medium uppercase tracking-wider">
@@ -119,12 +128,15 @@ html, body { height: 100%; margin: 0; }
       </div><button onclick="filterCategory('Music')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm"><i data-lucide="music" class="w-5 h-5"></i> Music</button> <button onclick="filterCategory('Gaming')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm"><i data-lucide="gamepad-2" class="w-5 h-5"></i> Gaming</button> <button onclick="filterCategory('News')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm"><i data-lucide="newspaper" class="w-5 h-5"></i> News</button> <button onclick="filterCategory('Sports')" class="sidebar-item w-full flex items-center gap-4 px-4 py-2.5 text-sm"><i data-lucide="trophy" class="w-5 h-5"></i> Sports</button>
      </nav>
     </aside><!-- MAIN CONTENT -->
-    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6"><!-- HOME PAGE -->
+    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6">
+     <!-- HOME PAGE -->
      <div id="page-home" class="page">
-      <div id="category-chips" class="flex gap-2 mb-6 overflow-x-auto pb-2 flex-nowrap"><button onclick="filterCategory('All')" class="chip active px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">All</button> <button onclick="filterCategory('Music')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Music</button> <button onclick="filterCategory('Gaming')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Gaming</button> <button onclick="filterCategory('News')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">News</button> <button onclick="filterCategory('Sports')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Sports</button> <button onclick="filterCategory('Education')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Education</button> <button onclick="filterCategory('Entertainment')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Entertainment</button> <button onclick="filterCategory('Tech')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Tech</button>
+      <div id="category-chips" class="flex gap-2 mb-6 overflow-x-auto pb-2 flex-nowrap">
+       <button onclick="filterCategory('All')" class="chip active px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">All</button> <button onclick="filterCategory('Music')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Music</button> <button onclick="filterCategory('Gaming')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Gaming</button> <button onclick="filterCategory('News')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">News</button> <button onclick="filterCategory('Sports')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Sports</button> <button onclick="filterCategory('Education')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Education</button> <button onclick="filterCategory('Entertainment')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Entertainment</button> <button onclick="filterCategory('Tech')" class="chip px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap">Tech</button>
       </div>
       <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-       <div class="text-center text-gray-500 py-20 col-span-full"><i data-lucide="video" class="w-16 h-16 mx-auto mb-4 opacity-30"></i>
+       <div class="text-center text-gray-500 py-20 col-span-full">
+        <i data-lucide="video" class="w-16 h-16 mx-auto mb-4 opacity-30"></i>
         <p class="text-lg font-medium">No videos yet</p>
         <p class="text-sm mt-1">Be the first to upload!</p>
        </div>
@@ -134,11 +146,11 @@ html, body { height: 100%; margin: 0; }
       <div class="flex flex-col lg:flex-row gap-6">
        <div class="flex-1">
         <div id="video-player" class="w-full aspect-video bg-[#181818] rounded-xl flex items-center justify-center relative overflow-hidden">
-         <div class="text-center">
-          <i data-lucide="play-circle" class="w-20 h-20 text-[#e53935] mx-auto mb-2 cursor-pointer"></i>
+         <div class="text-center"><i data-lucide="play-circle" class="w-20 h-20 text-[#e53935] mx-auto mb-2 cursor-pointer"></i>
           <p class="text-gray-400 text-sm">Video Player</p>
          </div><!-- Player controls bar -->
-         <div class="absolute bottom-0 left-0 right-0 bg-[#000000cc] px-4 py-2 flex items-center gap-3"><button class="hover:text-[#e53935]"><i data-lucide="play" class="w-5 h-5"></i></button> <button class="hover:text-[#e53935]"><i data-lucide="skip-forward" class="w-4 h-4"></i></button> <button class="hover:text-[#e53935]"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+         <div class="absolute bottom-0 left-0 right-0 bg-[#000000cc] px-4 py-2 flex items-center gap-3">
+          <button class="hover:text-[#e53935]"><i data-lucide="play" class="w-5 h-5"></i></button> <button class="hover:text-[#e53935]"><i data-lucide="skip-forward" class="w-4 h-4"></i></button> <button class="hover:text-[#e53935]"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
           <div class="flex-1 h-1 bg-[#444] rounded-full mx-2">
            <div class="h-full w-1/3 bg-[#e53935] rounded-full"></div>
           </div><span class="text-xs text-gray-400">0:00 / <span id="watch-duration">0:00</span></span> <button class="hover:text-[#e53935]"><i data-lucide="settings" class="w-4 h-4"></i></button> <button class="hover:text-[#e53935]"><i data-lucide="maximize" class="w-4 h-4"></i></button>
@@ -156,13 +168,13 @@ html, body { height: 100%; margin: 0; }
           </div><button id="watch-sub-btn" onclick="toggleSubscribe()" class="btn-primary px-4 py-1.5 rounded-full text-sm font-medium ml-2">Subscribe</button>
          </div>
          <div class="flex items-center gap-2">
-          <div class="flex bg-[#272727] rounded-full overflow-hidden"><button id="watch-like-btn" onclick="toggleLike('like')" class="like-btn flex items-center gap-1 px-4 py-2 text-sm hover:bg-[#333] border-r border-[#444]"><i data-lucide="thumbs-up" class="w-4 h-4"></i> <span id="watch-likes">0</span></button> <button id="watch-dislike-btn" onclick="toggleLike('dislike')" class="like-btn flex items-center gap-1 px-3 py-2 text-sm hover:bg-[#333]"><i data-lucide="thumbs-down" class="w-4 h-4"></i></button>
+          <div class="flex bg-[#272727] rounded-full overflow-hidden">
+           <button id="watch-like-btn" onclick="toggleLike('like')" class="like-btn flex items-center gap-1 px-4 py-2 text-sm hover:bg-[#333] border-r border-[#444]"><i data-lucide="thumbs-up" class="w-4 h-4"></i> <span id="watch-likes">0</span></button> <button id="watch-dislike-btn" onclick="toggleLike('dislike')" class="like-btn flex items-center gap-1 px-3 py-2 text-sm hover:bg-[#333]"><i data-lucide="thumbs-down" class="w-4 h-4"></i></button>
           </div><button class="btn-secondary flex items-center gap-1 px-4 py-2 rounded-full text-sm"><i data-lucide="share" class="w-4 h-4"></i> Share</button> <button class="btn-secondary flex items-center gap-1 px-3 py-2 rounded-full text-sm"><i data-lucide="download" class="w-4 h-4"></i></button>
          </div>
         </div>
         <div id="watch-description" class="bg-[#272727] rounded-xl p-3 mt-4 text-sm">
-         <div class="flex gap-2 text-gray-400 text-xs mb-2">
-          <span id="watch-views">0 views</span> · <span id="watch-date"></span>
+         <div class="flex gap-2 text-gray-400 text-xs mb-2"><span id="watch-views">0 views</span> · <span id="watch-date"></span>
          </div>
          <p id="watch-desc-text" class="text-gray-300"></p>
         </div><!-- Comments -->
@@ -170,8 +182,10 @@ html, body { height: 100%; margin: 0; }
          <h3 id="comment-count" class="font-medium mb-4">0 Comments</h3>
          <div id="comment-input-area" class="hidden flex gap-3 mb-6">
           <div id="comment-avatar" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0"></div>
-          <div class="flex-1"><input id="comment-input" type="text" placeholder="Add a comment..." class="input-field w-full px-0 py-2 bg-transparent border-0 border-b border-[#333] rounded-none text-sm" onfocus="document.getElementById('comment-actions').classList.remove('hidden')">
-           <div id="comment-actions" class="hidden flex justify-end gap-2 mt-2"><button onclick="document.getElementById('comment-input').value='';document.getElementById('comment-actions').classList.add('hidden')" class="btn-secondary px-4 py-1.5 rounded-full text-sm">Cancel</button> <button onclick="postComment()" class="btn-primary px-4 py-1.5 rounded-full text-sm">Comment</button>
+          <div class="flex-1">
+           <input id="comment-input" type="text" placeholder="Add a comment..." class="input-field w-full px-0 py-2 bg-transparent border-0 border-b border-[#333] rounded-none text-sm" onfocus="document.getElementById('comment-actions').classList.remove('hidden')">
+           <div id="comment-actions" class="hidden flex justify-end gap-2 mt-2">
+            <button onclick="document.getElementById('comment-input').value='';document.getElementById('comment-actions').classList.add('hidden')" class="btn-secondary px-4 py-1.5 rounded-full text-sm">Cancel</button> <button onclick="postComment()" class="btn-primary px-4 py-1.5 rounded-full text-sm">Comment</button>
            </div>
           </div>
          </div>
@@ -214,7 +228,8 @@ html, body { height: 100%; margin: 0; }
         <p id="channel-stats" class="text-gray-400 text-sm mt-1"></p>
        </div>
       </div>
-      <div class="flex gap-4 border-b border-[#333] mb-4"><button class="tab-btn active px-4 py-3 text-sm font-medium" onclick="switchChannelTab(this,'videos')">Videos</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchChannelTab(this,'about')">About</button>
+      <div class="flex gap-4 border-b border-[#333] mb-4">
+       <button class="tab-btn active px-4 py-3 text-sm font-medium" onclick="switchChannelTab(this,'videos')">Videos</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchChannelTab(this,'about')">About</button>
       </div>
       <div id="channel-videos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
       <div id="channel-about" class="hidden text-gray-300">
@@ -223,7 +238,8 @@ html, body { height: 100%; margin: 0; }
      </div><!-- STUDIO PAGE -->
      <div id="page-studio" class="page hidden">
       <h2 class="text-2xl font-bold mb-4 flex items-center gap-2"><i data-lucide="video" class="w-6 h-6 text-[#e53935]"></i> JagatWire Studio</h2>
-      <div class="flex gap-4 border-b border-[#333] mb-4"><button class="tab-btn active px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'dashboard')">Dashboard</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'content')">Content</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'analytics')">Analytics</button>
+      <div class="flex gap-4 border-b border-[#333] mb-4">
+       <button class="tab-btn active px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'dashboard')">Dashboard</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'content')">Content</button> <button class="tab-btn px-4 py-3 text-sm font-medium" onclick="switchStudioTab(this,'analytics')">Analytics</button>
       </div>
       <div id="studio-dashboard" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
        <div class="bg-[#181818] rounded-xl p-5">
@@ -267,22 +283,20 @@ html, body { height: 100%; margin: 0; }
      </div>
     </main>
    </div><!-- MODAL CONTAINER -->
-   <div id="modal-backdrop" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center hidden"><!-- SIGN IN MODAL -->
+   <div id="modal-backdrop" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center hidden">
+    <!-- SIGN IN MODAL -->
     <div id="modal-signin" class="hidden bg-[#212121] rounded-2xl w-full max-w-md mx-4 max-h-[90%] overflow-auto fade-in">
      <div class="p-6">
       <div class="flex items-center justify-between mb-6">
        <div class="flex items-center gap-2">
-        <svg width="28" height="28" viewbox="0 0 32 32">
-         <rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /><polygon points="13,10 13,22 23,16" fill="white" />
+        <svg width="28" height="28" viewbox="0 0 32 32"><rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /><polygon points="13,10 13,22 23,16" fill="white" />
         </svg><span class="font-bold">Sign in</span>
        </div><button onclick="hideModal()" class="p-1 hover:bg-[#333] rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleSignIn(event)">
-       <div class="mb-4">
-        <label class="text-sm text-gray-400 mb-1 block">Email</label><input id="signin-email" type="email" class="input-field w-full px-4 py-2.5 rounded-lg" required>
+       <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Email</label><input id="signin-email" type="email" class="input-field w-full px-4 py-2.5 rounded-lg" required>
        </div>
-       <div class="mb-6">
-        <label class="text-sm text-gray-400 mb-1 block">Password</label><input id="signin-password" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required>
+       <div class="mb-6"><label class="text-sm text-gray-400 mb-1 block">Password</label><input id="signin-password" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required>
        </div><button type="submit" id="signin-btn" class="btn-primary w-full py-2.5 rounded-lg font-medium">Sign in</button>
        <div id="signin-error" class="text-[#e53935] text-sm mt-3 hidden"></div>
       </form>
@@ -293,24 +307,19 @@ html, body { height: 100%; margin: 0; }
      <div class="p-6">
       <div class="flex items-center justify-between mb-6">
        <div class="flex items-center gap-2">
-        <svg width="28" height="28" viewbox="0 0 32 32">
-         <rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /><polygon points="13,10 13,22 23,16" fill="white" />
+        <svg width="28" height="28" viewbox="0 0 32 32"><rect x="2" y="4" width="28" height="24" rx="6" fill="#e53935" /><polygon points="13,10 13,22 23,16" fill="white" />
         </svg><span class="font-bold">Create account</span>
        </div><button onclick="hideModal()" class="p-1 hover:bg-[#333] rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div><!-- Step 1: Details -->
       <div id="signup-step1">
        <form onsubmit="handleSignUpStep1(event)">
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Username</label><input id="signup-username" type="text" class="input-field w-full px-4 py-2.5 rounded-lg" required minlength="3" maxlength="30">
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Username</label><input id="signup-username" type="text" class="input-field w-full px-4 py-2.5 rounded-lg" required minlength="3" maxlength="30">
         </div>
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Email</label><input id="signup-email" type="email" class="input-field w-full px-4 py-2.5 rounded-lg" required>
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Email</label><input id="signup-email" type="email" class="input-field w-full px-4 py-2.5 rounded-lg" required>
         </div>
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Password</label><input id="signup-password" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required minlength="6">
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Password</label><input id="signup-password" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required minlength="6">
         </div>
-        <div class="mb-6">
-         <label class="text-sm text-gray-400 mb-1 block">Confirm Password</label><input id="signup-confirm" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required>
+        <div class="mb-6"><label class="text-sm text-gray-400 mb-1 block">Confirm Password</label><input id="signup-confirm" type="password" class="input-field w-full px-4 py-2.5 rounded-lg" required>
         </div><button type="submit" id="signup-btn" class="btn-primary w-full py-2.5 rounded-lg font-medium">Continue</button>
         <div id="signup-error" class="text-[#e53935] text-sm mt-3 hidden"></div>
        </form>
@@ -318,17 +327,16 @@ html, body { height: 100%; margin: 0; }
       </div><!-- Step 2: Email Verification -->
       <div id="signup-step2" class="hidden">
        <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-[#e53935] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3">
-         <i data-lucide="mail" class="w-8 h-8 text-[#e53935]"></i>
+        <div class="w-16 h-16 bg-[#e53935] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3"><i data-lucide="mail" class="w-8 h-8 text-[#e53935]"></i>
         </div>
         <h3 class="font-bold text-lg">Verify your email</h3>
         <p class="text-gray-400 text-sm mt-1">We sent a 6-digit code to <span id="verify-email-display" class="text-white"></span></p>
        </div>
        <form onsubmit="handleVerifyCode(event)">
-        <div class="flex justify-center gap-2 mb-4" id="code-inputs"><input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,0)" onkeydown="codeInputBack(event,this,0)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,1)" onkeydown="codeInputBack(event,this,1)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,2)" onkeydown="codeInputBack(event,this,2)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,3)" onkeydown="codeInputBack(event,this,3)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,4)" onkeydown="codeInputBack(event,this,4)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,5)" onkeydown="codeInputBack(event,this,5)">
+        <div class="flex justify-center gap-2 mb-4" id="code-inputs">
+         <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,0)" onkeydown="codeInputBack(event,this,0)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,1)" onkeydown="codeInputBack(event,this,1)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,2)" onkeydown="codeInputBack(event,this,2)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,3)" onkeydown="codeInputBack(event,this,3)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,4)" onkeydown="codeInputBack(event,this,4)"> <input type="text" maxlength="1" class="input-field w-12 h-14 text-center text-2xl font-bold rounded-lg" oninput="codeInputNext(this,5)" onkeydown="codeInputBack(event,this,5)">
         </div>
-        <div id="verification-code-display" class="text-center bg-[#181818] rounded-lg p-3 mb-4">
-         <span class="text-gray-400 text-sm">Your code: </span><span id="generated-code" class="text-[#e53935] font-bold text-lg tracking-widest"></span>
+        <div id="verification-code-display" class="text-center bg-[#181818] rounded-lg p-3 mb-4"><span class="text-gray-400 text-sm">Your code: </span><span id="generated-code" class="text-[#e53935] font-bold text-lg tracking-widest"></span>
         </div><button type="submit" id="verify-btn" class="btn-primary w-full py-2.5 rounded-lg font-medium">Verify &amp; Create Account</button>
         <div id="verify-error" class="text-[#e53935] text-sm mt-3 hidden"></div><button type="button" onclick="resendCode()" class="w-full text-center text-sm text-gray-400 hover:text-white mt-3">Resend code</button>
        </form>
@@ -337,21 +345,22 @@ html, body { height: 100%; margin: 0; }
     </div><!-- UPLOAD MODAL -->
     <div id="modal-upload" class="hidden bg-[#212121] rounded-2xl w-full max-w-2xl mx-4 max-h-[90%] overflow-auto fade-in">
      <div class="p-6">
-      <div class="flex items-center justify-between mb-6"><span class="font-bold text-lg">Upload video</span> <button onclick="hideModal()" class="p-1 hover:bg-[#333] rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="flex items-center justify-between mb-6">
+       <span class="font-bold text-lg">Upload video</span> <button onclick="hideModal()" class="p-1 hover:bg-[#333] rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div><!-- Upload Step 1: File Select -->
       <div id="upload-step1">
        <div id="upload-zone" class="upload-zone rounded-xl p-12 text-center cursor-pointer" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleFileDrop(event)">
-        <div class="w-20 h-20 bg-[#181818] rounded-full flex items-center justify-center mx-auto mb-4">
-         <i data-lucide="upload" class="w-10 h-10 text-gray-400"></i>
+        <div class="w-20 h-20 bg-[#181818] rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="upload" class="w-10 h-10 text-gray-400"></i>
         </div>
         <p class="font-medium mb-1">Drag and drop video files to upload</p>
-        <p class="text-sm text-gray-400 mb-4">Your videos will be private until you publish them</p><button type="button" class="btn-primary px-6 py-2.5 rounded-lg font-medium">SELECT FILES</button>
-        <p class="text-xs text-gray-500 mt-4">Maximum file size: 100 MB</p><input id="file-input" type="file" accept="video/*" class="hidden" onchange="handleFileSelect(this)">
+        <p class="text-sm text-gray-400 mb-4">Your videos will be available immediately</p><button type="button" class="btn-primary px-6 py-2.5 rounded-lg font-medium">SELECT FILES</button>
+        <p class="text-xs text-gray-500 mt-4">Maximum file size: 50 MB</p><input id="file-input" type="file" accept="video/*" class="hidden" onchange="handleFileSelect(this)">
        </div>
       </div><!-- Upload Step 2: Details -->
       <div id="upload-step2" class="hidden">
        <div class="flex gap-4 mb-4">
-        <div id="upload-preview" class="w-48 h-28 bg-[#181818] rounded-lg flex items-center justify-center shrink-0 overflow-hidden"><i data-lucide="film" class="w-10 h-10 text-gray-500"></i>
+        <div id="upload-preview" class="w-48 h-28 bg-[#181818] rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+         <i data-lucide="film" class="w-10 h-10 text-gray-500"></i>
         </div>
         <div class="flex-1">
          <p id="upload-filename" class="font-medium text-sm truncate"></p>
@@ -363,19 +372,16 @@ html, body { height: 100%; margin: 0; }
         </div>
        </div>
        <form onsubmit="handleUploadSubmit(event)">
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Title (required)</label><input id="upload-title" type="text" class="input-field w-full px-4 py-2.5 rounded-lg" required maxlength="100">
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Title (required)</label><input id="upload-title" type="text" class="input-field w-full px-4 py-2.5 rounded-lg" required maxlength="100">
         </div>
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Description</label><textarea id="upload-description" class="input-field w-full px-4 py-2.5 rounded-lg h-24 resize-none" maxlength="5000"></textarea>
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Description</label><textarea id="upload-description" class="input-field w-full px-4 py-2.5 rounded-lg h-24 resize-none" maxlength="5000"></textarea>
         </div>
-        <div class="mb-4">
-         <label class="text-sm text-gray-400 mb-1 block">Category</label> <select id="upload-category" class="input-field w-full px-4 py-2.5 rounded-lg"> <option>Entertainment</option><option>Music</option><option>Gaming</option><option>News</option><option>Sports</option><option>Education</option><option>Tech</option><option>Other</option> </select>
+        <div class="mb-4"><label class="text-sm text-gray-400 mb-1 block">Category</label> <select id="upload-category" class="input-field w-full px-4 py-2.5 rounded-lg"> <option>Entertainment</option><option>Music</option><option>Gaming</option><option>News</option><option>Sports</option><option>Education</option><option>Tech</option><option>Other</option> </select>
         </div>
-        <div class="mb-6">
-         <label class="text-sm text-gray-400 mb-1 block">Visibility</label> <select id="upload-visibility" class="input-field w-full px-4 py-2.5 rounded-lg"> <option>Public</option><option>Unlisted</option><option>Private</option> </select>
+        <div class="mb-6"><label class="text-sm text-gray-400 mb-1 block">Visibility</label> <select id="upload-visibility" class="input-field w-full px-4 py-2.5 rounded-lg"> <option>Public</option><option>Unlisted</option><option>Private</option> </select>
         </div>
-        <div class="flex justify-end gap-3"><button type="button" onclick="resetUpload()" class="btn-secondary px-6 py-2.5 rounded-lg font-medium">Cancel</button> <button type="submit" id="upload-submit-btn" class="btn-primary px-6 py-2.5 rounded-lg font-medium" disabled>Publish</button>
+        <div class="flex justify-end gap-3">
+         <button type="button" onclick="resetUpload()" class="btn-secondary px-6 py-2.5 rounded-lg font-medium">Cancel</button> <button type="submit" id="upload-submit-btn" class="btn-primary px-6 py-2.5 rounded-lg font-medium" disabled>Publish</button>
         </div>
         <div id="upload-error" class="text-[#e53935] text-sm mt-3 hidden"></div>
        </form>
@@ -387,16 +393,26 @@ html, body { height: 100%; margin: 0; }
   <script>
 // ===== STATE =====
 let allData = [];
-let currentUser = null; // { username, email, avatar_color, __backendId }
+let currentAnonymousUser = 'User_' + Math.random().toString(36).substr(2, 9).toUpperCase();
 let currentPage = 'home';
 let currentCategory = 'All';
 let currentWatchVideo = null;
-let pendingSignup = {};
-let verificationCode = '';
 let uploadFile = null;
 let uploadComplete = false;
 let watchHistory = []; // local session history
 let sidebarOpen = true;
+
+// YouTube sample videos (reference content)
+const youtubeVideos = [
+  { id: 'yt_1', title: 'The Art of Coding', owner: 'TechMaster', category: 'Tech', duration: '8:32', views: 245000, likes: 8900, timestamp: new Date(Date.now() - 2*24*60*60*1000).toISOString(), thumbnailColor: '#1a237e', description: 'Learn the fundamentals of clean code and best practices in software development.' },
+  { id: 'yt_2', title: 'Gaming Highlights 2024', owner: 'ProGamer', category: 'Gaming', duration: '12:45', views: 523000, likes: 19300, timestamp: new Date(Date.now() - 3*24*60*60*1000).toISOString(), thumbnailColor: '#004d40', description: 'Best gaming moments from the year compiled in one epic video.' },
+  { id: 'yt_3', title: 'Music Production Tutorial', owner: 'BeatMaker', category: 'Music', duration: '15:20', views: 89000, likes: 3200, timestamp: new Date(Date.now() - 5*24*60*60*1000).toISOString(), thumbnailColor: '#880e4f', description: 'Complete guide to producing your first track using modern tools.' },
+  { id: 'yt_4', title: 'Breaking News Today', owner: 'NewsNow', category: 'News', duration: '4:15', views: 412000, likes: 12100, timestamp: new Date(Date.now() - 1*24*60*60*1000).toISOString(), thumbnailColor: '#bf360c', description: 'Latest updates on global events and trending stories.' },
+  { id: 'yt_5', title: 'Football Championship Final', owner: 'SportZone', category: 'Sports', duration: '120:00', views: 2100000, likes: 78000, timestamp: new Date(Date.now() - 1*24*60*60*1000).toISOString(), thumbnailColor: '#1b5e20', description: 'Full match of the championship final with commentary.' },
+  { id: 'yt_6', title: 'Physics Explained', owner: 'ScienceHub', category: 'Education', duration: '22:10', views: 156000, likes: 5600, timestamp: new Date(Date.now() - 7*24*60*60*1000).toISOString(), thumbnailColor: '#0d47a1', description: 'Understanding complex physics concepts in simple terms.' },
+  { id: 'yt_7', title: 'Comedy Special', owner: 'LaughFactory', category: 'Entertainment', duration: '65:30', views: 890000, likes: 32000, timestamp: new Date(Date.now() - 4*24*60*60*1000).toISOString(), thumbnailColor: '#e65100', description: 'Stand-up comedy special with hilarious moments.' },
+  { id: 'yt_8', title: 'Web Development Crash Course', owner: 'CodeAcademy', category: 'Education', duration: '3:45:20', views: 534000, likes: 22100, timestamp: new Date(Date.now() - 10*24*60*60*1000).toISOString(), thumbnailColor: '#5e35b1', description: 'Learn web development from zero to hero in one comprehensive course.' }
+];
 
 const defaultConfig = {
   site_title: 'JagatWireTube',
@@ -454,8 +470,10 @@ const dataHandler = {
 window.dataSdk.init(dataHandler);
 
 // ===== HELPERS =====
-function getUsers() { return allData.filter(d => d.type === 'user'); }
-function getVideos() { return allData.filter(d => d.type === 'video'); }
+function getVideos() { 
+  const userVideos = allData.filter(d => d.type === 'video');
+  return [...youtubeVideos, ...userVideos];
+}
 function getComments() { return allData.filter(d => d.type === 'comment'); }
 function getSubscriptions() { return allData.filter(d => d.type === 'subscription'); }
 function getLikes() { return allData.filter(d => d.type === 'like'); }
@@ -525,119 +543,18 @@ function toggleNotifications() { document.getElementById('notif-dropdown').class
 
 // ===== AUTH =====
 function updateAuthUI() {
-  const lo = document.getElementById('auth-header-logged-out');
-  const li = document.getElementById('auth-header-logged-in');
-  if (currentUser) {
-    lo.classList.add('hidden'); li.classList.remove('hidden'); li.style.display = 'flex';
-    const ab = document.getElementById('avatar-btn');
-    ab.style.background = currentUser.avatar_color;
-    ab.textContent = currentUser.username[0].toUpperCase();
-    document.getElementById('dropdown-avatar').style.background = currentUser.avatar_color;
-    document.getElementById('dropdown-avatar').textContent = currentUser.username[0].toUpperCase();
-    document.getElementById('dropdown-username').textContent = currentUser.username;
-    document.getElementById('dropdown-email').textContent = currentUser.email;
-    document.getElementById('comment-input-area')?.classList.remove('hidden');
-    const ca = document.getElementById('comment-avatar');
-    if (ca) { ca.style.background = currentUser.avatar_color; ca.textContent = currentUser.username[0].toUpperCase(); }
-  } else {
-    lo.classList.remove('hidden'); li.classList.add('hidden');
-    document.getElementById('comment-input-area')?.classList.add('hidden');
+  const ab = document.getElementById('avatar-btn');
+  if (ab) {
+    ab.style.background = '#e53935';
+    ab.textContent = currentAnonymousUser[0];
+    ab.onclick = toggleUserMenu;
   }
-}
-
-function handleSignIn(e) {
-  e.preventDefault();
-  const email = document.getElementById('signin-email').value.trim();
-  const pw = document.getElementById('signin-password').value;
-  const user = getUsers().find(u => u.email === email && u.password_hash === btoa(pw) && u.verified === 'true');
-  if (!user) {
-    const err = document.getElementById('signin-error');
-    err.textContent = 'Invalid email or password, or account not verified.';
-    err.classList.remove('hidden');
-    return;
-  }
-  currentUser = user;
-  hideModal();
-  updateAuthUI();
-  showToast('Welcome back, ' + user.username + '!', 'success');
-}
-
-function handleSignUpStep1(e) {
-  e.preventDefault();
-  const username = document.getElementById('signup-username').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const pw = document.getElementById('signup-password').value;
-  const confirm = document.getElementById('signup-confirm').value;
-  const err = document.getElementById('signup-error');
-
-  if (pw !== confirm) { err.textContent = 'Passwords do not match.'; err.classList.remove('hidden'); return; }
-  if (getUsers().find(u => u.email === email)) { err.textContent = 'Email already registered.'; err.classList.remove('hidden'); return; }
-  if (getUsers().find(u => u.username === username)) { err.textContent = 'Username already taken.'; err.classList.remove('hidden'); return; }
-
-  err.classList.add('hidden');
-  pendingSignup = { username, email, password_hash: btoa(pw), avatar_color: randomColor() };
-  verificationCode = String(Math.floor(100000 + Math.random()*900000));
-  document.getElementById('verify-email-display').textContent = email;
-  document.getElementById('generated-code').textContent = verificationCode;
-  document.getElementById('signup-step1').classList.add('hidden');
-  document.getElementById('signup-step2').classList.remove('hidden');
-  // Focus first code input
-  document.querySelector('#code-inputs input').focus();
-}
-
-function codeInputNext(el, idx) {
-  if (el.value.length === 1) {
-    const next = el.nextElementSibling;
-    if (next) next.focus();
-  }
-}
-function codeInputBack(e, el, idx) {
-  if (e.key === 'Backspace' && !el.value) {
-    const prev = el.previousElementSibling;
-    if (prev) prev.focus();
-  }
-}
-
-async function handleVerifyCode(e) {
-  e.preventDefault();
-  const inputs = document.querySelectorAll('#code-inputs input');
-  const code = Array.from(inputs).map(i => i.value).join('');
-  const err = document.getElementById('verify-error');
-
-  if (code !== verificationCode) { err.textContent = 'Invalid code. Please try again.'; err.classList.remove('hidden'); return; }
-
-  const btn = document.getElementById('verify-btn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
-
-  if (allData.filter(d => d.type === 'user').length >= 999) {
-    err.textContent = 'Maximum users reached.'; err.classList.remove('hidden');
-    btn.disabled = false; btn.textContent = 'Verify & Create Account';
-    return;
-  }
-
-  const result = await window.dataSdk.create({ type: 'user', ...pendingSignup, verified: 'true' });
-  btn.disabled = false; btn.textContent = 'Verify & Create Account';
-
-  if (result.isOk) {
-    showToast('Account created! Please sign in.', 'success');
-    hideModal();
-    setTimeout(() => showModal('signin'), 300);
-  } else {
-    err.textContent = 'Failed to create account.'; err.classList.remove('hidden');
-  }
-}
-
-function resendCode() {
-  verificationCode = String(Math.floor(100000 + Math.random()*900000));
-  document.getElementById('generated-code').textContent = verificationCode;
-  showToast('New verification code generated!', 'success');
-}
-
-function handleSignOut() {
-  currentUser = null;
-  updateAuthUI();
-  navigateTo('home');
-  showToast('Signed out.');
+  document.getElementById('dropdown-avatar').textContent = currentAnonymousUser[0];
+  document.getElementById('dropdown-username').textContent = currentAnonymousUser;
+  document.getElementById('dropdown-email').textContent = 'anonymous@jagatwire.local';
+  document.getElementById('comment-input-area')?.classList.remove('hidden');
+  const ca = document.getElementById('comment-avatar');
+  if (ca) { ca.style.background = '#e53935'; ca.textContent = currentAnonymousUser[0]; }
 }
 
 // ===== MODALS =====
@@ -670,7 +587,7 @@ function handleFileDrop(e) {
 }
 function processFile(file) {
   if (!file.type.startsWith('video/')) { showToast('Please select a video file.', 'error'); return; }
-  if (file.size > 100 * 1024 * 1024) { showToast('File exceeds 100 MB limit.', 'error'); return; }
+  if (file.size > 50 * 1024 * 1024) { showToast('File exceeds 50 MB limit.', 'error'); return; }
   uploadFile = file;
   uploadComplete = false;
   document.getElementById('upload-step1').classList.add('hidden');
@@ -704,7 +621,7 @@ function resetUpload() {
 }
 async function handleUploadSubmit(e) {
   e.preventDefault();
-  if (!uploadComplete || !currentUser) return;
+  if (!uploadComplete) return;
   const title = document.getElementById('upload-title').value.trim();
   if (!title) return;
 
@@ -722,7 +639,7 @@ async function handleUploadSubmit(e) {
     video_category: document.getElementById('upload-category').value,
     video_thumbnail_color: thumbColors[0],
     video_duration: durations[Math.floor(Math.random()*durations.length)],
-    video_owner: currentUser.username,
+    video_owner: currentAnonymousUser,
     video_views: Math.floor(Math.random()*1000),
     video_likes: 0,
     video_dislikes: 0,
@@ -742,8 +659,6 @@ async function handleUploadSubmit(e) {
 
 // ===== VIDEO RENDERING =====
 function createVideoCard(video, layout = 'grid') {
-  const user = getUsers().find(u => u.username === video.video_owner);
-  const avatarColor = user ? user.avatar_color : '#555';
   const initial = video.video_owner ? video.video_owner[0].toUpperCase() : '?';
 
   if (layout === 'horizontal') {
@@ -771,7 +686,7 @@ function createVideoCard(video, layout = 'grid') {
       <span class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-xs px-1.5 py-0.5 rounded font-medium">${video.video_duration||'0:00'}</span>
     </div>
     <div class="flex gap-3">
-      <div class="w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-xs font-bold" style="background:${avatarColor}">${initial}</div>
+      <div class="w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-xs font-bold bg-[#e53935]">${initial}</div>
       <div class="min-w-0">
         <h3 class="font-medium text-sm line-clamp-2 leading-tight">${escHtml(video.video_title)}</h3>
         <p class="text-xs text-gray-400 mt-1 hover:text-gray-300">${escHtml(video.video_owner)}</p>
@@ -838,7 +753,7 @@ function performSearch() {
 
 // ===== WATCH VIDEO =====
 function openVideo(videoId) {
-  const video = getVideos().find(v => v.__backendId === videoId);
+  const video = getVideos().find(v => v.__backendId === videoId || v.id === videoId);
   if (!video) return;
   currentWatchVideo = video;
   if (!watchHistory.includes(videoId)) watchHistory.unshift(videoId);
@@ -847,102 +762,113 @@ function openVideo(videoId) {
 
 function renderWatch() {
   const v = currentWatchVideo; if (!v) return;
-  const user = getUsers().find(u => u.username === v.video_owner);
-  const avatarColor = user ? user.avatar_color : '#555';
-  const subs = getSubscriptions().filter(s => s.subscriber_to === v.video_owner).length;
+  const subs = getSubscriptions().filter(s => s.subscriber_to === v.video_owner || s.subscriber_to === v.owner).length;
 
-  document.getElementById('video-player').style.background = v.video_thumbnail_color || '#181818';
-  document.getElementById('watch-title').textContent = v.video_title;
-  document.getElementById('watch-duration').textContent = v.video_duration || '0:00';
+  document.getElementById('video-player').style.background = v.video_thumbnail_color || v.thumbnailColor || '#181818';
+  document.getElementById('watch-title').textContent = v.video_title || v.title;
+  document.getElementById('watch-duration').textContent = v.video_duration || v.duration || '0:00';
   const wa = document.getElementById('watch-avatar');
-  wa.style.background = avatarColor;
-  wa.textContent = v.video_owner ? v.video_owner[0].toUpperCase() : '?';
-  wa.onclick = () => { navigateTo('channel'); renderChannelFor(v.video_owner); };
-  document.getElementById('watch-channel').textContent = v.video_owner;
-  document.getElementById('watch-channel').onclick = () => { navigateTo('channel'); renderChannelFor(v.video_owner); };
+  wa.style.background = '#e53935';
+  const ownerName = v.video_owner || v.owner;
+  wa.textContent = ownerName ? ownerName[0].toUpperCase() : '?';
+  wa.onclick = () => { navigateTo('channel'); renderChannelFor(ownerName); };
+  document.getElementById('watch-channel').textContent = ownerName;
+  document.getElementById('watch-channel').onclick = () => { navigateTo('channel'); renderChannelFor(ownerName); };
   document.getElementById('watch-subs').textContent = subs + ' subscribers';
-  document.getElementById('watch-views').textContent = formatViews(v.video_views) + ' views';
-  document.getElementById('watch-date').textContent = timeAgo(v.video_timestamp);
-  document.getElementById('watch-desc-text').textContent = v.video_description || 'No description';
-  document.getElementById('watch-likes').textContent = v.video_likes || 0;
+  document.getElementById('watch-views').textContent = formatViews(v.video_views || v.views) + ' views';
+  document.getElementById('watch-date').textContent = timeAgo(v.video_timestamp || v.timestamp);
+  document.getElementById('watch-desc-text').textContent = v.video_description || v.description || 'No description';
+  document.getElementById('watch-likes').textContent = v.video_likes || v.likes || 0;
 
   // Like state
-  if (currentUser) {
-    const myLike = getLikes().find(l => l.like_video_id === v.__backendId && l.like_user === currentUser.username);
-    document.getElementById('watch-like-btn').classList.toggle('liked', myLike && myLike.like_type === 'like');
-    document.getElementById('watch-dislike-btn').classList.toggle('liked', myLike && myLike.like_type === 'dislike');
-    // Sub state
-    const mySub = getSubscriptions().find(s => s.subscriber_from === currentUser.username && s.subscriber_to === v.video_owner);
-    document.getElementById('watch-sub-btn').textContent = mySub ? 'Subscribed' : 'Subscribe';
-    document.getElementById('watch-sub-btn').style.background = mySub ? '#272727' : '#e53935';
-  }
+  const myLike = getLikes().find(l => (l.like_video_id === v.__backendId || l.like_video_id === v.id) && l.like_user === currentAnonymousUser);
+  document.getElementById('watch-like-btn').classList.toggle('liked', myLike && myLike.like_type === 'like');
+  document.getElementById('watch-dislike-btn').classList.toggle('liked', myLike && myLike.like_type === 'dislike');
+  // Sub state
+  const mySub = getSubscriptions().find(s => s.subscriber_from === currentAnonymousUser && (s.subscriber_to === v.video_owner || s.subscriber_to === v.owner));
+  document.getElementById('watch-sub-btn').textContent = mySub ? 'Subscribed' : 'Subscribe';
+  document.getElementById('watch-sub-btn').style.background = mySub ? '#272727' : '#e53935';
 
-  // Comments
-  const comments = getComments().filter(c => c.comment_video_id === v.__backendId);
+  // Comments (only for user-uploaded videos)
+  const comments = v.__backendId ? getComments().filter(c => c.comment_video_id === v.__backendId) : [];
   document.getElementById('comment-count').textContent = comments.length + ' Comments';
   const cl = document.getElementById('comments-list');
   cl.innerHTML = comments.map(c => {
-    const cu = getUsers().find(u => u.username === c.comment_owner);
-    const cc = cu ? cu.avatar_color : '#555';
-    return `<div class="flex gap-3 mb-4"><div class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold" style="background:${cc}">${c.comment_owner?c.comment_owner[0].toUpperCase():'?'}</div><div><div class="flex items-center gap-2"><span class="text-sm font-medium">${escHtml(c.comment_owner)}</span><span class="text-xs text-gray-500">${timeAgo(c.comment_timestamp)}</span></div><p class="text-sm text-gray-300 mt-0.5">${escHtml(c.comment_text)}</p></div></div>`;
+    return `<div class="flex gap-3 mb-4"><div class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold bg-[#e53935]">${c.comment_owner?c.comment_owner[0].toUpperCase():'?'}</div><div><div class="flex items-center gap-2"><span class="text-sm font-medium">${escHtml(c.comment_owner)}</span><span class="text-xs text-gray-500">${timeAgo(c.comment_timestamp)}</span></div><p class="text-sm text-gray-300 mt-0.5">${escHtml(c.comment_text)}</p></div></div>`;
   }).join('');
+  
+  // Show/hide comment input based on video type
+  if (v.__backendId) {
+    document.getElementById('comment-input-area').classList.remove('hidden');
+  } else {
+    document.getElementById('comment-input-area').classList.add('hidden');
+  }
 
   // Suggested
-  const suggested = getVideos().filter(sv => sv.__backendId !== v.__backendId).slice(0, 8);
+  const suggested = getVideos().filter(sv => (sv.__backendId !== v.__backendId && sv.id !== v.id)).slice(0, 8);
   document.getElementById('suggested-videos').innerHTML = suggested.map(sv => createVideoCard(sv, 'horizontal')).join('');
 }
 
 async function toggleLike(type) {
-  if (!currentUser) { showModal('signin'); return; }
   const v = currentWatchVideo; if (!v) return;
-  const existing = getLikes().find(l => l.like_video_id === v.__backendId && l.like_user === currentUser.username);
+  const videoId = v.__backendId || v.id;
+  const existing = getLikes().find(l => l.like_video_id === videoId && l.like_user === currentAnonymousUser);
+  
+  // Only allow likes on user-uploaded videos
+  if (!v.__backendId) {
+    showToast('You can only like uploaded videos.', 'error');
+    return;
+  }
+  
   if (existing) {
     await window.dataSdk.delete(existing);
     if (existing.like_type !== type) {
-      if (allData.length < 999) await window.dataSdk.create({ type: 'like', like_video_id: v.__backendId, like_user: currentUser.username, like_type: type });
+      if (allData.length < 999) await window.dataSdk.create({ type: 'like', like_video_id: videoId, like_user: currentAnonymousUser, like_type: type });
     }
   } else {
-    if (allData.length < 999) await window.dataSdk.create({ type: 'like', like_video_id: v.__backendId, like_user: currentUser.username, like_type: type });
+    if (allData.length < 999) await window.dataSdk.create({ type: 'like', like_video_id: videoId, like_user: currentAnonymousUser, like_type: type });
   }
   // Update video like count
-  const likes = getLikes().filter(l => l.like_video_id === v.__backendId && l.like_type === 'like').length + (type === 'like' && !existing ? 1 : 0);
+  const likes = getLikes().filter(l => l.like_video_id === videoId && l.like_type === 'like').length + (type === 'like' && !existing ? 1 : 0);
   await window.dataSdk.update({ ...v, video_likes: likes });
 }
 
 async function toggleSubscribe() {
-  if (!currentUser) { showModal('signin'); return; }
   const v = currentWatchVideo; if (!v) return;
-  const existing = getSubscriptions().find(s => s.subscriber_from === currentUser.username && s.subscriber_to === v.video_owner);
+  const ownerName = v.video_owner || v.owner;
+  const existing = getSubscriptions().find(s => s.subscriber_from === currentAnonymousUser && s.subscriber_to === ownerName);
   if (existing) {
     await window.dataSdk.delete(existing);
   } else {
-    if (allData.length < 999) await window.dataSdk.create({ type: 'subscription', subscriber_from: currentUser.username, subscriber_to: v.video_owner });
+    if (allData.length < 999) await window.dataSdk.create({ type: 'subscription', subscriber_from: currentAnonymousUser, subscriber_to: ownerName });
   }
 }
 
 async function postComment() {
-  if (!currentUser) return;
   const input = document.getElementById('comment-input');
   const text = input.value.trim();
   if (!text || !currentWatchVideo) return;
+  if (!currentWatchVideo.__backendId) {
+    showToast('You can only comment on uploaded videos.', 'error');
+    return;
+  }
   if (allData.length >= 999) { showToast('Storage limit reached.', 'error'); return; }
   input.value = '';
   document.getElementById('comment-actions').classList.add('hidden');
-  await window.dataSdk.create({ type: 'comment', comment_text: text, comment_video_id: currentWatchVideo.__backendId, comment_owner: currentUser.username, comment_timestamp: new Date().toISOString() });
+  await window.dataSdk.create({ type: 'comment', comment_text: text, comment_video_id: currentWatchVideo.__backendId, comment_owner: currentAnonymousUser, comment_timestamp: new Date().toISOString() });
 }
 
 // ===== CHANNEL =====
 function renderChannel() {
-  if (currentUser) renderChannelFor(currentUser.username);
+  renderChannelFor(currentAnonymousUser);
 }
 function renderChannelFor(username) {
-  const user = getUsers().find(u => u.username === username);
   const videos = getVideos().filter(v => v.video_owner === username);
   const subs = getSubscriptions().filter(s => s.subscriber_to === username).length;
   const ca = document.getElementById('channel-avatar');
-  ca.style.background = user ? user.avatar_color : '#555';
+  ca.style.background = '#e53935';
   ca.textContent = username[0].toUpperCase();
-  document.getElementById('channel-banner').style.background = user ? user.avatar_color + '22' : '#1a1a1a';
+  document.getElementById('channel-banner').style.background = '#e5393322';
   document.getElementById('channel-name').textContent = username;
   document.getElementById('channel-handle').textContent = '@' + username.toLowerCase();
   document.getElementById('channel-stats').textContent = subs + ' subscribers · ' + videos.length + ' videos';
@@ -960,9 +886,8 @@ function switchChannelTab(btn, tab) {
 
 // ===== STUDIO =====
 function renderStudio() {
-  if (!currentUser) return;
   updateStudioStats();
-  const myVideos = getVideos().filter(v => v.video_owner === currentUser.username);
+  const myVideos = getVideos().filter(v => v.video_owner === currentAnonymousUser);
   const list = document.getElementById('studio-video-list');
   if (myVideos.length === 0) {
     list.innerHTML = '<div class="text-center py-10 text-gray-500"><p>No videos yet. Upload your first video!</p></div>';
@@ -973,10 +898,9 @@ function renderStudio() {
   lucide.createIcons();
 }
 function updateStudioStats() {
-  if (!currentUser) return;
-  const myVideos = getVideos().filter(v => v.video_owner === currentUser.username);
+  const myVideos = getVideos().filter(v => v.video_owner === currentAnonymousUser);
   const totalViews = myVideos.reduce((s,v) => s + (v.video_views||0), 0);
-  const subs = getSubscriptions().filter(s => s.subscriber_to === currentUser.username).length;
+  const subs = getSubscriptions().filter(s => s.subscriber_to === currentAnonymousUser).length;
   const sv = document.getElementById('studio-views'); if (sv) sv.textContent = formatViews(totalViews);
   const sc = document.getElementById('studio-video-count'); if (sc) sc.textContent = myVideos.length;
   const ss = document.getElementById('studio-subs'); if (ss) ss.textContent = subs;
@@ -1015,17 +939,15 @@ function switchStudioTab(btn, tab) {
 
 // ===== OTHER PAGES =====
 function renderSubscriptions() {
-  if (!currentUser) { document.getElementById('subs-content').innerHTML = '<p class="text-gray-500 text-center py-10">Sign in to see subscriptions</p>'; return; }
-  const mySubs = getSubscriptions().filter(s => s.subscriber_from === currentUser.username);
+  const mySubs = getSubscriptions().filter(s => s.subscriber_from === currentAnonymousUser);
   const subVideos = getVideos().filter(v => mySubs.some(s => s.subscriber_to === v.video_owner));
   document.getElementById('subs-content').innerHTML = subVideos.length
     ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">${subVideos.map(v => createVideoCard(v)).join('')}</div>`
-    : '<p class="text-gray-500 text-center py-10">No subscription videos yet</p>';
+    : '<p class="text-gray-500 text-center py-10">No subscriptions yet</p>';
   lucide.createIcons();
 }
 function renderLiked() {
-  if (!currentUser) { document.getElementById('liked-content').innerHTML = '<p class="text-gray-500 text-center py-10">Sign in to see liked videos</p>'; return; }
-  const myLikes = getLikes().filter(l => l.like_user === currentUser.username && l.like_type === 'like');
+  const myLikes = getLikes().filter(l => l.like_user === currentAnonymousUser && l.like_type === 'like');
   const likedVideos = getVideos().filter(v => myLikes.some(l => l.like_video_id === v.__backendId));
   document.getElementById('liked-content').innerHTML = likedVideos.length
     ? likedVideos.map(v => createVideoCard(v)).join('')
@@ -1040,8 +962,7 @@ function renderHistory() {
   lucide.createIcons();
 }
 function renderLibrary() {
-  if (!currentUser) { document.getElementById('library-content').innerHTML = '<p class="text-gray-500 text-center py-10 col-span-full">Sign in to see your library</p>'; return; }
-  const myVideos = getVideos().filter(v => v.video_owner === currentUser.username);
+  const myVideos = getVideos().filter(v => v.video_owner === currentAnonymousUser);
   document.getElementById('library-content').innerHTML = myVideos.length
     ? myVideos.map(v => createVideoCard(v)).join('')
     : '<p class="text-gray-500 text-center py-10 col-span-full">Your library is empty</p>';
@@ -1051,5 +972,5 @@ function renderLibrary() {
 // Init icons
 lucide.createIcons();
 </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3862cc34e2ff68',t:'MTc3NDcxOTI3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3871a432844932',t:'MTc3NDcxOTg3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
