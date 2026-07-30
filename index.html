@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 
-<html lang="en"><head>
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>NCERT Market - Every NCERT Book, Just ₹1</title>
+<title>UPI Payment Flow</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -16,53 +14,53 @@
             theme: {
                 extend: {
                     "colors": {
-                        "on-tertiary-container": "#ffd6a8",
-                        "on-tertiary-fixed": "#2a1700",
-                        "error": "#ba1a1a",
-                        "surface-container-highest": "#d9e3f6",
-                        "on-primary-container": "#d4dcff",
-                        "on-surface": "#121c2a",
-                        "on-surface-variant": "#434654",
-                        "on-primary-fixed": "#00174d",
-                        "outline-variant": "#c3c5d7",
-                        "secondary-fixed": "#85f8c4",
-                        "primary-fixed": "#dbe1ff",
-                        "on-tertiary": "#ffffff",
-                        "outline": "#737686",
-                        "secondary-fixed-dim": "#68dba9",
-                        "secondary": "#006c4a",
-                        "on-background": "#121c2a",
-                        "primary-fixed-dim": "#b5c4ff",
-                        "inverse-surface": "#27313f",
-                        "tertiary-container": "#895600",
-                        "surface-container-low": "#eff4ff",
-                        "surface": "#f8f9ff",
-                        "inverse-on-surface": "#eaf1ff",
-                        "surface-bright": "#f8f9ff",
-                        "surface-variant": "#d9e3f6",
-                        "on-secondary-fixed": "#002114",
-                        "on-secondary": "#ffffff",
-                        "background": "#f8f9ff",
-                        "tertiary-fixed-dim": "#ffb95f",
-                        "on-secondary-container": "#00714e",
-                        "primary-container": "#1a56db",
-                        "on-primary-fixed-variant": "#003dab",
+                        "primary-container": "#1a365d",
                         "surface-container-lowest": "#ffffff",
-                        "on-tertiary-fixed-variant": "#653e00",
-                        "surface-dim": "#d0dbed",
-                        "secondary-container": "#82f5c1",
-                        "on-error": "#ffffff",
-                        "on-secondary-fixed-variant": "#005137",
-                        "inverse-primary": "#b5c4ff",
-                        "tertiary": "#694100",
-                        "surface-tint": "#1353d8",
+                        "inverse-surface": "#2d3133",
+                        "surface-container": "#eceef0",
+                        "secondary": "#735c00",
                         "on-error-container": "#93000a",
-                        "primary": "#003fb1",
-                        "surface-container-high": "#dee9fc",
-                        "tertiary-fixed": "#ffddb8",
+                        "surface-tint": "#455f88",
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-primary": "#adc7f7",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface": "#191c1e",
+                        "surface-bright": "#f7f9fb",
+                        "on-secondary-container": "#745c00",
+                        "on-secondary-fixed": "#241a00",
+                        "primary": "#002045",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#43474e",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "outline-variant": "#c4c6cf",
+                        "on-tertiary-container": "#00b47d",
+                        "secondary-container": "#fed65b",
+                        "tertiary-fixed": "#6ffbbe",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary": "#002617",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-container": "#003e28",
+                        "surface": "#f7f9fb",
+                        "on-primary-fixed": "#001b3c",
+                        "on-background": "#191c1e",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#86a0cd",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-fixed-dim": "#4edea3",
                         "error-container": "#ffdad6",
-                        "surface-container": "#e6eeff",
-                        "on-primary": "#ffffff"
+                        "surface-dim": "#d8dadc",
+                        "background": "#f7f9fb",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#ffe088",
+                        "primary-fixed-dim": "#adc7f7",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "outline": "#74777f",
+                        "secondary-fixed-dim": "#e9c349"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -71,218 +69,193 @@
                         "full": "9999px"
                     },
                     "spacing": {
-                        "stack-md": "24px",
-                        "stack-lg": "48px",
-                        "stack-sm": "12px",
                         "base": "8px",
-                        "gutter": "24px",
-                        "margin-mobile": "20px",
-                        "container-max": "1280px",
-                        "margin-desktop": "64px"
+                        "container-margin": "24px",
+                        "section-gap": "32px",
+                        "stack-md": "12px",
+                        "stack-lg": "24px",
+                        "gutter": "16px",
+                        "stack-sm": "4px"
                     },
                     "fontFamily": {
                         "label-sm": ["Inter"],
-                        "display-lg-mobile": ["Montserrat"],
-                        "display-lg": ["Montserrat"],
-                        "headline-md": ["Montserrat"],
                         "body-lg": ["Inter"],
-                        "body-md": ["Inter"]
+                        "body-md": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "label-md": ["Inter"],
+                        "headline-sm": ["Outfit"],
+                        "display-lg-mobile": ["Outfit"]
                     },
                     "fontSize": {
-                        "label-sm": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
-                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
                     }
                 }
             }
         }
     </script>
 <style>
-        .hero-pattern {
-            background-color: #f8f9ff;
-            background-image: radial-gradient(#c3c5d7 1px, transparent 1px);
-            background-size: 24px 24px;
+        .sheet-enter {
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .card-shadow {
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.03);
-        }
-        .card-hover:hover {
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
-</head>
-<body class="bg-background text-on-background font-body-md antialiased pt-16">
-<!-- TopNavBar -->
-<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 max-w-container-max mx-auto md:px-margin-desktop px-margin-mobile">
-<div class="flex items-center gap-gutter">
-<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed" href="/">NCERT Market</a>
-<nav class="hidden md:flex gap-stack-md ml-gutter">
-<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary dark:border-primary-fixed pb-1 font-label-sm text-label-sm scale-95 active:scale-90 transition-transform" href="#">Browse</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-medium font-label-sm text-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 scale-95 active:scale-90 transition-transform" href="#">Classes</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-medium font-label-sm text-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 scale-95 active:scale-90 transition-transform" href="#">Subjects</a>
-<a class="text-on-surface-variant dark:text-outline-variant font-medium font-label-sm text-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 scale-95 active:scale-90 transition-transform" href="#">My Library</a>
-</nav>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex items-end sm:items-center justify-center p-0 sm:p-container-margin overflow-hidden relative">
+<!-- Ambient Background (Minimalist Corporate) -->
+<div class="absolute inset-0 z-0 bg-surface pointer-events-none flex flex-col justify-between">
+<div class="h-64 bg-gradient-to-b from-primary-fixed to-transparent opacity-30"></div>
 </div>
-<div class="flex items-center gap-stack-sm">
-<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
-<span class="material-symbols-outlined text-on-surface-variant text-xl mr-2">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-body-md p-0 w-48 text-on-surface outline-none placeholder-outline" placeholder="Search books..." type="text"/>
+<!-- Payment Bottom Sheet / Card -->
+<main class="w-full max-w-md bg-surface-container-lowest rounded-t-[32px] sm:rounded-[32px] shadow-[0px_-10px_40px_rgba(26,54,93,0.08)] sm:shadow-[0px_20px_60px_rgba(26,54,93,0.12)] relative z-10 sheet-enter overflow-hidden flex flex-col h-[751px] sm:h-auto">
+<!-- Drag Handle (Mobile) -->
+<div class="w-full flex justify-center pt-4 pb-2 sm:hidden">
+<div class="w-12 h-1.5 bg-outline-variant rounded-full"></div>
 </div>
-<button class="font-label-sm text-label-sm font-bold text-primary dark:text-primary-fixed hover:bg-surface-container py-2 px-4 rounded-lg transition-colors">Sign In</button>
+<!-- Header: Merchant Info -->
+<header class="px-container-margin pt-6 pb-stack-lg border-b border-surface-variant flex flex-col items-center text-center">
+<!-- Merchant Avatar -->
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center mb-stack-md shadow-[0px_8px_16px_rgba(26,54,93,0.1)] relative">
+<span class="material-symbols-outlined text-on-primary-container" style="font-size: 32px; font-variation-settings: 'FILL' 1;">account_balance</span>
+<!-- Verified Badge -->
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-on-tertiary-container rounded-full flex items-center justify-center border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-on-tertiary" style="font-size: 14px; font-variation-settings: 'FILL' 1;">verified</span>
 </div>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-1">NCERT Prep</h1>
+<div class="flex items-center gap-1 text-on-surface-variant mb-stack-lg">
+<span class="font-label-md text-label-md">9142595543@upi</span>
+<span class="material-symbols-outlined text-on-surface-variant" style="font-size: 16px;">content_copy</span>
+</div>
+<!-- Amount -->
+<div class="flex items-baseline justify-center gap-1">
+<span class="font-headline-md text-headline-md text-on-surface-variant">₹</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">5.00</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2 uppercase tracking-wider">Secure UPI Payment</p>
 </header>
-<main class="max-w-container-max mx-auto w-full">
-<!-- Hero Section -->
-<section class="relative hero-pattern pt-24 pb-stack-lg px-margin-mobile md:px-margin-desktop rounded-b-xl overflow-hidden mb-stack-lg border-b border-outline-variant flex flex-col items-center text-center">
-<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface opacity-80 pointer-events-none"></div>
-<div class="relative z-10 max-w-3xl flex flex-col items-center">
-<span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full font-label-sm text-label-sm mb-6 border border-primary/20">
-<span class="material-symbols-outlined text-[16px]">bolt</span> High-Speed Downloads
-                </span>
-<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-sm">
-                    Every NCERT Book,<br/>Just <span class="text-primary">₹1</span>
-</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-md max-w-2xl">
-                    Instant access to the complete library of NCERT textbooks. High-quality, searchable PDFs optimized for all your devices. Stop searching, start studying.
-                </p>
-<div class="w-full max-w-2xl glass-panel p-2 rounded-xl border border-outline-variant shadow-lg flex items-center mb-stack-md focus-within:border-primary transition-colors">
-<span class="material-symbols-outlined text-outline ml-4">search</span>
-<input class="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface px-4 py-4 outline-none placeholder-outline" placeholder="Search by class, subject, or chapter..." type="text"/>
-<button class="bg-primary text-on-primary font-label-sm text-label-sm px-8 py-4 rounded-lg hover:bg-primary-container transition-colors shrink-0">Search</button>
+<!-- Content: App Selection -->
+<div class="flex-1 overflow-y-auto px-container-margin py-stack-lg bg-surface-bright">
+<h2 class="font-label-md text-label-md text-on-surface-variant mb-stack-md">Select UPI App</h2>
+<div class="space-y-stack-sm flex flex-col">
+<!-- App Option: Google Pay (Selected) -->
+<label class="group relative flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border-2 border-primary cursor-pointer transition-all hover:bg-surface-container-low">
+<div class="flex items-center gap-gutter">
+<div class="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A meticulously crafted logo icon representing a digital payment app, featuring a stylized 'G' and 'Pay' in vibrant, modern colors against a pristine white background. The icon is sharp, flat, and conveys trust and technology in a high-key, modern UI context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3Hl4RI0xnnFsVh3a0vdF06hxfJByXS4gQW8YHJ_sKhJjsv3NuunyrvuHOViMA3Qqgjjd6YMgDwG5luViaoUammVGng_JYQP_SBGwEVTfaBMBb0lcnkylzZxqAZ7ZePLfyZFMZ-PC-as8ZdQ4r4OzfBrOBw7CVan2W2nY45ZDWV3iW-7ABbZ4ZHuG_A0xdZMgs-MaYzne5Cmox33lI8pTrvVDKO6T5sZBboYLuyyLKIGXmb7XOiEFHxQ"/>
 </div>
-<div class="flex flex-wrap justify-center gap-gutter text-on-surface-variant font-label-sm text-label-sm">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
-                        Instant UPI Payment
-                    </div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-secondary text-[18px]">download</span>
-                        Direct Download
-                    </div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-secondary text-[18px]">devices</span>
-                        Any Device
-                    </div>
-</div>
-</div>
-</section>
-<!-- Featured Books Bento Grid -->
-<section class="px-margin-mobile md:px-margin-desktop mb-stack-lg">
-<div class="flex justify-between items-end mb-stack-md">
 <div>
-<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Featured Books</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Most downloaded resources this week</p>
-</div>
-<button class="text-primary font-label-sm text-label-sm hover:underline hidden md:block">View All</button>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 md:gap-6"><!-- Book Card 1 -->
-<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden card-shadow card-hover transition-all duration-300 flex flex-col group">
-<div class="h-64 bg-surface-container flex items-center justify-center relative overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent"></div>
-<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern, high-quality flat-lay photograph of an NCERT Class 10 Mathematics textbook lying on a clean white desk, surrounded by minimalist geometric drafting tools like a compass and set square. Soft, diffused professional studio lighting creates a bright, crisp educational aesthetic with subtle blue corporate accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOEsVZHMw2J5TZXhJKq6oBwzsKZlnj3MIuMcddS07QTC2yXlRQZcHmkEwltF-n9TB9KOqLEQO8vGhVEOCSELMbcwigGVQXd0mmvRBnKC70LVwb58g0EHsJFsQotMgMEFlFnZXrYEos2g3Uz6b68flFCDybx1hd6IKaR-ABNoDuYQXnWFNfMN756fwWmaK9NvFgOpxWwXacwLfDGpvAU1q9jEgONInPi0dGGk-zxnJjUk2pseW6cgb4ig"/>
-<div class="absolute top-4 left-4 flex gap-2">
-<span class="bg-primary text-on-primary px-2 py-1 rounded text-[12px] font-bold uppercase tracking-wider shadow-sm">Class 10</span>
-<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded text-[12px] font-medium shadow-sm">Maths</span>
+<p class="font-label-md text-label-md text-on-surface">Google Pay</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-80">GPay</p>
 </div>
 </div>
-<div class="p-4 flex flex-col flex-grow">
-<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Mathematics Part I</h3>
-<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-4">Complete syllabus for Class 10 with detailed examples and exercises.</p>
-<div class="mt-auto flex items-center justify-between pt-4 border-t border-outline-variant/50">
-<div class="flex flex-col">
-<span class="text-label-sm text-on-surface-variant uppercase">Price</span>
-<span class="font-headline-md text-headline-md text-primary font-bold">₹1</span>
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-primary flex items-center justify-center transition-colors">
+<div class="w-2.5 h-2.5 bg-surface-container-lowest rounded-full"></div>
 </div>
-<button class="bg-primary text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-xl hover:bg-primary-container transition-all flex items-center gap-2 shadow-sm active:scale-95">
-<span class="material-symbols-outlined text-[20px]">download</span> Get PDF
+<input checked="" class="hidden" name="upi_app" type="radio" value="gpay"/>
+</label>
+<!-- App Option: PhonePe -->
+<label class="group relative flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-variant cursor-pointer transition-all hover:border-outline-variant hover:bg-surface-container-low">
+<div class="flex items-center gap-gutter">
+<div class="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sleek, flat vector icon of a purple digital wallet or payment app logo, reminiscent of a stylized 'Pe' symbol. The icon is displayed clearly on a high-key white background, exuding a clean, modern, and trustworthy financial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEF_3UR7tHDegJRS2ycPg0cTw0SrYFIdbZu3uSqsAeWb3X8-kR8sz85kznVqWCDfTHvy3cMejLY_8YGzL1CzETsOO3DvFiT5UVAdV_H2sw-B2SODjkNPSKgjqcPt93MWQqJM8Zbvt9wMm69c1MTR7oArpNjlhlqUbOr_LBLhWE82y_r3MC4Ctfq041Mhq_IR0GEXprmDt9mCoaadf7PKnUCl5M-G25uQc_H9g12ZBD10wTB3BMMBrAEQ"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">PhonePe</p>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant bg-transparent flex items-center justify-center group-hover:border-primary transition-colors">
+<div class="w-2.5 h-2.5 bg-transparent rounded-full"></div>
+</div>
+<input class="hidden" name="upi_app" type="radio" value="phonepe"/>
+</label>
+<!-- App Option: Paytm -->
+<label class="group relative flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-variant cursor-pointer transition-all hover:border-outline-variant hover:bg-surface-container-low">
+<div class="flex items-center gap-gutter">
+<div class="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist logo graphic featuring a stylized, bright blue 'Pay' typography logo icon on a clean white background. The design is modern, sharp, and fits perfectly within a corporate digital wallet ecosystem." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByaO7NMi5RI-ShM8CJLKbmuOzDheEBq6FwM1LXUi0v-dmRD3dLOIrqY-MYg1kRmrXGcE3fm9mTUxVRV4GuWoCclBAKW1ws2epxS4oGpnQVXnv9X56hPZFhUMF1oeWHhP4fgCa1K7JSeaS3HIW68UgRGHyjC0YbBQ2j8freS6GqGyVIjVQe8jmB1NaBQPCssCkNvZ-1CvF6kyQzIvKGBWhZq9DD8mwLC895g4ebAgiRuAdcFiaTWU1LyQ"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Paytm</p>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant bg-transparent flex items-center justify-center group-hover:border-primary transition-colors">
+<div class="w-2.5 h-2.5 bg-transparent rounded-full"></div>
+</div>
+<input class="hidden" name="upi_app" type="radio" value="paytm"/>
+</label>
+<!-- App Option: BHIM -->
+<label class="group relative flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-variant cursor-pointer transition-all hover:border-outline-variant hover:bg-surface-container-low">
+<div class="flex items-center gap-gutter">
+<div class="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, highly recognizable icon for a national digital payment system, utilizing deep green and orange accents on a stark white background. The aesthetic is official, secure, and modernly simplified." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQB86iJFxgf35vRx1jtyYsmCgy14gtiAnUpsDa_-Viljp4j4prlKbpvbX8qzxWXA4gi6FK6cVLs-DdbhJCJpcU0s4WmtTUyPMPWBTgNhyoOk58BiyLAAyKzigrMD-XsQxf7DEW-MOL_HEHYwZLDMJ19ZvXYBKPZKBLYUDL6GCjQL0WOeHxM_UsT5rlvKZvrCnPa8ZOkKbZJdVFiWnmvq_eTD2IyqcURRkaih6-0nqeTLU08GyhF38DkQ"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">BHIM UPI</p>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant bg-transparent flex items-center justify-center group-hover:border-primary transition-colors">
+<div class="w-2.5 h-2.5 bg-transparent rounded-full"></div>
+</div>
+<input class="hidden" name="upi_app" type="radio" value="bhim"/>
+</label>
+</div>
+<div class="mt-stack-lg flex items-center justify-center gap-2 text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
+<span class="font-label-sm text-label-sm">Secured by UPI</span>
+</div>
+</div>
+<!-- Footer: Action -->
+<footer class="p-container-margin bg-surface-container-lowest border-t border-surface-variant z-20">
+<button class="w-full bg-gradient-to-r from-primary to-[#003366] text-on-primary font-label-md text-label-md py-4 px-6 rounded-[16px] flex items-center justify-center gap-2 shadow-[0px_8px_20px_rgba(26,54,93,0.2)] hover:shadow-[0px_12px_24px_rgba(26,54,93,0.3)] hover:scale-[1.02] transition-all duration-200 active:scale-95 group">
+<span class="material-symbols-outlined text-on-primary group-hover:animate-pulse" style="font-size: 20px;">account_balance_wallet</span>
+<span>Pay ₹5 Now</span>
 </button>
-</div>
-</div>
-</article>
-<!-- Book Card 2 -->
-<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden card-shadow card-hover transition-all duration-300 flex flex-col group">
-<div class="h-64 bg-surface-container flex items-center justify-center relative overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-tr from-secondary/5 to-transparent"></div>
-<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek, modern editorial photograph of an NCERT Class 12 Physics textbook resting on a pristine surface next to a futuristic prism refracting light into a subtle rainbow. The lighting is clean and bright, emphasizing a high-tech academic environment with crisp whites and subtle cool tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXf95y6YgIqc5cqwSR5ML6XGj9r_nxLa3_ZmMPu2Xy1mcm18DUXtS8QHesGX-CxrnAxBSeVkMDdVnHZM1-v_yHMLKtzV1vU48XvCbXkemd8LEgML7pjfPr_wP6-kbW2HefWXsESF_Zutchvhw1ZsvulMWG5wIN3K2fTGx-HWEWTTRzbB656msW4kA8oRGn5esFoAwzt6kVWyI_vrKF4gBYxYgTDnTRVLJnC8ms9BYIVK6-iBGv0ZPM_g"/>
-<div class="absolute top-4 left-4 flex gap-2">
-<span class="bg-primary text-on-primary px-2 py-1 rounded text-[12px] font-bold uppercase tracking-wider shadow-sm">Class 12</span>
-<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded text-[12px] font-medium shadow-sm">Physics</span>
-</div>
-</div>
-<div class="p-4 flex flex-col flex-grow">
-<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Physics Part I &amp; II</h3>
-<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-4">Advanced concepts in electromagnetism, optics, and modern physics.</p>
-<div class="mt-auto flex items-center justify-between pt-4 border-t border-outline-variant/50">
-<div class="flex flex-col">
-<span class="text-label-sm text-on-surface-variant uppercase">Price</span>
-<span class="font-headline-md text-headline-md text-primary font-bold">₹1</span>
-</div>
-<button class="bg-primary text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-xl hover:bg-primary-container transition-all flex items-center gap-2 shadow-sm active:scale-95">
-<span class="material-symbols-outlined text-[20px]">download</span> Get PDF
-</button>
-</div>
-</div>
-</article>
-<!-- Book Card 3 -->
-<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden card-shadow card-hover transition-all duration-300 flex flex-col group">
-<div class="h-64 bg-surface-container flex items-center justify-center relative overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-tr from-tertiary/5 to-transparent"></div>
-<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A bright, minimalist photograph of an NCERT Class 9 Science textbook on a white table top alongside a pristine glass beaker and a small green plant cutting. The scene conveys a fresh, modern educational feel with soft, even studio lighting and a clean, spacious composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE1Og_eb5BNOEyy7ad0P_1O5nZp8yop2Qz9ivJKTEt7y8a0Ex7bA1ueKBa5zxNw3X3BNyYpZJ91AH1yMK7R-Kwzf7T8NHKzTihqxy959L46wBiV4IZ7_NhDA0Db4KwJHvp3o7u6JWLWwhB7CwjxU3AuGfOcHR9BG-BHcfvlEVVdmKA_bv0JyDEr1LziuqIEcPVmm61PN6IMCkZkRMThVBON6YGum1HAA0SLkZLzN4uU0asaRyyB11E5w"/>
-<div class="absolute top-4 left-4 flex gap-2">
-<span class="bg-primary text-on-primary px-2 py-1 rounded text-[12px] font-bold uppercase tracking-wider shadow-sm">Class 9</span>
-<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded text-[12px] font-medium shadow-sm">Science</span>
-</div>
-</div>
-<div class="p-4 flex flex-col flex-grow">
-<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Science</h3>
-<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-4">Foundational concepts across physics, chemistry, and biology.</p>
-<div class="mt-auto flex items-center justify-between pt-4 border-t border-outline-variant/50">
-<div class="flex flex-col">
-<span class="text-label-sm text-on-surface-variant uppercase">Price</span>
-<span class="font-headline-md text-headline-md text-primary font-bold">₹1</span>
-</div>
-<button class="bg-primary text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-xl hover:bg-primary-container transition-all flex items-center gap-2 shadow-sm active:scale-95">
-<span class="material-symbols-outlined text-[20px]">download</span> Get PDF
-</button>
-</div>
-</div>
-</article></div>
-</section><section class="px-margin-mobile md:px-margin-desktop mb-stack-lg">
-<div class="bg-surface-container-high rounded-2xl p-stack-lg border border-primary/20 relative overflow-hidden">
-<div class="flex flex-col md:flex-row items-center justify-between gap-stack-md relative z-10">
-<div class="max-w-2xl">
-<div class="flex items-center gap-2 text-primary font-label-sm text-label-sm mb-2 uppercase tracking-wider">
-<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
-          Bulk Savings
-        </div>
-<h2 class="font-headline-md text-headline-md md:text-display-lg-mobile text-on-surface mb-4">Download Entire Class Sets</h2>
-<p class="font-body-lg text-on-surface-variant mb-0">
-          Get every textbook for your academic year in one click. Save up to 40% compared to individual downloads. High-quality, searchable, and organized by subject.
-        </p>
-</div>
-<div class="flex shrink-0">
-<button class="bg-primary text-on-primary font-label-sm text-label-sm px-8 py-4 rounded-xl hover:bg-primary-container transition-all shadow-lg hover:shadow-xl font-bold flex items-center gap-2 active:scale-95">
-          View Class Sets
-          <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-</button>
-</div>
-</div>
-<!-- Decorative background element -->
-<div class="absolute -bottom-16 -left-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-</div>
-</section>
-<!-- Call to Action -->
-<section class="px-margin-mobile md:px-margin-desktop mb-stack-lg">
-<div class="bg-primary-container rounded-2xl p-stack-lg flex flex-col md:flex-row items-center justify-between gap-stack-md relative overflow-hidden">
-<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
-<div class="max-w-xl z-10">
-<h2 class="font-display-lg-mobile md:font-display-lg text-on-primary-container mb-4">Ready to start learning?</h2>
-<p class="font-b
+</footer>
+</main>
+<script>
+        // Simple radio button visual toggle logic for demonstration
+        document.querySelectorAll('input[type="radio"][name="upi_app"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Reset all
+                document.querySelectorAll('input[type="radio"][name="upi_app"]').forEach(r => {
+                    const label = r.closest('label');
+                    label.classList.remove('border-2', 'border-primary');
+                    label.classList.add('border', 'border-surface-variant');
+                    const indicator = label.querySelector('.w-6.h-6');
+                    indicator.classList.remove('border-primary', 'bg-primary');
+                    indicator.classList.add('border-outline-variant', 'bg-transparent');
+                    indicator.querySelector('div').classList.remove('bg-surface-container-lowest');
+                    indicator.querySelector('div').classList.add('bg-transparent');
+                });
+
+                // Set active
+                if(this.checked) {
+                    const label = this.closest('label');
+                    label.classList.remove('border', 'border-surface-variant');
+                    label.classList.add('border-2', 'border-primary');
+                    const indicator = label.querySelector('.w-6.h-6');
+                    indicator.classList.remove('border-outline-variant', 'bg-transparent');
+                    indicator.classList.add('border-primary', 'bg-primary');
+                    indicator.querySelector('div').classList.remove('bg-transparent');
+                    indicator.querySelector('div').classList.add('bg-surface-container-lowest');
+                }
+            });
+        });
+    </script>
+</body></html>
