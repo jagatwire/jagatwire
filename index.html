@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -112,12 +111,13 @@
         body { font-family: 'Inter', sans-serif; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        [v-cloak] { display: none; }
     </style>
 </head>
 <body class="bg-background text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
 <!-- Shell Container -->
 <div class="flex h-screen overflow-hidden">
-<!-- SideNavBar Anchor -->
+<!-- SideNavBar -->
 <aside class="hidden md:flex flex-col h-full py-md px-base border-r border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-low w-64 docked left-0 z-40 transition-all duration-200 ease-in-out">
 <div class="flex items-center gap-3 mb-10 px-2">
 <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
@@ -129,37 +129,42 @@
 </div>
 </div>
 <nav class="flex-1 space-y-1">
-<!-- Menu Management - ACTIVE -->
 <a class="flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-200 ease-in-out text-secondary-container dark:text-on-secondary-container font-bold border-r-4 border-secondary bg-surface-container-low" href="#">
 <span class="material-symbols-outlined">restaurant_menu</span>
 <span class="font-label-md text-label-md">Menu Management</span>
 </a>
-<!-- Orders -->
 <a class="flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-200 ease-in-out text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high" href="#">
 <span class="material-symbols-outlined">receipt_long</span>
 <span class="font-label-md text-label-md">Orders</span>
 </a>
-<!-- Analytics -->
 <a class="flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-200 ease-in-out text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high" href="#">
 <span class="material-symbols-outlined">leaderboard</span>
 <span class="font-label-md text-label-md">Analytics</span>
 </a>
-<!-- Settings -->
 <a class="flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-200 ease-in-out text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high" href="#">
 <span class="material-symbols-outlined">settings</span>
 <span class="font-label-md text-label-md">Settings</span>
 </a>
 </nav>
-<button class="mt-4 mb-10 bg-secondary text-on-secondary py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold shadow-sm active:scale-95 transition-transform">
+<button class="mt-4 mb-10 bg-secondary text-on-secondary py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-bold shadow-sm active:scale-95 transition-transform" onclick="toggleModal('order-modal')">
 <span class="material-symbols-outlined">add</span>
 <span>New Order</span>
 </button>
 <div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<div class="px-4 py-2 flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Currency</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-md py-1.5 px-2 text-sm focus:ring-secondary focus:border-secondary" id="currency-select" onchange="updateCurrency(this.value)">
+<option value="USD">USD ($)</option>
+<option value="INR">INR (₹)</option>
+<option value="EUR">EUR (€)</option>
+<option value="GBP">GBP (£)</option>
+</select>
+</div>
 <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
 <span class="material-symbols-outlined">contact_support</span>
 <span class="font-label-md text-label-md">Support</span>
 </a>
-<a class="flex items-center gap-3 py-3 px-4 rounded-lg text-error hover:bg-error-container transition-colors font-bold border border-none active:scale-95" href="#">
+<a class="flex items-center gap-3 py-3 px-4 rounded-lg text-error hover:bg-error-container transition-colors font-bold border border-none active:scale-95" href="#" onclick="logout()">
 <span class="material-symbols-outlined">logout</span>
 <span class="font-label-md text-label-md">Logout</span>
 </a>
@@ -167,7 +172,7 @@
 </aside>
 <!-- Main Workspace -->
 <div class="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-<!-- TopNavBar Anchor -->
+<!-- TopNavBar -->
 <header class="flex justify-between items-center w-full px-gutter h-16 docked full-width top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm">
 <div class="flex items-center gap-4">
 <button class="md:hidden p-2 text-on-surface-variant">
@@ -176,7 +181,6 @@
 <span class="text-headline-md font-headline-md font-black text-primary dark:text-on-primary-fixed">JagatWire Table</span>
 </div>
 <div class="flex items-center gap-6">
-<!-- Search Bar on Right -->
 <div class="hidden md:flex items-center bg-surface-container-high rounded-full px-4 py-1.5 w-64 group focus-within:ring-2 ring-secondary-container transition-all">
 <span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
 <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-on-surface-variant/50" placeholder="Search menu..." type="text"/>
@@ -190,7 +194,9 @@
 </button>
 </div>
 <div class="h-8 w-[1px] bg-outline-variant mx-1"></div>
-<button class="flex items-center gap-3 bg-white border border-outline-variant px-4 py-2 rounded-full hover:bg-surface-container-low transition-all shadow-sm active:scale-95">
+<!-- Google Auth Container -->
+<div id="auth-container">
+<button class="flex items-center gap-3 bg-white border border-outline-variant px-4 py-2 rounded-full hover:bg-surface-container-low transition-all shadow-sm active:scale-95" id="google-signin-btn" onclick="simulateLogin()">
 <svg height="18" viewbox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.64 9.20455C17.64 8.56636 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z" fill="#4285F4"></path>
 <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z" fill="#34A853"></path>
@@ -199,30 +205,48 @@
 </svg>
 <span class="font-label-md text-label-md text-on-surface">Sign in with Google</span>
 </button>
+<div class="hidden flex items-center gap-3" id="user-profile">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md text-primary font-bold">Manager</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">System Admin</p>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-secondary overflow-hidden bg-surface-container-high">
+<img alt="User Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaqbWyc9njIOIWMVh2rkdf8Y0qEiNCrvmF3twYP2nQpBjHn3oAsNELXxgD_4hqMyewQxVOrrd7QSMeDeO_NNZtgnGwmxp2iw36_dgUebBPzpRG5_jR5xU8twNpRpa8VOywz0dEh0Do_5MYwIGHsXi1vdRFLPlUCeCqXMhzoau17KGi3BVTI84Av0voUwj6JBiyVGUQqMuZ65VnIKsuphSBKZppfMMpo_tTNOx_QfTVL4m2vfmTWuNC"/>
+</div>
+</div>
+</div>
 </div>
 </header>
 <!-- Notice Banner -->
 <div class="bg-primary text-on-primary py-2 px-gutter flex items-center justify-center gap-2 z-30">
 <span class="material-symbols-outlined text-[18px]">info</span>
-<span class="font-label-sm text-label-sm uppercase tracking-wider">Notice: All payments will be handled at the billing counter.</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">NOTICE: PAYMENTS ACCEPTED ONLINE VIA UPI OR AT THE BILLING COUNTER.</span>
 </div>
 <!-- Content Area -->
 <main class="flex-1 overflow-y-auto p-gutter bg-background hide-scrollbar">
-<!-- Page Header Actions -->
+<!-- Page Header -->
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
 <div>
 <h2 class="font-headline-xl text-headline-xl text-primary">Menu Management</h2>
 <p class="font-body-md text-body-md text-on-surface-variant">Manage your culinary offerings and digital presence.</p>
 </div>
-<div class="flex gap-3">
+<div class="flex items-center gap-3">
+<!-- Global UPI Toggle -->
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-lg border border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface">Enable UPI Payments</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="upi-global-toggle" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
 <button class="bg-surface-container-lowest border border-outline-variant text-on-surface px-4 py-2.5 rounded-lg flex items-center gap-2 font-label-md text-label-md hover:bg-surface-container-low transition-colors">
 <span class="material-symbols-outlined">filter_list</span>
-                            Filter
-                        </button>
+                        Filter
+                    </button>
 <button class="bg-secondary text-on-secondary px-6 py-2.5 rounded-lg flex items-center gap-2 font-label-md text-label-md shadow-sm active:scale-95 transition-transform">
 <span class="material-symbols-outlined">add</span>
-                            Add New Item
-                        </button>
+                        Add New Item
+                    </button>
 </div>
 </div>
 <!-- Category: Main Course -->
@@ -230,8 +254,8 @@
 <div class="flex items-center justify-between mb-4 border-b border-outline-variant pb-2">
 <h3 class="font-headline-md text-headline-md flex items-center gap-2">
 <span class="material-symbols-outlined text-secondary">restaurant</span>
-                            Main Course
-                        </h3>
+                        Main Course
+                    </h3>
 <span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">8 Items</span>
 </div>
 <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
@@ -246,25 +270,24 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant">
-<!-- Item 1 -->
 <tr class="hover:bg-surface-container-lowest transition-colors group">
 <td class="px-6 py-4">
 <div class="flex items-center gap-4">
 <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant">
-<img class="w-full h-full object-cover" data-alt="A gourmet Signature Wagyu Burger served on a toasted brioche bun, featuring a thick, juicy wagyu patty, melted aged cheddar, caramelized onions, and fresh arugula. The lighting is high-end studio quality, accentuating textures and glistening ingredients. The background is a blurred high-end restaurant kitchen setting with neutral, modern tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj9AeyK4aUxqO4W_wDTse2zvm1-9Fptx5326DSVu79QwAGnwYOjau4AJhIGS_zDKrXA_cmeTx_5z_U_SlCbsQ2sP1nsvfDSYtC1w6XueiiIVEngarwgy6gNbf9dD8C5QKkoYwIUzMgadOKIK64NbenEfQ0OFz03gRjnrDNxrX2OmsNU5QuaXikElmgF3AKKa7fx-J15Ot3OMiqNEjrIy0oHBSWTEcAWNH1_qlD5FnqwBEWqlP5zL4K"/>
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj9AeyK4aUxqO4W_wDTse2zvm1-9Fptx5326DSVu79QwAGnwYOjau4AJhIGS_zDKrXA_cmeTx_5z_U_SlCbsQ2sP1nsvfDSYtC1w6XueiiIVEngarwgy6gNbf9dD8C5QKkoYwIUzMgadOKIK64NbenEfQ0OFz03gRjnrDNxrX2OmsNU5QuaXikElmgF3AKKa7fx-J15Ot3OMiqNEjrIy0oHBSWTEcAWNH1_qlD5FnqwBEWqlP5zL4K"/>
 </div>
 <span class="font-headline-md text-body-md font-semibold text-primary">Signature Wagyu Burger</span>
 </div>
 </td>
 <td class="px-6 py-4 font-body-sm text-body-sm text-on-surface-variant max-w-xs">
-                                        Premium wagyu beef, caramelized onions, gruyère cheese, and truffle aioli on a brioche bun.
-                                    </td>
-<td class="px-6 py-4 font-label-md text-label-md font-bold text-primary">
-                                        $24.00
-                                    </td>
+                                Premium wagyu beef, caramelized onions, gruyère cheese, and truffle aioli on a brioche bun.
+                            </td>
+<td class="px-6 py-4">
+<span class="font-label-md text-label-md font-bold text-primary price-display" data-base-price="24.00">$24.00</span>
+</td>
 <td class="px-6 py-4">
 <div class="flex items-center gap-3">
-<span class="font-label-sm text-label-sm text-on-surface-variant">Live on Website</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Live</span>
 <label class="relative inline-flex items-center cursor-pointer">
 <input checked="" class="sr-only peer" type="checkbox"/>
 <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-on-tertiary-container"></div>
@@ -282,47 +305,24 @@
 </div>
 </td>
 </tr>
-<!-- More items... -->
 <tr class="hover:bg-surface-container-lowest transition-colors group">
 <td class="px-6 py-4">
 <div class="flex items-center gap-4">
 <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant">
-<img class="w-full h-full object-cover" data-alt="A beautifully plated Truffle Parmesan Fries dish, featuring golden crispy shoestring fries dusted with finely grated parmesan and fresh parsley. The lighting is bright and airy, casting soft shadows on a minimalist ceramic plate. The aesthetic is modern corporate hospitality, highlighting the rich textures of the herbs and cheese." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9hIBjyFyiguTGAkGwMRCAJlUQfx_901wPu0ZqHqn2C0ru3taEyAmKMpdNy27czNWZsloFWprYVQuiXTk2IA27LPe862Y3BAMlA-wVqJRyi9xEjYknrQclBy5fUD0U6WCn0Lb4qQ32EjgSKYfTXbL-0tccr1FVyATq-2Y6MTjHvL7DjO_arpEeTLsBbd1pV8mkhP3e3L55SgMRyGWfpea8WAUDqpLAz4s8tZZu9Fn4HIoUgEmxnBGr"/>
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9hIBjyFyiguTGAkGwMRCAJlUQfx_901wPu0ZqHqn2C0ru3taEyAmKMpdNy27czNWZsloFWprYVQuiXTk2IA27LPe862Y3BAMlA-wVqJRyi9xEjYknrQclBy5fUD0U6WCn0Lb4qQ32EjgSKYfTXbL-0tccr1FVyATq-2Y6MTjHvL7DjO_arpEeTLsBbd1pV8mkhP3e3L55SgMRyGWfpea8WAUDqpLAz4s8tZZu9Fn4HIoUgEmxnBGr"/>
 </div>
 <span class="font-headline-md text-body-md font-semibold text-primary">Truffle Parmesan Fries</span>
 </div>
 </td>
 <td class="px-6 py-4 font-body-sm text-body-sm text-on-surface-variant max-w-xs">
-                                        Crispy skin-on fries tossed in white truffle oil and 24-month aged parmesan cheese.
-                                    </td>
-<td class="px-6 py-4 font-label-md text-label-md font-bold text-primary">
-                                        $12.00
-                                    </td>
+                                Crispy skin-on fries tossed in white truffle oil and 24-month aged parmesan cheese.
+                            </td>
+<td class="px-6 py-4">
+<span class="font-label-md text-label-md font-bold text-primary price-display" data-base-price="12.00">$12.00</span>
+</td>
 <td class="px-6 py-4">
 <div class="flex items-center gap-3">
-<span class="font-label-sm text-label-sm text-on-surface-variant">Live on Website</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Live</span>
 <label class="relative inline-flex items-center cursor-pointer">
 <input checked="" class="sr-only peer" type="checkbox"/>
-<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-on-tertiary-container"></div>
-</label>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed rounded-lg transition-all">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-lg transition-all">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<!-- Category: Beverages -->
-<section>
-<div class="flex items-center justify-between mb-4 border-b border-outline-variant pb-2">
-<h3 class="f
+<div class="w-11 h-6 
