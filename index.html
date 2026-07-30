@@ -1,952 +1,315 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
+<html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>JagatWire Care Unit | The Future of Care</title>
+<title>CINEVIEW - Video Viewer</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-        .glow-pill-active {
-            animation: pulse-glow 2s infinite ease-in-out;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-        .medical-gradient-text {
-            background: linear-gradient(135deg, #0058bc 0%, #006a65 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-container-lowest": "#ffffff",
-                    "on-primary": "#ffffff",
-                    "inverse-surface": "#2d3133",
-                    "surface-dim": "#d8dadc",
-                    "on-primary-fixed": "#001a41",
-                    "primary": "#0058bc",
-                    "surface-container-high": "#e6e8ea",
-                    "outline-variant": "#c1c6d7",
-                    "inverse-primary": "#adc6ff",
-                    "surface-container-low": "#f2f4f6",
-                    "on-surface": "#191c1e",
-                    "tertiary-fixed-dim": "#bec6e0",
-                    "tertiary-fixed": "#dae2fd",
-                    "surface": "#f7f9fb",
-                    "on-surface-variant": "#414755",
-                    "on-error-container": "#93000a",
-                    "outline": "#717786",
-                    "on-secondary": "#ffffff",
-                    "on-secondary-container": "#006f69",
-                    "on-tertiary": "#ffffff",
-                    "secondary": "#006a65",
-                    "surface-container-highest": "#e0e3e5",
-                    "on-tertiary-fixed": "#131b2e",
-                    "on-tertiary-fixed-variant": "#3f465c",
-                    "primary-fixed": "#d8e2ff",
-                    "on-primary-container": "#fefcff",
-                    "on-error": "#ffffff",
-                    "surface-container": "#eceef0",
-                    "on-secondary-fixed": "#00201e",
-                    "surface-bright": "#f7f9fb",
-                    "surface-variant": "#e0e3e5",
-                    "secondary-fixed": "#61f9ef",
-                    "primary-fixed-dim": "#adc6ff",
-                    "on-background": "#191c1e",
-                    "tertiary-container": "#6c748b",
-                    "tertiary": "#545c72",
-                    "surface-tint": "#005bc1",
-                    "primary-container": "#0070eb",
-                    "on-secondary-fixed-variant": "#00504c",
-                    "background": "#f7f9fb",
-                    "secondary-container": "#5df6ec",
-                    "on-tertiary-container": "#fefcff",
-                    "inverse-on-surface": "#eff1f3",
-                    "on-primary-fixed-variant": "#004493",
-                    "error": "#ba1a1a",
-                    "error-container": "#ffdad6",
-                    "secondary-fixed-dim": "#39dcd2"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "gutter": "24px",
-                    "container-padding": "32px",
-                    "section-gap": "48px",
-                    "unit": "8px"
-            },
-            "fontFamily": {
-                    "body-md": ["Inter"],
-                    "headline-lg-mobile": ["Inter"],
-                    "headline-lg": ["Inter"],
-                    "display-lg": ["Inter"],
-                    "label-sm": ["JetBrains Mono"]
-            },
-            "fontSize": {
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
-            }
-          },
-        },
-      }
-    </script>
-</head>
-<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
-<!-- Top Navigation Bar -->
-<nav class="bg-surface/70 backdrop-blur-xl dark:bg-surface-dim/70 docked full-width top-0 sticky z-50 border-b border-white/40 dark:border-outline-variant/20 shadow-[0_0_20px_rgba(0,88,188,0.1)]">
-<div class="flex justify-between items-center w-full px-gutter py-4 max-w-7xl mx-auto">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">health_metrics</span>
-<span class="text-headline-lg-mobile font-black tracking-tighter text-primary dark:text-inverse-primary">JagatWire Care Unit</span>
-</div>
-<div class="hidden md:flex items-center gap-8">
-<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary py-1 text-body-md font-body-md" href="#">Home</a>
-<a class="text-on-surface-variant dark:text-outline hover:bg-primary/10 transition-all duration-300 px-3 py-1 rounded-lg text-body-md font-body-md" href="#">Services</a>
-<a class="text-on-surface-variant dark:text-outline hover:bg-primary/10 transition-all duration-300 px-3 py-1 rounded-lg text-body-md font-body-md" href="#">Technology</a>
-</div>
-<div class="flex items-center gap-4">
-<button class="hidden sm:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-body-md font-body-md">
-<span class="material-symbols-outlined">language</span>
-                    Language
-                </button>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold shadow-lg hover:shadow-primary/30 active:scale-95 transition-all duration-300">
-                    Emergency
-                </button>
-</div>
-</div>
-</nav>
-<!-- Main Content Canvas -->
-<main class="relative min-h-screen">
-<!-- High-Tech Background -->
-<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
-
-</div>
-<!-- Hero & Auth Section -->
-<section class="relative z-10 max-w-7xl mx-auto px-container-padding pt-16 md:pt-24 pb-section-gap grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-<!-- Left Side: Value Prop -->
-<div class="space-y-8">
-<div class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full">
-<span class="w-2 h-2 rounded-full bg-secondary glow-pill-active"></span>
-<span class="text-label-sm font-label-sm uppercase tracking-widest">Next-Gen Diagnostics Active</span>
-</div>
-<h1 class="text-display-lg font-display-lg leading-tight">
-                    The Future of <span class="medical-gradient-text">Care</span> is Here.
-                </h1>
-<p class="text-on-surface-variant text-body-md font-body-md max-w-lg leading-relaxed">
-                    Harnessing the power of predictive AI and real-time biometric synthesis to deliver clinical precision that was once thought impossible. Join the JagatWire Network today.
-                </p>
-<!-- Stats Grid -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
-<div class="glass-card p-6 rounded-xl shadow-sm">
-<div class="text-primary font-bold text-headline-lg-mobile">2.5M+</div>
-<div class="text-on-surface-variant text-label-sm font-label-sm">Patients Treated</div>
-</div>
-<div class="glass-card p-6 rounded-xl shadow-sm">
-<div class="text-primary font-bold text-headline-lg-mobile">99.9%</div>
-<div class="text-on-surface-variant text-label-sm font-label-sm">Precision AI</div>
-</div>
-<div class="glass-card p-6 rounded-xl shadow-sm">
-<div class="text-primary font-bold text-headline-lg-mobile">24/7</div>
-<div class="text-on-surface-variant text-label-sm font-label-sm">Monitoring</div>
-</div>
-</div>
-</div>
-<!-- Right Side: Auth Card -->
-<div class="flex justify-center lg:justify-end">
-<div class="glass-card w-full max-w-md p-8 md:p-10 rounded-3xl shadow-[0_40px_100px_rgba(0,88,188,0.15)] relative overflow-hidden">
-<!-- Subtle Glow Accent -->
-<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-<div class="relative z-10 space-y-8">
-<div class="text-center">
-<h2 class="text-headline-lg font-headline-lg mb-2">Welcome Back</h2>
-<p class="text-on-surface-variant text-body-md">Access your clinical dashboard</p>
-</div>
-<div class="space-y-4">
-<!-- Google Login Button -->
-<button class="w-full flex items-center justify-center gap-3 bg-white border border-outline-variant py-4 rounded-xl hover:bg-surface-container-low transition-all duration-300 shadow-sm group">
-<svg class="w-6 h-6 group-hover:scale-110 transition-transform" viewbox="0 0 24 24">
-<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
-<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
-<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
-<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
-</svg>
-<span class="font-bold text-on-surface">Login with Google</span>
-</button>
-<div class="flex items-center gap-4 py-2">
-<div class="h-px flex-1 bg-outline-variant/30"></div>
-<span class="text-label-sm text-outline uppercase tracking-widest">or clinical ID</span>
-<div class="h-px flex-1 bg-outline-variant/30"></div>
-</div>
-<div class="space-y-4">
-<div class="space-y-2">
-<label class="text-label-sm font-label-sm ml-1 text-on-surface-variant">Institutional Email</label>
-<input class="w-full bg-white/50 border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 outline-none transition-all" placeholder="dr.smith@jagatwire.med" type="email"/>
-</div>
-<div class="space-y-2 relative">
-<label class="text-label-sm font-label-sm ml-1 text-on-surface-variant">Access Token</label>
-<input class="w-full bg-white/50 border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 outline-none transition-all" placeholder="••••••••" type="password"/>
-<span class="material-symbols-outlined absolute right-4 top-10 text-outline cursor-pointer hover:text-primary">visibility</span>
-</div>
-<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold shadow-lg hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-300">
-                                    Initialize Secure Session
-                                </button>
-</div>
-<div class="text-center pt-4">
-<a class="text-primary font-bold text-label-sm hover:underline" href="#">New to the network? Request access</a>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Bento Tech Preview Section -->
-<section class="max-w-7xl mx-auto px-container-padding py-section-gap">
-<h2 class="text-headline-lg font-headline-lg mb-12 text-center">Engineered for Precision</h2>
-<div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-[800px] md:h-[600px]">
-<!-- Feature 1: Large Visual -->
-<div class="md:col-span-2 md:row-span-2 glass-card rounded-3xl overflow-hidden relative group">
-<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A futuristic medical imaging terminal with floating blue holograms of a human skeletal system and nervous network. The aesthetic is clean, medical futurism with soft lighting and professional high-tech diagnostic interfaces. Deep navy and cyan color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBjx_z8np8JbGXLzD2Vu1NWcYDaYj9cgEABeZtnX_YhrmwzCHiPq_3CgxfMUTFYGkja7PTgBI53kVpkly7kByGr1-o3Zk3TE_e9Od0ait0y5_2FPeKJgtob2LB2He9XqmHc5TUhUlnfhbaPtklu42HcNOr77X7fQKbnhRUNxNcfYS5BwgpcsLn0Hg27zDxVetM_o6DnN_3fS5gBZpT6n3PUdcW7PwSQIBJayisq0_4G4fchA5Wpb8_P')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-surface-dim to-transparent opacity-60"></div>
-<div class="absolute bottom-8 left-8 right-8">
-<span class="text-label-sm font-label-sm text-primary uppercase bg-white/80 px-3 py-1 rounded-full inline-block mb-3">Live Feed</span>
-<h3 class="text-headline-lg-mobile font-bold text-on-surface">Neural Mapping Engine</h3>
-<p class="text-on-surface-variant mt-2">Real-time synaptic visualization for advanced neurology.</p>
-</div>
-</div>
-<!-- Feature 2 -->
-<div class="md:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-center">
-<span class="material-symbols-outlined text-primary text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">biotech</span>
-<h3 class="text-headline-lg-mobile font-bold">Predictive AI Labs</h3>
-<p class="text-on-surface-variant mt-2">Identifying potential health anomalies before they manifest physically.</p>
-</div>
-<!-- Feature 3 -->
-<div class="glass-card rounded-3xl p-8 flex flex-col justify-center text-center">
-<span class="material-symbols-outlined text-secondary text-4xl mb-2">shield_with_heart</span>
-<div class="text-display-lg font-black text-secondary">A+</div>
-<div class="text-label-sm font-label-sm uppercase tracking-widest mt-1">Compliance Rate</div>
-</div>
-<!-- Feature 4 -->
-<div class="glass-card rounded-3xl p-8 flex flex-col justify-center text-center bg-primary text-on-primary">
-<span class="material-symbols-outlined text-4xl mb-2">history_edu</span>
-<div class="text-display-lg font-black">1.2ms</div>
-<div class="text-label-sm font-label-sm uppercase tracking-widest mt-1">Data Latency</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="bg-inverse-surface dark:bg-surface-container-highest w-full mt-section-gap">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter px-container-padding py-12 max-w-7xl mx-auto">
-<div class="space-y-4">
-<div class="text-headline-lg-mobile font-bold text-on-primary">JagatWire Care Unit</div>
-<p class="text-on-surface-variant/80 dark:text-outline-variant text-body-md font-body-md">
-                    Leading the revolution in clinical technology through AI-powered precision and human-centric care systems.
-                </p>
-<p class="text-label-sm font-label-sm text-on-surface-variant/60">
-                    © 2024 JagatWire Care Unit. AI-Powered Precision.
-                </p>
-</div>
-<div class="flex flex-col gap-4">
-<h4 class="text-on-primary font-bold text-body-md">Ecosystem</h4>
-<nav class="flex flex-col gap-2">
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors text-label-sm font-label-sm" href="#">Support</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors text-label-sm font-label-sm" href="#">Privacy Policy</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors text-label-sm font-label-sm" href="#">Modern Tech</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors text-label-sm font-label-sm" href="#">Clinical Network</a>
-</nav>
-</div>
-<div class="space-y-4">
-<h4 class="text-on-primary font-bold text-body-md">Join the Vanguard</h4>
-<div class="flex gap-2">
-<input class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 outline-none focus:ring-2 ring-secondary-fixed text-white w-full" placeholder="Updates via email" type="email"/>
-<button class="bg-secondary-fixed text-on-secondary-fixed px-4 py-2 rounded-lg font-bold hover:brightness-110 transition-all">Join</button>
-</div>
-<div class="flex gap-4 pt-4">
-<span class="material-symbols-outlined text-on-surface-variant/60 hover:text-secondary-fixed cursor-pointer">hub</span>
-<span class="material-symbols-outlined text-on-surface-variant/60 hover:text-secondary-fixed cursor-pointer">vital_signs</span>
-<span class="material-symbols-outlined text-on-surface-variant/60 hover:text-secondary-fixed cursor-pointer">science</span>
-</div>
-</div>
-</div>
-</footer>
-<script>
-        // Micro-interactions and subtle effects
-        document.addEventListener('mousemove', (e) => {
-            const glow = document.querySelector('.bg-primary/10.blur-3xl');
-            if (glow) {
-                const x = (e.clientX / window.innerWidth - 0.5) * 50;
-                const y = (e.clientY / window.innerHeight - 0.5) * 50;
-                glow.style.transform = `translate(${x}px, ${y}px)`;
-            }
-        });
-
-        // Button hover sounds or haptics simulation
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                // Potential placeholder for sound effects or light vibration
-            });
-        });
-    </script>
-</body></html>
-<!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Registration | JagatWire Care Unit</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-container-lowest": "#ffffff",
-                    "on-primary": "#ffffff",
-                    "inverse-surface": "#2d3133",
-                    "surface-dim": "#d8dadc",
-                    "on-primary-fixed": "#001a41",
-                    "primary": "#0058bc",
-                    "surface-container-high": "#e6e8ea",
-                    "outline-variant": "#c1c6d7",
-                    "inverse-primary": "#adc6ff",
-                    "surface-container-low": "#f2f4f6",
-                    "on-surface": "#191c1e",
-                    "tertiary-fixed-dim": "#bec6e0",
-                    "tertiary-fixed": "#dae2fd",
-                    "surface": "#f7f9fb",
-                    "on-surface-variant": "#414755",
-                    "on-error-container": "#93000a",
-                    "outline": "#717786",
-                    "on-secondary": "#ffffff",
-                    "on-secondary-container": "#006f69",
-                    "on-tertiary": "#ffffff",
-                    "secondary": "#006a65",
-                    "surface-container-highest": "#e0e3e5",
-                    "on-tertiary-fixed": "#131b2e",
-                    "on-tertiary-fixed-variant": "#3f465c",
-                    "primary-fixed": "#d8e2ff",
-                    "on-primary-container": "#fefcff",
-                    "on-error": "#ffffff",
-                    "surface-container": "#eceef0",
-                    "on-secondary-fixed": "#00201e",
-                    "surface-bright": "#f7f9fb",
-                    "surface-variant": "#e0e3e5",
-                    "secondary-fixed": "#61f9ef",
-                    "primary-fixed-dim": "#adc6ff",
-                    "on-background": "#191c1e",
-                    "tertiary-container": "#6c748b",
-                    "tertiary": "#545c72",
-                    "surface-tint": "#005bc1",
-                    "primary-container": "#0070eb",
-                    "on-secondary-fixed-variant": "#00504c",
-                    "background": "#f7f9fb",
-                    "secondary-container": "#5df6ec",
-                    "on-tertiary-container": "#fefcff",
-                    "inverse-on-surface": "#eff1f3",
-                    "on-primary-fixed-variant": "#004493",
-                    "error": "#ba1a1a",
-                    "error-container": "#ffdad6",
-                    "secondary-fixed-dim": "#39dcd2"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "gutter": "24px",
-                    "container-padding": "32px",
-                    "section-gap": "48px",
-                    "unit": "8px"
-            },
-            "fontFamily": {
-                    "body-md": ["Inter"],
-                    "headline-lg-mobile": ["Inter"],
-                    "headline-lg": ["Inter"],
-                    "display-lg": ["Inter"],
-                    "label-sm": ["JetBrains Mono"]
-            },
-            "fontSize": {
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(0, 88, 188, 0.05);
-        }
-        .glow-cyan { box-shadow: 0 0 15px rgba(97, 249, 239, 0.4); }
-        .glow-blue { box-shadow: 0 0 20px rgba(0, 88, 188, 0.3); }
-        .glow-error { box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
-        .glow-success { box-shadow: 0 0 15px rgba(0, 200, 150, 0.3); }
-        
-        .form-step { display: none; }
-        .form-step.active { display: block; animation: fadeIn 0.4s ease-out; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-glow-focus:focus {
-            border-color: #0070eb;
-            box-shadow: 0 0 0 4px rgba(0, 112, 235, 0.15);
-            outline: none;
-        }
-
-        .medical-grid {
-            background-image: radial-gradient(circle at 2px 2px, rgba(0, 88, 188, 0.05) 1px, transparent 0);
-            background-size: 24px 24px;
-        }
-    </style>
-</head>
-<body class="medical-grid min-h-screen text-on-surface">
-<!-- Top Navigation -->
-<nav class="fixed top-0 left-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/40 dark:border-outline-variant/20 shadow-[0_0_20px_rgba(0,88,188,0.1)]">
-<div class="flex justify-between items-center w-full px-gutter py-4 max-w-7xl mx-auto">
-<div class="text-headline-lg-mobile font-black tracking-tighter text-primary">
-                JagatWire Care Unit
-            </div>
-<div class="flex items-center gap-4">
-<button class="text-body-md font-body-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">language</span>
-                    Language
-                </button>
-<button class="bg-error text-on-primary px-4 py-2 rounded-lg font-bold hover:scale-95 transition-all duration-150">
-                    Emergency
-                </button>
-</div>
-</div>
-</nav>
-<main class="pt-32 pb-20 px-container-padding max-w-5xl mx-auto">
-<!-- Progress Stepper -->
-<div class="mb-12 flex justify-between items-center relative">
-<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-container-high -z-10"></div>
-<div class="flex flex-col items-center gap-2" id="step-indicator-1">
-<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold glow-blue">1</div>
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-primary">Identity</span>
-</div>
-<div class="flex flex-col items-center gap-2" id="step-indicator-2">
-<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold">2</div>
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant">Clinical Details</span>
-</div>
-</div>
-<div class="glass-card rounded-xl p-8 md:p-12">
-<form class="space-y-8" id="registrationForm">
-<!-- Step 1: Identity -->
-<div class="form-step active" id="step-1">
-<header class="mb-10">
-<h1 class="text-headline-lg font-headline-lg text-primary mb-2">Patient Identity</h1>
-<p class="text-body-md font-body-md text-on-surface-variant">Please provide your legal identity and contact information for the clinical record.</p>
-</header>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="space-y-2">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Full Name</label>
-<div class="relative">
-<input class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 text-body-md font-body-md input-glow-focus transition-all duration-300" id="fullName" placeholder="e.g. Dr. Jane Doe" required="" type="text"/>
-<div class="absolute right-4 top-1/2 -translate-y-1/2 validation-icon"></div>
-</div>
-</div>
-<div class="space-y-2">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Date of Birth</label>
-<input class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 text-body-md font-body-md input-glow-focus" required="" type="date"/>
-</div>
-<div class="space-y-2">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Contact Number</label>
-<input class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 text-body-md font-body-md input-glow-focus" placeholder="+1 (555) 000-0000" type="tel"/>
-</div>
-<div class="space-y-2">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Insurance ID (Optional)</label>
-<input class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 text-body-md font-body-md input-glow-focus" placeholder="JGW-992-XXXX" type="text"/>
-</div>
-</div>
-<div class="mt-12 flex justify-end">
-<button class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-3 hover:shadow-lg transition-all active:scale-95 group" onclick="goToStep(2)" type="button">
-                            Next: Clinical Details
-                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</button>
-</div>
-</div>
-<!-- Step 2: Clinical Details -->
-<div class="form-step" id="step-2">
-<header class="mb-10">
-<h1 class="text-headline-lg font-headline-lg text-primary mb-2">Clinical Assessment</h1>
-<p class="text-body-md font-body-md text-on-surface-variant">Define the primary cause of your visit and localize any acute symptoms.</p>
-</header>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-<div class="lg:col-span-2 space-y-8">
-<div class="space-y-4">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Cause of Visit</label>
-<div class="flex flex-wrap gap-2 mb-4">
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-bold hover:bg-primary hover:text-white transition-colors chip-select" type="button">Routine Checkup</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-bold hover:bg-primary hover:text-white transition-colors chip-select" type="button">Acute Pain</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-bold hover:bg-primary hover:text-white transition-colors chip-select" type="button">Follow-up</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-bold hover:bg-primary hover:text-white transition-colors chip-select" type="button">Lab Results</button>
-</div>
-<textarea class="w-full h-40 bg-white/50 border border-outline-variant rounded-lg p-4 text-body-md font-body-md input-glow-focus transition-all" placeholder="Describe your symptoms or concerns in detail..."></textarea>
-</div>
-<div class="p-6 bg-primary/5 rounded-xl border border-primary/10">
-<h3 class="font-bold text-primary mb-2 flex items-center gap-2">
-<span class="material-symbols-outlined">info</span>
-                                    AI Precognition Active
-                                </h3>
-<p class="text-body-md text-on-surface-variant opacity-80">Our diagnostic HUD will begin analysis as soon as you submit. High-priority symptoms are triaged automatically.</p>
-</div>
-</div>
-<!-- Symptom Visualization (Body Diagram Placeholder) -->
-<div class="space-y-4">
-<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Symptom Localization</label>
-<div class="relative glass-card rounded-xl aspect-[3/4] overflow-hidden border border-primary/20 group cursor-crosshair">
-<div class="absolute inset-0 bg-primary/5 flex items-center justify-center">
-<div class="relative w-full h-full p-4">
-<img class="w-full h-full object-contain opacity-60" data-alt="A stylized, futuristic 3D medical anatomical diagram of a human figure in a digital blue grid space. The aesthetic is clean, medical futurism with glassmorphic transparency and glowing cyan pulse points highlighting joint areas. High-key clinical lighting with soft reflections on a deep navy floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUy5PI16mHY3nC-MWDLHfgdVHsPbKotKYUDBqEhN48caZLvX7cLOmcskUvOkfCn3bqvrGI6-HYcXW5wMWZ6hYmjhHT__CDgzRrVslF0VZ3EIIidbno8z4lPrU-BK8iLExoRLs_s3-hnpzMie-pEzsLmVjzJr9fhYHR9Fhu8H9FiUZ1lrw0Anzsf5e0ePe9MthplKcvppro1dRW1mAe4SyifhpfSC1Dc33oppMI8-VSjtASuuCTFcvo"/>
-<!-- Interactive Markers Overlay -->
-<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-4 h-4 bg-error rounded-full animate-ping glow-error"></div>
-<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-4 h-4 bg-error rounded-full shadow-lg"></div>
-<div class="absolute top-1/2 right-1/3 w-3 h-3 bg-secondary-fixed rounded-full glow-cyan"></div>
-</div>
-</div>
-<div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur p-2 rounded-lg text-[10px] font-label-sm text-primary uppercase text-center border border-primary/10">
-                                    Tap to Mark Pain Points
-                                </div>
-</div>
-</div>
-</div>
-<div class="mt-12 flex justify-between items-center">
-<button class="text-on-surface-variant font-bold hover:text-primary transition-colors flex items-center gap-2" onclick="goToStep(1)" type="button">
-<span class="material-symbols-outlined">arrow_back</span>
-                            Back
-                        </button>
-<button class="bg-primary text-on-primary px-10 py-5 rounded-full font-bold flex items-center gap-3 glow-blue hover:scale-105 hover:bg-primary-container transition-all active:scale-95" type="submit">
-                            Submit Registration
-                            <span class="material-symbols-outlined">send</span>
-</button>
-</div>
-</div>
-</form>
-</div>
-</main>
-<footer class="w-full mt-section-gap bg-inverse-surface dark:bg-surface-container-highest">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter px-container-padding py-12 max-w-7xl mx-auto">
-<div class="space-y-4">
-<div class="text-headline-lg-mobile font-bold text-on-primary">JagatWire</div>
-<p class="text-on-surface-variant/80 dark:text-outline-variant text-body-md font-body-md">
-                    © 2024 JagatWire Care Unit. AI-Powered Precision.
-                </p>
-</div>
-<div class="flex flex-col gap-3">
-<h4 class="text-on-primary font-bold uppercase text-label-sm">Resources</h4>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Support</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
-</div>
-<div class="flex flex-col gap-3">
-<h4 class="text-on-primary font-bold uppercase text-label-sm">Ecosystem</h4>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Modern Tech</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Clinical Network</a>
-</div>
-</div>
-</footer>
-<script>
-        function goToStep(stepNumber) {
-            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-
-            // Update Indicators
-            const indicators = [1, 2];
-            indicators.forEach(i => {
-                const dot = document.querySelector(`#step-indicator-${i} > div`);
-                const text = document.querySelector(`#step-indicator-${i} > span`);
-                
-                if (i === stepNumber) {
-                    dot.className = "w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold glow-blue";
-                    text.className = "text-label-sm font-label-sm uppercase tracking-wider text-primary";
-                } else if (i < stepNumber) {
-                    dot.className = "w-10 h-10 rounded-full bg-secondary text-on-primary flex items-center justify-center font-bold";
-                    text.className = "text-label-sm font-label-sm uppercase tracking-wider text-secondary";
-                    dot.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
-                } else {
-                    dot.className = "w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold";
-                    text.className = "text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant";
-                    dot.innerHTML = i;
-                }
-            });
-        }
-
-        // Chip selection logic
-        document.querySelectorAll('.chip-select').forEach(chip => {
-            chip.addEventListener('click', () => {
-                chip.classList.toggle('bg-primary');
-                chip.classList.toggle('text-on-primary');
-            });
-        });
-
-        // Simple real-time validation visual
-        const nameInput = document.getElementById('fullName');
-        nameInput.addEventListener('input', (e) => {
-            if (e.target.value.length > 3) {
-                nameInput.classList.remove('border-outline-variant', 'glow-error');
-                nameInput.classList.add('border-secondary', 'glow-success');
-            } else if (e.target.value.length > 0) {
-                nameInput.classList.add('border-error', 'glow-error');
-                nameInput.classList.remove('border-secondary', 'glow-success');
-            } else {
-                nameInput.classList.remove('border-error', 'glow-error', 'border-secondary', 'glow-success');
-                nameInput.classList.add('border-outline-variant');
-            }
-        });
-
-        // Form Submit
-        document.getElementById('registrationForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Registration data packet transmitted to Clinical Node J-442.');
-        });
-    </script>
-</body></html>
-<!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Registration Confirmed | JagatWire Care Unit</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-        .glow-border:focus-within {
-            box-shadow: 0 0 0 2px #0058bc, 0 0 15px rgba(0, 88, 188, 0.3);
-        }
-        .pulse-glow {
-            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); opacity: 0.5; }
-            50% { transform: scale(1.05); opacity: 0.2; }
-            100% { transform: scale(0.95); opacity: 0.5; }
-        }
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-    </style>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary": "#ffffff",
-                        "inverse-surface": "#2d3133",
-                        "surface-dim": "#d8dadc",
-                        "on-primary-fixed": "#001a41",
-                        "primary": "#0058bc",
-                        "surface-container-high": "#e6e8ea",
-                        "outline-variant": "#c1c6d7",
-                        "inverse-primary": "#adc6ff",
-                        "surface-container-low": "#f2f4f6",
-                        "on-surface": "#191c1e",
-                        "tertiary-fixed-dim": "#bec6e0",
-                        "tertiary-fixed": "#dae2fd",
-                        "surface": "#f7f9fb",
-                        "on-surface-variant": "#414755",
-                        "on-error-container": "#93000a",
-                        "outline": "#717786",
-                        "on-secondary": "#ffffff",
-                        "on-secondary-container": "#006f69",
-                        "on-tertiary": "#ffffff",
-                        "secondary": "#006a65",
-                        "surface-container-highest": "#e0e3e5",
-                        "on-tertiary-fixed": "#131b2e",
-                        "on-tertiary-fixed-variant": "#3f465c",
-                        "primary-fixed": "#d8e2ff",
-                        "on-primary-container": "#fefcff",
-                        "on-error": "#ffffff",
-                        "surface-container": "#eceef0",
-                        "on-secondary-fixed": "#00201e",
-                        "surface-bright": "#f7f9fb",
-                        "surface-variant": "#e0e3e5",
-                        "secondary-fixed": "#61f9ef",
-                        "primary-fixed-dim": "#adc6ff",
-                        "on-background": "#191c1e",
-                        "tertiary-container": "#6c748b",
-                        "tertiary": "#545c72",
-                        "surface-tint": "#005bc1",
-                        "primary-container": "#0070eb",
-                        "on-secondary-fixed-variant": "#00504c",
-                        "background": "#f7f9fb",
-                        "secondary-container": "#5df6ec",
-                        "on-tertiary-container": "#fefcff",
-                        "inverse-on-surface": "#eff1f3",
-                        "on-primary-fixed-variant": "#004493",
-                        "error": "#ba1a1a",
-                        "error-container": "#ffdad6",
-                        "secondary-fixed-dim": "#39dcd2"
+                    colors: {
+                        "on-primary-fixed": "#25005a",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "surface": "#131313",
+                        "on-secondary-container": "#00566b",
+                        "tertiary-container": "#a15100",
+                        "on-tertiary-container": "#ffe0cd",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-container": "#14d1ff",
+                        "primary": "#d2bbff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#301400",
+                        "secondary-fixed-dim": "#4cd6ff",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "on-background": "#e5e2e1",
+                        "on-primary-container": "#ede0ff",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed-dim": "#ffb784",
+                        "outline-variant": "#4a4455",
+                        "on-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "on-secondary": "#003543",
+                        "outline": "#958da1",
+                        "on-error": "#690005",
+                        "surface-tint": "#d2bbff",
+                        "surface-bright": "#3a3939",
+                        "tertiary-fixed": "#ffdcc6",
+                        "primary-fixed-dim": "#d2bbff",
+                        "tertiary": "#ffb784",
+                        "surface-container-highest": "#353534",
+                        "inverse-primary": "#732ee4",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary": "#a6e6ff",
+                        "on-tertiary": "#4f2500",
+                        "surface-variant": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001f28",
+                        "secondary-fixed": "#b7eaff",
+                        "primary-container": "#7c3aed"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
                     },
-                    "spacing": {
-                        "gutter": "24px",
-                        "container-padding": "32px",
-                        "section-gap": "48px",
-                        "unit": "8px"
+                    spacing: {
+                        base: "8px",
+                        "margin-desktop": "40px",
+                        gutter: "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
                     },
-                    "fontFamily": {
-                        "body-md": ["Inter"],
-                        "headline-lg-mobile": ["Inter"],
-                        "headline-lg": ["Inter"],
-                        "display-lg": ["Inter"],
-                        "label-sm": ["JetBrains Mono"]
+                    fontFamily: {
+                        "display-lg": ["Montserrat", "sans-serif"],
+                        "headline-md": ["Montserrat", "sans-serif"],
+                        "display-lg-mobile": ["Montserrat", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "title-lg": ["Inter", "sans-serif"]
                     },
-                    "fontSize": {
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    fontSize: {
+                        "display-lg": ["64px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "headline-md": ["32px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "display-lg-mobile": ["40px", { lineHeight: "1.1", fontWeight: "800" }],
+                        "label-sm": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "title-lg": ["20px", { lineHeight: "1.4", fontWeight: "600" }]
                     }
-                },
-            },
+                }
+            }
         }
     </script>
+<style>
+        body {
+            background-color: #131313;
+            background-image: radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.1), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(20, 209, 255, 0.05), transparent 25%);
+            color: #e5e2e1;
+        }
+        .glass-panel {
+            background: rgba(28, 27, 27, 0.4);
+            backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-active {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .eq-bar {
+            width: 4px;
+            background-color: #a6e6ff;
+            border-radius: 2px;
+            animation: eqBounce 1s infinite alternate ease-in-out;
+        }
+        @keyframes eqBounce {
+            0% { height: 4px; }
+            100% { height: 24px; }
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.4s; }
+    </style>
 </head>
-<body class="bg-background text-on-surface font-body-md overflow-x-hidden min-h-screen flex flex-col">
-<!-- TopNavBar (Shared Component) -->
-<header class="bg-surface/70 backdrop-blur-xl dark:bg-surface-dim/70 border-b border-white/40 dark:border-outline-variant/20 shadow-[0_0_20px_rgba(0,88,188,0.1)] docked full-width top-0 sticky z-50">
-<div class="flex justify-between items-center w-full px-gutter py-4 max-w-7xl mx-auto">
-<div class="text-headline-lg-mobile font-headline-lg-mobile font-black tracking-tighter text-primary dark:text-inverse-primary">
-                JagatWire Care Unit
-            </div>
-<div class="flex gap-4">
-<button class="text-body-md font-body-md text-primary dark:text-inverse-primary hover:bg-primary/10 transition-all duration-300 px-4 py-2 rounded-lg flex items-center gap-2">
-<span class="material-symbols-outlined">language</span> Language
-                </button>
-<button class="text-body-md font-body-md bg-error text-on-error px-6 py-2 rounded-full font-bold shadow-lg hover:shadow-error/30 active:scale-95 transition-all">
-                    Emergency
-                </button>
+<body class="font-body-md text-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 backdrop-blur-3xl shadow-2xl shadow-primary/5 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 w-full">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg-mobile md:text-display-lg font-extrabold tracking-tighter text-primary bg-clip-text">CINEVIEW</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Discover</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Library</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Live</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Studio</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 ml-2">
+<img alt="User profile with obsidian glow" class="w-full h-full object-cover" data-alt="A macro shot of a sleek obsidian glowing sphere, abstract profile avatar style, deep blacks with vibrant purple edge lighting, cinematic lighting, ultra high fidelity, dark UI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA51y-BH65adJc1c4I0EkCwHMv2PMjnLgOWaFjKfDtkWIDd7Rh-gLm1sy_7GcZ6d0eFDXHfh0BDNceRj3200uUt5YhH3cgHY4q-ToiFNRKvWQIJMyv35H3XiFra5bLZE5qwUJHFqxgGb8djZputJyfmIEn2Glja0-IJxABltPj_a8C59fq3_Uan72FwcHBSfSLXIKmDxdD8GLMUTjPJj9aFn8jIdY1giYhzUlXl9uY0q6lOFme7eccMUQ"/>
 </div>
 </div>
 </header>
-<main class="flex-grow flex flex-col items-center justify-center py-section-gap px-container-padding relative">
-<!-- Atmospheric Background Element -->
-<div class="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px]"></div>
-<div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[80px]"></div>
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col py-base gap-4 fixed left-0 top-20 h-[calc(100vh-5rem)] w-64 z-40 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-white/5 shadow-[20px_0_50px_rgba(0,0,0,0.5)] transition-all duration-200 ease-in-out">
+<div class="p-6 border-b border-white/5 mb-2">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high border border-primary/20">
+<img alt="CineView Pro User" class="w-full h-full object-cover" data-alt="A macro shot of a sleek obsidian glowing sphere, abstract profile avatar style, deep blacks with vibrant purple edge lighting, cinematic lighting, ultra high fidelity, dark UI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbKbZbTA5GM-K5IgjqNWpuIYJzmPIyj-9XtANNizUjDyHwHC0kK0PMDBCR9m6mftMAa8ToxaOyImumUeR2w_b-DAop4xBw0bgTvQyA-bDpzCNSf3fIjZLn9xBCw1J0kOWEOpeD2hgQEAhfQtMab1l9Le192k9W6k5rgj1-eKhuE1zDW6g2Uy8zDR8oQOAqeSaXwp7rQ14LrPQia0LfAuol0TvZ0iDpMR63b09PDS0wz_Eu1-5LpYjINg"/>
 </div>
-<!-- Success Animation & Heading Section -->
-<div class="text-center mb-10 flex flex-col items-center">
-<div class="relative mb-8">
-<div class="absolute inset-0 bg-primary/20 rounded-full blur-2xl pulse-glow scale-150"></div>
-<div class="relative w-24 h-24 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 border-4 border-white/20">
-<span class="material-symbols-outlined !text-[48px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-</div>
-<h1 class="font-display-lg text-display-lg text-on-surface mb-2 tracking-tight">Registration Confirmed, <span class="text-primary">Sarah Jenkins</span></h1>
-<p class="text-on-surface-variant max-w-lg mx-auto font-body-md">Your clinical profile has been synthesized and integrated into the JagatWire Care network. Your care cycle begins now.</p>
-</div>
-<!-- Main Bento/Invoice Layout -->
-<div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-<!-- Invoice & Summary Card (Left/Center Column) -->
-<div class="lg:col-span-2 glass-card rounded-2xl p-8 shadow-xl relative overflow-hidden">
-<div class="flex justify-between items-start mb-8">
 <div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Invoice &amp; Summary</h2>
-<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase">TXN-ID: JW-9928-LX</span>
-</div>
-<div class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant/30">
-<p class="font-label-sm text-label-sm text-on-surface-variant">DATE</p>
-<p class="font-body-md font-bold text-on-surface">OCT 24, 2024</p>
+<h3 class="font-title-lg text-title-lg text-on-surface">Pro Workspace</h3>
+<p class="font-label-sm text-label-sm text-primary/80">Cinematic Mode Active</p>
 </div>
 </div>
-<div class="space-y-4 mb-8">
-<div class="flex justify-between items-center py-4 border-b border-outline-variant/20">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary-container">clinical_notes</span>
-<span class="font-body-md text-on-surface">Baseline Neural Diagnostics</span>
+<button class="w-full py-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg font-label-sm text-label-sm transition-colors">Upgrade to Ultra</button>
 </div>
-<span class="font-label-sm text-body-md font-bold text-on-surface">$1,200.00</span>
-</div>
-<div class="flex justify-between items-center py-4 border-b border-outline-variant/20">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary-container">biotech</span>
-<span class="font-body-md text-on-surface">AI Consultation Fee (Tier 1)</span>
-</div>
-<span class="font-label-sm text-body-md font-bold text-on-surface">$450.00</span>
-</div>
-<div class="flex justify-between items-center py-4 border-b border-outline-variant/20">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary-container">shield_with_heart</span>
-<span class="font-body-md text-on-surface">Network Connectivity &amp; Security</span>
-</div>
-<span class="font-label-sm text-body-md font-bold text-on-surface">$85.00</span>
-</div>
-</div>
-<div class="flex justify-between items-end">
-<div>
-<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">PAYMENT METHOD</p>
-<div class="flex items-center gap-2 font-bold text-on-surface">
-<span class="material-symbols-outlined text-secondary">credit_card</span>
-                            VISA •••• 4242
-                        </div>
-</div>
-<div class="text-right">
-<p class="font-label-sm text-label-sm text-on-surface-variant">TOTAL CHARGED</p>
-<p class="font-headline-lg text-headline-lg text-primary font-black">$1,735.00</p>
-</div>
-</div>
-<!-- Download Button Embedded in Card -->
-<button class="mt-8 w-full bg-primary-container text-on-primary-container py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:shadow-[0_0_25px_rgba(0,112,235,0.4)] transition-all active:scale-[0.98] group">
-<span class="material-symbols-outlined group-hover:animate-bounce">cloud_download</span>
-                    Download PDF Bill
-                    <span class="font-label-sm opacity-60 ml-2">2.4 MB</span>
-</button>
-</div>
-<!-- Next Steps Column -->
-<div class="space-y-6">
-<div class="glass-card rounded-2xl p-6 border-l-4 border-l-secondary shadow-lg">
-<div class="flex items-center gap-4 mb-4">
-<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined">smart_toy</span>
-</div>
-<h3 class="font-headline-lg-mobile text-headline-lg-mobile">Next Step 01</h3>
-</div>
-<p class="font-body-md text-on-surface-variant mb-4">Your personalized AI health synthesis is ready for review.</p>
-<button class="w-full py-3 rounded-lg border-2 border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors flex items-center justify-center gap-2">
-                        Meet your AI Consultant
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<div class="glass-card rounded-2xl p-6 border-l-4 border-l-primary shadow-lg relative overflow-hidden">
-<div class="flex items-center gap-4 mb-4">
-<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">location_on</span>
-</div>
-<h3 class="font-headline-lg-mobile text-headline-lg-mobile">Next Step 02</h3>
-</div>
-<p class="font-body-md text-on-surface-variant mb-4">Proceed to the physical triage wing for your initial biometric scan.</p>
-<div class="bg-primary/5 p-4 rounded-xl border border-primary/20 text-center">
-<p class="font-label-sm text-label-sm text-primary mb-1 uppercase">Report To</p>
-<p class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Station A-12</p>
-</div>
-<div class="mt-4 flex justify-center">
-<div class="flex -space-x-2">
-<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A portrait of a professional female medical AI consultant with holographic interface elements in a clean, high-tech clinical environment. The lighting is bright and modern with soft cyan accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfTjN-s8IiSWnDjV2bkwVKfH_--DM42yxMYOWHJnV821HDlRvsND1NBgLW1XTgTuxnVjXh1Q1y6_zCBQip8vcoqFI-gDQ1W9lfcgtPCwXuE_lBpyCtTcXQpRqWLcV12HLhCGJ1jqcEzSN2htWSEATiwIEteDUtZXmts8BVr3mZRTU2V380MjPkLFD4199FsEZMqXkBHa4zr7W_KVaJwI6OZhGTPSNt1nSXjyuQDGtvse4cjsDq1A8d"/>
-</div>
-<div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A portrait of a male robotic surgical assistant with a friendly, high-tech interface design. He is set against a backdrop of a futuristic medical laboratory with soft blue and white clinical lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6xYplk87MMEzMop10-NlH-87F92m6ahMLihHvPD8eLO3U5P_9tc_Utrpx6IIaxdhWOOQEolz1JC7G1Q1PzqW3BwFNFBt2bMs-aa9QqgIYwk_FFG-Jx2w--qTMqeoGhcmjk0FDbNmiNKHYNSBlOPsaMB88_c8kiMQZRKr0MI7AIVoJx5XjgbSklXmGodbIgB56v5Y-AlGC7pl5ECtSaMlzFhbzy4wX6SzmEwJwa3oQfvrIQWXwNAEy"/>
-</div>
-</div>
-<span class="text-xs text-on-surface-variant ml-4 self-center font-label-sm">Staff waiting at station</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Map Navigation Context (Subtle) -->
-<div class="mt-section-gap w-full max-w-4xl glass-card rounded-2xl p-4 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-on-surface-variant">map</span>
-<span class="font-body-md text-on-surface-variant">Campus Navigation active: <strong>A-12</strong> is 200m from your current position.</span>
-</div>
-<button class="text-primary font-bold flex items-center gap-1 hover:underline">
-                Open AR Map
-                <span class="material-symbols-outlined">north_east</span>
-</button>
-</div>
-</main>
-<!-- Footer (Shared Component) -->
-<footer class="bg-inverse-surface dark:bg-surface-container-highest w-full mt-section-gap">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter px-container-padding py-12 max-w-7xl mx-auto">
-<div>
-<div class="text-headline-lg-mobile font-headline-lg-mobile font-bold text-on-primary mb-4">
-                    JagatWire Care Unit
-                </div>
-<p class="text-label-sm font-label-sm text-on-surface-variant/80 dark:text-outline-variant">
-                    © 2024 JagatWire Care Unit. AI-Powered Precision.
-                </p>
-</div>
-<div class="flex flex-col gap-4">
-<h4 class="text-on-primary font-bold">Quick Links</h4>
-<nav class="flex flex-col gap-2">
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Support</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Modern Tech</a>
-<a class="text-on-surface-variant/80 dark:text-outline-variant hover:text-secondary-fixed transition-colors" href="#">Clinical Network</a>
+<nav class="flex flex-col gap-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant/70 hover:bg-white/5 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">local_fire_department</span>
+<span class="font-label-sm text-label-sm">Trending</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant/70 hover:bg-white/5 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant/70 hover:bg-white/5 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-sm text-label-sm">Enhanced</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant/70 hover:bg-white/5 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-sm text-label-sm">Collections</span>
+</a>
 </nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 mt-20 md:ml-64 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-8">
+<!-- Video Player Canvas -->
+<section class="w-full rounded-xl overflow-hidden glass-panel shadow-2xl shadow-black/50 relative">
+<div class="video-container rounded-t-xl">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" src="https://youtu.be/53vlche51mc?si=6pNwiw-dY49F-h73?autoplay=1&amp;mute=1&amp;controls=0&amp;modestbranding=1&amp;rel=0&amp;showinfo=0" title="Cinematic Video"></iframe>
 </div>
-<div class="flex flex-col gap-4">
-<h4 class="text-on-primary font-bold">Emergency Protocol</h4>
-<p class="text-body-md font-body-md text-on-surface-variant/80 dark:text-outline-variant">
-                    If you experience immediate physical distress, activate the Emergency button in the header or alert the nearest medical drone.
-                </p>
+<!-- In-Player Controls Overlay (Bottom edge of video) -->
+<div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end px-6 py-4 z-10 pointer-events-none">
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden mb-4 pointer-events-auto cursor-pointer group">
+<div class="h-full bg-gradient-to-r from-secondary to-primary-container w-1/3 group-hover:h-2 transition-all"></div>
+</div>
+<div class="flex justify-between items-center pointer-events-auto text-on-surface">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">play_arrow</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">volume_up</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">01:24 / 15:42</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">closed_caption</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">fullscreen</span>
 </div>
 </div>
+</div>
+</section>
+<!-- Pro-Grade Controls Panel -->
+<section class="glass-panel rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Cinematic Controls</h2>
+<p class="text-on-surface-variant font-body-md">Fine-tune your playback experience with advanced Obsidian Engine settings.</p>
+</div>
+<div class="flex flex-wrap md:flex-nowrap gap-4 w-full md:w-auto">
+<!-- Enhancer Mode -->
+<div class="flex-1 min-w-[150px] bg-surface-container-low rounded-lg p-4 border border-white/5 cursor-pointer hover:bg-surface-container transition-colors group" id="enhancer-toggle">
+<div class="flex justify-between items-center mb-3">
+<span class="material-symbols-outlined text-primary group-hover:text-primary-fixed-dim">auto_fix_high</span>
+<div class="w-10 h-5 bg-surface-container-highest rounded-full relative transition-colors duration-300" id="enhancer-track">
+<div class="absolute left-1 top-1 w-3 h-3 bg-on-surface-variant rounded-full transition-transform duration-300" id="enhancer-knob"></div>
+</div>
+</div>
+<h4 class="font-label-sm text-label-sm text-on-surface">Enhancer Mode</h4>
+<p class="text-[10px] text-on-surface-variant mt-1">AI Upscaling Active</p>
+</div>
+<!-- Studio Sound -->
+<div class="flex-1 min-w-[150px] bg-surface-container-low rounded-lg p-4 border border-white/5 glow-active flex flex-col justify-between">
+<div class="flex justify-between items-center mb-3">
+<span class="material-symbols-outlined text-secondary">graphic_eq</span>
+<div class="flex items-end gap-[2px] h-6 w-12 overflow-hidden px-1">
+<div class="eq-bar h-[40%]"></div>
+<div class="eq-bar h-[80%]"></div>
+<div class="eq-bar h-[30%]"></div>
+<div class="eq-bar h-[100%]"></div>
+<div class="eq-bar h-[60%]"></div>
+</div>
+</div>
+<h4 class="font-label-sm text-label-sm text-on-surface">Studio Sound</h4>
+<p class="text-[10px] text-secondary mt-1">Spatial Audio: ON</p>
+</div>
+<!-- Dynamic Quality -->
+<div class="flex-1 min-w-[150px] bg-surface-container-low rounded-lg p-4 border border-white/5 flex flex-col justify-between">
+<div class="flex justify-between items-center mb-3">
+<span class="material-symbols-outlined text-on-surface-variant">high_quality</span>
+<span class="bg-primary/20 text-primary font-label-sm text-label-sm px-2 py-1 rounded">4K HDR</span>
+</div>
+<h4 class="font-label-sm text-label-sm text-on-surface">Dynamic Quality</h4>
+<select class="mt-2 w-full bg-surface border border-outline-variant rounded text-on-surface font-label-sm text-label-sm p-1 focus:ring-1 focus:ring-primary focus:border-primary">
+<option>1080p HD</option>
+<option>1440p QHD</option>
+<option selected="">4K HDR Ultra</option>
+<option>8K Experimental</option>
+</select>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 mt-auto bg-background border-t border-surface-container-highest flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto z-40 relative">
+<span class="font-display-lg text-on-surface text-xl mb-4 md:mb-0">CINEVIEW</span>
+<div class="flex gap-6 mb-4 md:mb-0">
+<a class="font-label-sm text-label-sm text-outline hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Terms</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">API</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-primary-fixed-dim opacity-80 hover:opacity-100 transition-opacity" href="#">Support</a>
+</div>
+<p class="font-label-sm text-label-sm text-outline text-center md:text-right">© 2026 CINEVIEW ULTIMATE. POWERED BY DEEP OBSIDIAN ENGINE.</p>
 </footer>
 <script>
-        // Simple interactive micro-interaction for the success icon
-        document.addEventListener('DOMContentLoaded', () => {
-            const successIcon = document.querySelector('.material-symbols-outlined');
-            if (successIcon) {
-                successIcon.parentElement.addEventListener('mouseenter', () => {
-                    successIcon.style.transform = 'scale(1.2) rotate(5deg)';
-                    successIcon.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                });
-                successIcon.parentElement.addEventListener('mouseleave', () => {
-                    successIcon.style.transform = 'scale(1) rotate(0)';
-                });
+        // Simple toggle interaction for Enhancer Mode
+        const enhancerToggle = document.getElementById('enhancer-toggle');
+        const enhancerTrack = document.getElementById('enhancer-track');
+        const enhancerKnob = document.getElementById('enhancer-knob');
+        let isEnhanced = false;
+
+        enhancerToggle.addEventListener('click', () => {
+            isEnhanced = !isEnhanced;
+            if(isEnhanced) {
+                enhancerToggle.classList.add('glow-active');
+                enhancerTrack.classList.replace('bg-surface-container-highest', 'bg-primary/50');
+                enhancerKnob.classList.add('translate-x-5');
+                enhancerKnob.classList.replace('bg-on-surface-variant', 'bg-primary');
+            } else {
+                enhancerToggle.classList.remove('glow-active');
+                enhancerTrack.classList.replace('bg-primary/50', 'bg-surface-container-highest');
+                enhancerKnob.classList.remove('translate-x-5');
+                enhancerKnob.classList.replace('bg-primary', 'bg-on-surface-variant');
             }
         });
     </script>
