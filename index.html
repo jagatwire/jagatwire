@@ -1,294 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JagatWire Education | Open Source Learning</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --secondary: #ec4899;
-            --bg-color: #f8fafc;
-            --text-main: #0f172a;
-            --text-light: #64748b;
-            --card-bg: rgba(255, 255, 255, 0.7);
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JagatWire Time - India Spotlight</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#d8c2b5",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#85f8c4",
+                    "inverse-on-surface": "#283044",
+                    "surface-container-high": "#222a3d",
+                    "on-primary-fixed-variant": "#6f3800",
+                    "inverse-primary": "#8e4e14",
+                    "surface-container-low": "#131b2e",
+                    "surface-tint": "#ffb780",
+                    "error-container": "#93000a",
+                    "surface-bright": "#31394d",
+                    "on-secondary-fixed-variant": "#005137",
+                    "on-primary-fixed": "#2f1400",
+                    "on-secondary-container": "#00311f",
+                    "on-tertiary": "#1d00a5",
+                    "outline": "#a08d80",
+                    "on-tertiary-fixed": "#0f0069",
+                    "error": "#ffb4ab",
+                    "on-error": "#690005",
+                    "background": "#0b1326",
+                    "surface": "#0b1326",
+                    "tertiary": "#cecbff",
+                    "primary-container": "#f4a261",
+                    "on-primary": "#4e2600",
+                    "tertiary-fixed": "#e2dfff",
+                    "tertiary-fixed-dim": "#c3c0ff",
+                    "surface-container": "#171f33",
+                    "surface-dim": "#0b1326",
+                    "secondary-fixed-dim": "#68dba9",
+                    "on-secondary": "#003825",
+                    "surface-container-lowest": "#060e20",
+                    "surface-container-highest": "#2d3449",
+                    "primary-fixed-dim": "#ffb780",
+                    "primary-fixed": "#ffdcc4",
+                    "on-tertiary-fixed-variant": "#3323cc",
+                    "outline-variant": "#534439",
+                    "on-surface": "#dae2fd",
+                    "on-secondary-fixed": "#002114",
+                    "on-background": "#dae2fd",
+                    "surface-variant": "#2d3449",
+                    "primary": "#ffc499",
+                    "secondary": "#68dba9",
+                    "on-primary-container": "#6f3800",
+                    "on-tertiary-container": "#3222cb",
+                    "secondary-container": "#25a475",
+                    "inverse-surface": "#dae2fd",
+                    "tertiary-container": "#aeacff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "stack-lg": "32px",
+                    "stack-md": "16px",
+                    "margin-x": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Libre Caslon Text"],
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "display-lg": ["Libre Caslon Text"],
+                    "display-lg-mobile": ["Libre Caslon Text"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["48px", {"lineHeight": "56px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(11, 19, 38, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 196, 153, 0.15);
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+        
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(11, 19, 38, 0.2) 0%, rgba(11, 19, 38, 0.8) 100%);
         }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
         }
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.4s ease;
-            z-index: 1000;
+
+        .luminous-border {
+            box-shadow: inset 0 0 10px rgba(255, 183, 128, 0.1);
         }
-        nav.scrolled {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 15px 5%;
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.4; }
         }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            margin-left: 30px;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            padding: 0 20px;
-            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.1), transparent 40%), radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.1), transparent 40%);
-        }
-        .hero h1 {
-            font-size: 4.5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin-bottom: 40px;
-            animation: slideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .btn {
-            padding: 15px 35px;
-            border-radius: 50px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: slideUp 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.4);
-        }
-        .shape {
-            position: absolute;
-            filter: blur(40px);
-            z-index: -1;
-            animation: float 6s infinite ease-in-out;
-        }
-        .shape-1 { 
-            width: 300px; 
-            height: 300px; 
-            background: rgba(79, 70, 229, 0.2); 
-            border-radius: 50%; 
-            top: 10%; 
-            left: -10%; 
-        }
-        .shape-2 { 
-            width: 400px; 
-            height: 400px; 
-            background: rgba(236, 72, 153, 0.2); 
-            border-radius: 50%; 
-            bottom: 10%; 
-            right: -10%; 
-            animation-delay: -3s; 
-        }
-        .search-container {
-            margin: -50px auto 50px;
-            max-width: 700px;
-            position: relative;
-            z-index: 10;
-            padding: 0 20px;
-            animation: slideUp 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .search-container input {
-            width: 100%;
-            padding: 20px 30px;
-            border-radius: 50px;
-            border: 2px solid transparent;
-            font-size: 1.1rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            outline: none;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-        }
-        .search-container input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.15);
-        }
-        .library {
-            padding: 80px 5%;
-            text-align: center;
-        }
-        .library h2 {
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            transition: all 0.4s ease;
-            text-align: left;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        .card.reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border-color: var(--primary);
-        }
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .card p {
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.05); }
-        }
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .nav-links { display: none; }
+        .glow-dot {
+            animation: pulse-glow 2s infinite ease-in-out;
         }
     </style>
 </head>
-<body>
-    <nav id="navbar">
-        <div class="logo">JagatWire.</div>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#library">Open Library</a>
-            <a href="#courses">Courses</a>
-            <a href="#about">About</a>
-        </div>
-    </nav>
-
-    <header class="hero" id="home">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <h1>Free Education.<br>For The World.</h1>
-        <p>Access thousands of open-source courses, textbooks, interactive models, and research papers—curated into one seamless learning experience.</p>
-        <a href="#library" class="btn">Start Exploring</a>
-    </header>
-
-    <div class="search-container">
-        <input type="text" placeholder="Search for physics, programming, literature...">
-    </div>
-
-    <section class="library" id="library">
-        <h2>Explore Open Resources</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="card-icon">💻</div>
-                <h3>Computer Science</h3>
-                <p>Open-source coding bootcamps, documentation, and algorithms from top universities.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">🧬</div>
-                <h3>Natural Sciences</h3>
-                <p>Interactive 3D biology models, open physics labs, and chemistry simulations.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">📚</div>
-                <h3>Humanities</h3>
-                <p>Public domain literature, historical archives, and open philosophical texts.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">📐</div>
-                <h3>Mathematics</h3>
-                <p>Open-source calculators, graphing tools, and step-by-step calculus courses.</p>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('reveal');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-            observer.observe(card);
-        });
-    </script>
-</body>
-</html>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant/20 flat no shadows flex justify-between items-center w-full px-margin-x h-20 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl">public</span>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary tracking-tight">JagatWire Time</h1>
+</div>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#">Global</a>
+<a class="text-primary font-bold transition-colors duration-300 font-label-caps text-label-caps uppercase border-b-2 border-primary" href="#">Country Spotlight</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps uppercase" href="#">Planner</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="hidden sm:flex items-center bg-surface-container-high/50 rounded-full px-4 py-2 border border-outline-variant/30">
+<span class="material-symbols-outlined text-on-surface-variant text-xl mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-40 text-on-surface placeholder:text-on-surface-variant/50" placeholder="Explore regions..." type="text"/>
+</div>
+<button class="relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a tech-savvy user in their 30s, looking confidently at the camera. The background is a soft-focus digital workspace with warm, amber lighting that aligns with a luxury night-mode aesthetic. The style is crisp, editorial photography with deep contrasts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH01rvUX76gtNEaxQQNHo1v94WClfJm-GPOJZPhjMLr2DsNPdfLoQ4CQvBUmVy4pt8-FkkTANzdDqDoPyaxlN7FCmICOTNPl11_los-Rh5P7S0MHay4TjIDGZmW6Ckl6WgdDfhOiiCrh-yNbxFofYD1suyEukVzqkMhJZ6ljix0L8ew9p-NuRqBrKcH1JmxDog8sy7zdq5mtU_d2JgKdJ8icAJu9q5MjXowEnmgxE4mvk3aA6pVs4iVw"/>
+</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="bg-surface-container-low/90 dark:bg-surface-container-low/90 backdrop-blur-2xl text-secondary dark:text-secondary docked left-0 h-full w-20 border-r border-outline-variant/10 shadow-xl fixed left-0 top-0 flex flex-col py-8 z-40">
+<div class="mt-20 flex flex-col items-center gap-10 h-full">
+<div class="flex flex-col items-center gap-1 text-center">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">SOUTH ASIA</span>
+</div>
+<div class="flex flex-col gap-8">
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all duration-200">language</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant group-hover:text-primary">OVERVIEW</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-primary border-r-2 border-primary pr-1">sensors</span>
+<span class="font-label-caps text-[8px] text-primary">PULSE</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all duration-200">compare_arrows</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant group-hover:text-primary">COMPARE</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-all duration-200">analytics</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant group-hover:text-primary">INSIGHTS</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col items-center">
+<button class="flex flex-col items-center gap-1 group active:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">settings</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant group-hover:text-secondary">SETTINGS</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 pt-20 min-h-screen relative">
+<!-- Hero Section -->
+<section class="relative h-[921px] w-full flex items-end justify-start px-margin-x pb-24 overflow-hidden">
+<!-- Background Image with Gradient Overlay -->
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 hero-gradient z-10"></div>
+<div class="w-full h-full bg-cover bg-center scale-105 transition-transform duration-10000 hover:scale-100" data-alt="A breathtaking night view of the Taj Mahal illuminated by a golden moon, reflecting perfectly in the still water of the Yamuna river. The sky is a deep midnight indigo with scattered stars. The style is high-end cinematic photography, emphasizing architectural grandeur and a serene, mystical atmosphere with rich jewel-toned lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDY0SGGxa2zcAHPZ0n4ilyqhvjuHDKYDjHJTtZsTvkAqddE3FNgC07tJSMbLEheNc0RWEI1bv_35iyiyWn8M9qNw7mUWyvmP8ka07UVPNIM398K4O4Cg0PAWDmZXwhYaCVAKcnLgYoiRL79DUlguJLrSTVY1WDm008TDKh9qCDlje1Q8IpqPN9o4OFHkSz-fQCLk68zyitlxygt3V-0bV7hhFqWpQI1mbOfaWib-g_pdZkDgl9eR9YlTw')"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-20 max-w-4xl animate-fade-in-up">
+<div class="flex items-center gap-4 mb-4">
+<span class="h-[1px] w-12 bg-primary"></span>
+<span class="font-label-caps text-label-caps text-primary tracking-[0.2em] uppercase">Current Time: New Delhi, India</span>
+</div>
+<h2 class="font-display-lg text-display-lg md:text-[140px] leading-tight text-on-surface drop-shadow-2xl mb-2" id="hero-clock">
+                    00:00:00
+                </h2>
+<div class="flex flex-wrap items-center gap-6 mt-4">
+<div class="glass-panel px-6 py-3 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">schedule</span>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">TIMEZONE</p>
+<p class="font-body-md font-bold">GMT +5:30 (IST)</p>
+</div>
+</div>
+<div class="glass-panel px-6 py-3 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">wb_sunny</span>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">WEATHER</p>
+<p class="font-body-md font-bold">28°C · Clear Sky</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Component (Explore) -->
+<div class="absolute bottom-10 right-10 z-30 flex flex-col items-end gap-4">
+<button class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">explore</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid Sections -->
+<section class="px-margin-x py-20 grid grid-cols-1 md:grid-cols-12 gap-gutter relative">
+<!-- Cultural Tidbits -->
+<div class="md:col-span-8 glass-panel p-8 rounded-3xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">temple_hindu</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-2 h-8 bg-secondary rounded-full"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cultural Tidbits</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+<div class="space-y-3">
+<h4 class="font-label-caps text-secondary text-label-caps">DIVINE FLAVORS</h4>
+<p class="text-on-surface-variant leading-relaxed">India is the world's leading producer of spices. The intricate 'Masala' blends vary significantly from region to region, reflecting centuries of trade and local agriculture.</p>
+</div>
+<div class="space-y-3">
+<h4 class="font-label-caps text-secondary text-label-caps">LINGUISTIC TAPESTRY</h4>
+<p class="text-on-surface-variant leading-relaxed">With 22 officially recognized languages and over 1,600 dialects, India represents one of the most complex linguistic landscapes on Earth.</p>
+</div>
+<div class="space-y-3">
+<h4 class="font-label-caps text-secondary text-label-caps">ANCIENT KNOWLEDGE</h4>
+<p class="text-on-surface-variant leading-relaxed">The concept of zero was first conceived in India, revolutionizing global mathematics and eventually enabling modern computing.</p>
+</div>
+<div class="space-y-3">
+<h4 class="font-label-caps text-secondary text-label-caps">SILK ROADS</h4>
+<p class="text-on-surface-variant leading-relaxed">Handloom weaving is a sacred art here. From Varanasi's Banarasi silks to Kanchipuram's vibrant weaves, every thread tells a ancestral story.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Timezone Context Card -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<div class="bg-primary-container p-8 rounded-3xl text-on-primary-container relative overflow-hidden h-full">
+<div class="absolute -right-4 -bottom-4 opacity-20">
+<span class="material-symbols-outlined text-[140px]">history_toggle_off</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-6 leading-tight">Timezone Context</h3>
+<p class="mb-8 opacity-90">Unlike most large countries, India has a single time zone (IST) for the entire nation, spanning nearly 3,000 kilometers from East to West.</p>
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-on-primary-container/20 pb-2">
+<span class="font-label-caps text-[10px]">LONDON (GMT)</span>
+<span class="font-body-md font-bold">-5:30h</span>
+</div>
+<div class="flex justify-between items-center border-b border-on-primary-container/20 pb-2">
+<span class="font-label-caps text-[10px]">NEW YORK (EST)</span>
+<span class="font-body-md font-bold">-10:30h</span>
+</div>
+<div class="flex justify-between items-center border-b border-on-primary-container/20 pb-2">
+<span class="font-label-caps text-[10px]">TOKYO (JST)</span>
+<span class="font-body-md font-bold">+3:30h</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Events (Wide Card) -->
+<div class="md:col-span-12 glass-panel p-8 rounded-3xl">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-primary rounded-full"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Regional Events Calendar</h3>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-full border border-outline-variant/30 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 rounded-full border border-outline-variant/30 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Event 1 -->
+<div class="group cursor-pointer">
+<div class="relative h-48 rounded-2xl overflow-hidden mb-4 border border-outline-variant/10">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A vibrant festival scene in India, showing people throwing colorful powders (Holi festival) against a backdrop of ancient sandstone architecture. Sunlight filters through the colored clouds, creating a kaleidoscopic and joyful atmosphere. High contrast, saturated colors, editorial travel photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuc0Ar_iQq2ObaPDJeQ8PyMfqakuKPoDFP__MKebLYdprZtWLFD4KREvURPj3Of_P3e0t6borPUgD78rEGcrrlgrf6TNGSPJHNn5cirLz1o5PxkAltJtz7-UmZrleBbSspdI1p_KEEdN4-b13UTSbZx6a-2cL-EtbMKF-4ZJYM3Y0hwo191iRXh4uXUWuIWoeAqgWACtz5A5fvrdkbhyDOtuI40LbcQd-nqGTmX3MDpSgBVrTOWoRZFg"/>
+<div class="absolute top-3 left-3 bg-primary text-on-primary px-3 py-1 rounded-lg font-label-caps text-[10px]">MAR 25</div>
+</div>
+<h4 class="font-body-lg font-bold text-on-surface group-hover:text-primary transition-colors">Holi: Festival of Colors</h4>
+<p class="text-on-surface-variant text-sm mt-1">National Celebration</p>
+</div>
+<!-- Event 2 -->
+<div class="group cursor-pointer">
+<div class="relative h-48 rounded-2xl overflow-hidden mb-4 border border-outline-variant/10">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sophisticated business summit interior in Mumbai, featuring glass walls overlooking a modern skyline at dusk. Professional people in business attire are networking under elegant pendant lights. The color palette is cool blues and warm ambers, reflecting a professional, high-end corporate event." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc8PL6kQYyctEbd_-M_TxcS7aAmpOhEloY1OsWfc-3wYRzlc_22Q8bY3g_WK-DQbhKkxjSInFhHGEkHlLPxR4ucWPZQ65PQ6sn1MnbyMeHpHTHZez2od08GHe58ID0UnymdDaDlyZSvVITxxl4vxe_FiVJG1rLZ6AxEHIAFxXXeeUV-6-nXkzt7rgzDDPws54LerijtnOQq7PbRhSju0skqCRI1Kq7s0RwycObe6MoYkKkFRgfkcbIHA"/>
+<div class="absolute top-3 left-3 bg-secondary text-on-secondary px-3 py-1 rounded-lg font-label-caps text-[10px]">APR 12</div>
+</div>
+<h4 class="font-body-lg font-bold text-on-surface group-hover:text-secondary transition-colors">Tech-India Summit</h4>
+<p class="text-on-surface-variant text-sm mt-1">Bangalore Hub</p>
+</div>
+<!-- Event 3 -->
+<div class="group cursor-pointer">
+<div class="relative h-48 rounded-2xl overflow-hidden mb-4 border border-outline-variant/10">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A serene temple complex in South India at sunrise, with long shadows stretching across stone courtyards. Devotees in traditional white clothing are walking peacefully. The lighting is soft and ethereal, capturing the m
