@@ -8,388 +8,605 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    :root{
-      --bg:#0f1419; --card:#15202b; --border:#38444d; --text:#e7e9ea; --muted:#8b98a5;
-      --accent:#1d9bf0; --green:#00ba7c; --accent-2:#7bd389;
-      --glass: rgba(255,255,255,0.03);
+    :root {
+      --bg: #0f1419;
+      --card: #15202b;
+      --border: #38444d;
+      --text: #e7e9ea;
+      --muted: #8b98a5;
+      --accent: #1d9bf0;
+      --green: #00ba7c;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--text);
-      background:linear-gradient(160deg,#0a0f14 0%,#15202b 50%,#0f1419 100%);
-      min-height:100vh; padding:1rem;
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(160deg, #0a0f14 0%, #15202b 50%, #0f1419 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
     }
-    .container{max-width:920px;margin:0 auto;padding:1rem}
 
-    /* Top follow banner */
-    .follow-banner{
-      display:flex;align-items:center;gap:.75rem;background:linear-gradient(90deg,rgba(29,155,240,0.12), rgba(29,155,240,0.03));
-      border:1px solid rgba(29,155,240,0.22);color:var(--text);padding:.6rem .9rem;border-radius:12px;margin-bottom:1rem;
-      transition:transform .25s ease, opacity .25s ease;
+    .wrapper { max-width: 760px; margin: 0 auto; }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(90deg, #fff, #1d9bf0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .follow-banner.hide{opacity:0;transform:translateY(-8px);pointer-events:none}
-    .follow-banner .cta{margin-left:auto;display:flex;gap:.5rem;align-items:center}
-    .follow-banner a{color:var(--accent);text-decoration:none;font-weight:600}
 
-    /* Header */
-    h1{font-size:1.5rem;margin:0 0 .25rem;background:linear-gradient(90deg,#fff,#1d9bf0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .subtitle{color:var(--muted);margin-bottom:1rem}
+    .subtitle { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
 
-    .controls-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+    .input-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
 
-    .input-group{display:flex;gap:.75rem;flex:1;min-width:260px}
-    input[type="url"]{flex:1;background:var(--card);border:1px solid var(--border);padding:.7rem 1rem;border-radius:9999px;color:var(--text);outline:none}
-    button{background:var(--accent);color:#fff;border:none;padding:.6rem .9rem;border-radius:9999px;font-weight:600;cursor:pointer}
-    button.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
-    .controls {display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
-    select,input[type=checkbox]{background:var(--card);border:1px solid var(--border);color:var(--text);padding:.35rem .6rem;border-radius:8px}
+    input[type="url"] {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.85rem 1.25rem;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus { border-color: var(--accent); }
 
-    /* Connect area */
-    .connect-area{display:flex;align-items:center;gap:.6rem;background:var(--glass);padding:.6rem;border-radius:10px;border:1px solid var(--border)}
-    .account-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.25rem .5rem;border-radius:999px;background:rgba(255,255,255,0.02)}
-    .premium-badge{background:linear-gradient(90deg,#f7b500,#ff6a00);padding:.15rem .4rem;border-radius:8px;font-weight:700;color:#111;font-size:.78rem}
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 9999px;
+      padding: 0.85rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    button:hover { opacity: 0.9; }
+    button:active { transform: scale(0.97); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Card */
-    #card-container{display:none;margin:1rem 0;transition:opacity .35s ease, transform .25s ease}
-    #card-container.show{display:block;opacity:1;transform:none}
-    .tweet-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;max-width:640px;margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,0.45);transition:transform .2s ease,filter .2s ease}
-    .tweet-card.bw{filter:grayscale(1)}
-    .tweet-card.smooth-in{transform:translateY(6px);opacity:0;animation:cardIn .35s forwards}
-    @keyframes cardIn{to{transform:none;opacity:1}}
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
 
-    .header{display:flex;gap:.75rem;align-items:center;margin-bottom:.8rem}
-    .avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#222}
-    .name-row{display:flex;gap:.4rem;align-items:center;font-weight:700}
-    .verified-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff}
-    .handle{color:var(--muted);font-size:.95rem}
-    .text{font-size:1.06rem;line-height:1.45;margin:.5rem 0;white-space:pre-wrap}
-    .text a{color:var(--accent)}
-    .meta{color:var(--muted);font-size:.9rem;margin-bottom:.5rem}
-    .media-grid{display:grid;gap:4px;border-radius:12px;overflow:hidden;margin-bottom:.85rem}
-    .media-grid.one{grid-template-columns:1fr}
-    .media-grid.two{grid-template-columns:1fr 1fr}
-    .media-grid.three,.media-grid.four{grid-template-columns:1fr 1fr}
-    .media-grid img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .25s ease}
-    .media-grid img.loaded{opacity:1}
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
 
-    .metrics{display:flex;gap:1rem;padding-top:.6rem;border-top:1px solid var(--border);color:var(--muted);font-size:.9rem}
-    .metrics strong{color:var(--text)}
+    select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.9rem;
+      outline: none;
+    }
 
-    .actions{display:flex;gap:.6rem;justify-content:center;margin-top:1rem}
+    .status {
+      min-height: 1.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .status.error { color: #f4212e; }
+    .status.success { color: var(--green); }
 
-    /* Toast / success animation */
-    .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:20px;background:linear-gradient(90deg,#0f1722,#12202b);border:1px solid rgba(255,255,255,0.04);padding:.75rem 1rem;border-radius:12px;color:var(--text);box-shadow:0 8px 40px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s}
-    .toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-    .toast .ok{color:var(--accent-2);font-weight:700;margin-right:.6rem}
-    .toast .follow-link{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:.3rem .5rem;border-radius:8px;color:var(--accent);margin-left:.6rem}
+    #card-container { display: none; margin: 0 auto 2rem; }
 
-    /* Premium modal (simple) */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-    .modal-backdrop.open{opacity:1;pointer-events:auto}
-    .modal{background:var(--card);border-radius:12px;padding:1rem;border:1px solid var(--border);max-width:560px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+    .tweet-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: filter 0.3s;
+      color: var(--text);
+    }
 
-    /* small helpers */
-    .muted{color:var(--muted)}
-    .spacer{height:12px}
-    @media(max-width:720px){.controls-row{flex-direction:column;align-items:stretch}.input-group{width:100%}}
+    .tweet-card.bw { filter: grayscale(100%); }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #333;
+      flex-shrink: 0;
+    }
+
+    .author-info { flex: 1; min-width: 0; }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .verified-badge svg { width: 12px; height: 12px; fill: white; }
+
+    .handle { color: var(--muted); font-size: 0.95rem; margin-top: 1px; }
+
+    .text {
+      font-size: 1.15rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 0.85rem;
+    }
+    .text a { color: var(--accent); text-decoration: none; }
+    .text a:hover { text-decoration: underline; }
+
+    .media-grid {
+      display: grid;
+      gap: 4px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 0.85rem;
+    }
+    .media-grid.one { grid-template-columns: 1fr; }
+    .media-grid.two { grid-template-columns: 1fr 1fr; }
+    .media-grid.three, .media-grid.four { grid-template-columns: 1fr 1fr; }
+
+    .media-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-height: 280px;
+      background: #000;
+      display: block;
+      transition: opacity 250ms ease, transform 250ms ease;
+      opacity: 0;
+    }
+    .media-grid img.loaded { opacity: 1; transform: none; }
+
+    .avatar.placeholder, .media-grid img.placeholder {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      position: relative;
+      filter: blur(0.2px);
+    }
+    .img-spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-top-color: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      position: absolute;
+      right: 8px; top: 8px;
+    }
+
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+
+    .metrics {
+      display: flex;
+      gap: 1.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .metrics strong { color: var(--text); font-weight: 600; }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    .info-box {
+      margin-top: 3rem;
+      padding: 1.25rem;
+      background: rgba(29, 155, 240, 0.08);
+      border: 1px solid rgba(29, 155, 240, 0.25);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .info-box strong { color: var(--text); }
+
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .input-group { flex-direction: column; }
+      button { width: 100%; }
+      .controls { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div id="followBanner" class="follow-banner" role="region" aria-label="Follow JagatWire on X">
-      <div style="display:flex;align-items:center;gap:.6rem">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.43.36 9.08 9.08 0 0 1 19.11 1.6 4.48 4.48 0 0 0 12.07 5v.56A12.94 12.94 0 0 1 3 1.67a4.48 4.48 0 0 0 1.39 5.98A4.41 4.41 0 0 1 2.8 7v.05a4.48 4.48 0 0 0 3.59 4.39A4.52 4.52 0 0 1 4 11.5v.06a4.48 4.48 0 0 0 3.62 4.4A9 9 0 0 1 1.5 18.5s3 2 8 2c9 0 13.9-8.5 13.9-15.9 0-.24 0-.48-.02-.72A9.9 9.9 0 0 0 23 3z" fill="#1d9bf0"/></svg>
-        <div>
-          <strong>Follow JagatWire</strong> for more tools & updates
-          <div class="muted" style="font-size:.84rem">Stay updated — follow <a href="https://x.com/JagatWireEN" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">@JagatWireEN</a></div>
-        </div>
-      </div>
-      <div class="cta">
-        <a href="https://x.com/JagatWireEN" target="_blank" rel="noopener noreferrer">Follow</a>
-        <button id="closeBanner" class="secondary" title="Dismiss">Close</button>
-      </div>
+  <div class="wrapper">
+    <h1>X Post → Image</h1>
+    <p class="subtitle">Paste any X/Twitter post link • Verification badges • Custom ratio • B&W • JagatWire watermark</p>
+
+    <div class="input-group">
+      <input type="url" id="urlInput" placeholder="https://x.com/username/status/1234567890" autocomplete="off" />
+      <button id="generateBtn">Generate</button>
     </div>
 
-    <h1>X Post → Image</h1>
-    <div class="subtitle">Paste any X/Twitter post link • Connect your X account • Premium export • Watermark</div>
-
-    <div class="controls-row">
-      <div style="flex:1;display:flex;gap:.75rem;align-items:center">
-        <div class="input-group">
-          <input id="urlInput" type="url" placeholder="https://x.com/username/status/1234567890" autocomplete="off" />
-          <button id="generateBtn">Generate</button>
-        </div>
-
-        <div class="connect-area" aria-hidden="false">
-          <div id="accountStatus" class="account-pill" title="Account status">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="10" fill="#1d9bf0"/></svg>
-            <span id="accountName">Not connected</span>
-          </div>
-          <button id="connectBtn" class="secondary">Connect X</button>
-          <button id="simulateConnectBtn" class="secondary" title="Demo connect">Simulate</button>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:.6rem;align-items:center">
-        <label for="ratioSelect" class="muted">Ratio</label>
-        <select id="ratioSelect" title="Aspect ratio">
+    <div class="controls">
+      <div class="control-group">
+        <label for="ratioSelect">Ratio:</label>
+        <select id="ratioSelect">
           <option value="original">Original</option>
           <option value="1/1">1:1 Square</option>
           <option value="4/5">4:5 Portrait</option>
           <option value="16/9">16:9 Landscape</option>
           <option value="9/16">9:16 Story</option>
         </select>
+      </div>
 
-        <label><input id="bwToggle" type="checkbox"> B&amp;W</label>
-
-        <label style="display:flex;align-items:center;gap:.4rem"><span class="muted">Plan</span>
-          <select id="planSelect">
-            <option value="free">Free</option>
-            <option value="premium">Premium</option>
-          </select>
-        </label>
-
-        <button id="upgradeBtn" class="secondary" style="display:none">Upgrade</button>
+      <div class="control-group">
+        <input type="checkbox" id="bwToggle" />
+        <label for="bwToggle">Black &amp; White</label>
       </div>
     </div>
 
-    <div id="status" class="muted" style="min-height:18px"></div>
+    <div class="status" id="status"></div>
 
     <div id="card-container" aria-live="polite">
-      <div id="tweetCard" class="tweet-card smooth-in" role="region" aria-label="Post preview"></div>
+      <div class="tweet-card" id="tweetCard" role="region" aria-label="Post preview">
+        <!-- Filled dynamically -->
+      </div>
 
       <div class="actions">
         <button id="downloadBtn">Download PNG</button>
-        <button id="copyBtn" class="secondary">Copy Image</button>
+        <button class="btn-secondary" id="copyBtn">Copy Image</button>
       </div>
     </div>
 
-    <div class="spacer"></div>
-
-    <div class="info-box" style="background:linear-gradient(90deg, rgba(29,155,240,0.06), rgba(29,155,240,0.02));border:1px solid rgba(29,155,240,0.18);padding:1rem;border-radius:12px">
+    <div class="info-box">
       <strong>Features & Credits</strong><br><br>
-      • Connect your X account to access authenticated endpoints.<br>
-      • Premium enables higher-quality exports and faster priority image fetches.<br>
+      • Shows <strong>Premium / Blue verification</strong> badge when available from the post data.<br>
+      • Adjustable aspect ratio + Black &amp; White mode.<br>
       • Every download is watermarked with <strong>JagatWire</strong>.<br>
-      • Media is loaded as data-URLs (proxy optional) to avoid CORS tainting during export.<br>
-      • Powered by FxTwitter / FxEmbed and html-to-image.
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite">
-    <span class="ok">✓</span>
-    <span id="toastText">Your post has been downloaded</span>
-    <a class="follow-link" href="https://x.com/JagatWireEN" target="_blank" rel="noopener noreferrer">Follow @JagatWireEN</a>
-    <button id="dismissToast" class="secondary" style="margin-left:.6rem">Dismiss</button>
-  </div>
-
-  <!-- Premium modal -->
-  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h3 id="modalTitle">Upgrade to Premium</h3>
-      <p class="muted">Premium unlocks higher export quality, priority media fetch, and removes rate limits for frequent users.</p>
-      <div style="display:flex;gap:.6rem;margin-top:1rem;">
-        <button id="confirmUpgrade" style="background:linear-gradient(90deg,#7bd389,#00ba7c)">Upgrade — $4.99</button>
-        <button id="closeModal" class="secondary">Cancel</button>
-      </div>
+      • Powered by free open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxTwitter / FxEmbed</a> API + html-to-image library.
     </div>
   </div>
 
   <script>
-    /* =================== CONFIG ===================
-       Fill these with your OAuth2 client details if you want a real "Connect X" flow.
-       For a real integration you must:
-         - Register an OAuth app with X (Twitter) and get client_id
-         - Provide a redirect URI that you control and which POSTS a message back to the opener:
-             <script>window.opener.postMessage({type:'x-auth', access_token: '...'}, window.location.origin); window.close();</script>
-       Or implement OAuth token exchange server-side (recommended for production).
-       ------------------------------------------------
-    */
-    const OAUTH_CLIENT_ID = ''; // e.g. 'abc123...';
-    const OAUTH_REDIRECT_URI = ''; // e.g. 'https://yourdomain.com/oauth-callback.html'
-    const OAUTH_AUTHORIZE_URL = 'https://twitter.com/i/oauth2/authorize'; // X/Twitter OAuth 2 endpoint (example)
-    // Proxy prefix (leave empty to disable)
-    const PROXY_PREFIX = '';
+    // CONFIG: if you run into CORS issues, set a proxy prefix here (e.g. 'https://corsproxy.io/?')
+    // Leave as empty string to disable automatic proxy attempts.
+    const PROXY_PREFIX = 'https://corsproxy.io/?';
 
-    /* =================== UI references =================== */
-    const urlInput = document.getElementById('urlInput');
-    const generateBtn = document.getElementById('generateBtn');
-    const statusEl = document.getElementById('status');
-    const cardContainer = document.getElementById('card-container');
-    const tweetCard = document.getElementById('tweetCard');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const ratioSelect = document.getElementById('ratioSelect');
-    const bwToggle = document.getElementById('bwToggle');
-    const planSelect = document.getElementById('planSelect');
-    const upgradeBtn = document.getElementById('upgradeBtn');
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const confirmUpgrade = document.getElementById('confirmUpgrade');
-    const closeModal = document.getElementById('closeModal');
-    const toast = document.getElementById('toast');
-    const toastText = document.getElementById('toastText');
-    const dismissToast = document.getElementById('dismissToast');
-    const followBanner = document.getElementById('followBanner');
-    const closeBanner = document.getElementById('closeBanner');
-    const accountStatus = document.getElementById('accountStatus');
-    const accountName = document.getElementById('accountName');
-    const connectBtn = document.getElementById('connectBtn');
-    const simulateConnectBtn = document.getElementById('simulateConnectBtn');
+    const urlInput     = document.getElementById('urlInput');
+    const generateBtn  = document.getElementById('generateBtn');
+    const statusEl     = document.getElementById('status');
+    const cardContainer= document.getElementById('card-container');
+    const tweetCard    = document.getElementById('tweetCard');
+    const downloadBtn  = document.getElementById('downloadBtn');
+    const copyBtn      = document.getElementById('copyBtn');
+    const ratioSelect  = document.getElementById('ratioSelect');
+    const bwToggle     = document.getElementById('bwToggle');
 
-    /* Persistent flags in localStorage */
-    const STORAGE_KEYS = {
-      token: 'jw_x_token',
-      account: 'jw_x_account',
-      premium: 'jw_premium'
-    };
-
-    function setStatus(msg, kind = '') {
-      statusEl.textContent = msg || '';
-      statusEl.className = kind ? kind : '';
+    // small helper: update status
+    function setStatus(text, kind = '') {
+      statusEl.textContent = text || '';
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
     }
 
-    /* Small helpers (from previous version) */
+    // Notify if html-to-image didn't load
+    if (typeof htmlToImage === 'undefined') {
+      console.warn('html-to-image library not loaded — image export will fail.');
+    }
+
+    // Toggle B&W live
+    bwToggle.addEventListener('change', () => {
+      tweetCard.classList.toggle('bw', bwToggle.checked);
+    });
+
+    function extractTweetId(url) {
+      const patterns = [
+        /(?:x\.com|twitter\.com)\/(?:#!\/)?(?:\w+\/)?status\/(\d+)/i,
+        /\/status\/(\d+)/i,
+        /^(\d{6,20})$/
+      ];
+      for (const p of patterns) {
+        const m = url.match(p);
+        if (m) return m[1];
+      }
+      return null;
+    }
+
     function escapeHtml(s = '') {
       return String(s)
         .replace(/&/g, '&amp;')
         .replace(/</g,'&lt;')
         .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#39;');
-    }
-    function formatNumber(n) {
-      n = Number(n) || 0;
-      if (n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
-      if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
-      return String(n);
-    }
-    function formatDate(dateStr){
-      try{
-        const d = new Date(dateStr);
-        if(isNaN(d)) return dateStr;
-        return d.toLocaleString('en-US',{hour:'numeric',minute:'2-digit',month:'short',day:'numeric',year:'numeric'});
-      }catch{ return dateStr }
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
-    // linkify (keeps previous behavior)
-    function linkifyText(text=''){
+    // Linkify URLs, @handles, #hashtags — returns HTML (safe-escaped first)
+    function linkifyText(text = '') {
       let t = escapeHtml(text);
+
+      // URLs (simple)
       const urlRegex = /((https?:\/\/|www\.)[^\s<]+)/gi;
-      t = t.replace(urlRegex, function(m){
-        let url = m;
-        if(!/^https?:\/\//i.test(url)) url = 'https://' + url;
-        return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(m)}</a>`;
+      t = t.replace(urlRegex, function (match) {
+        let url = match;
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(match)}</a>`;
       });
-      t = t.replace(/(^|\s)@([a-zA-Z0-9_]{1,25})/g, function(m, prefix, h){
-        const href = `https://x.com/${h}`;
-        return `${prefix}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(h)}</a>`;
+
+      // handles
+      t = t.replace(/(^|\s)@([a-zA-Z0-9_]{1,25})/g, function (m, prefix, handle) {
+        const href = `https://x.com/${handle}`;
+        return `${prefix}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(handle)}</a>`;
       });
-      t = t.replace(/(^|\s)#([^\s#]+)/g, function(m, pre, tag){
+
+      // hashtags
+      t = t.replace(/(^|\s)#([^\s#]+)/g, function (m, prefix, tag) {
         const href = `https://x.com/hashtag/${encodeURIComponent(tag)}`;
-        return `${pre}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">#${escapeHtml(tag)}</a>`;
+        return `${prefix}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">#${escapeHtml(tag)}</a>`;
       });
+
       return t;
     }
 
-    /* ========== CORS-safe image loading helpers ========== */
-    function blobToDataURL(blob){
-      return new Promise((resolve,reject)=>{
-        const reader = new FileReader();
-        reader.onerror = reject;
-        reader.onload = ()=>resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
+    function formatNumber(n) {
+      n = Number(n) || 0;
+      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return n.toString();
     }
-    async function fetchAsDataUrl(url){
-      try{
-        const r = await fetch(url, {mode:'cors', cache:'force-cache'});
-        if(!r.ok) throw new Error('fetch failed: '+r.status);
-        const blob = await r.blob();
-        return await blobToDataURL(blob);
-      }catch(err){
-        if(PROXY_PREFIX){
-          try{
-            const proxyUrl = PROXY_PREFIX + encodeURIComponent(url);
-            const r2 = await fetch(proxyUrl, {mode:'cors'});
-            if(!r2.ok) throw new Error('proxy failed: '+r2.status);
-            const blob2 = await r2.blob();
-            return await blobToDataURL(blob2);
-          }catch(e){
-            throw new Error('both direct and proxy fetch failed');
-          }
-        }
-        throw err;
+
+    function formatDate(dateStr) {
+      try {
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleString('en-US', {
+          hour: 'numeric', minute: '2-digit',
+          month: 'short', day: 'numeric', year: 'numeric'
+        });
+      } catch {
+        return dateStr;
       }
     }
 
-    async function replaceImgDataSrc(imgEl){
-      if(!imgEl || !imgEl.dataset) return;
-      const src = imgEl.dataset.src;
-      if(!src) return;
-      imgEl.classList.add('placeholder');
-      try{
-        const dataUrl = await fetchAsDataUrl(src);
-        imgEl.src = dataUrl;
-        await new Promise((resolve)=>{ if(imgEl.complete) return resolve(); imgEl.onload=()=>resolve(); imgEl.onerror=()=>resolve(); });
-        imgEl.classList.remove('placeholder');
-        imgEl.classList.add('loaded');
-      }catch(e){
-        console.warn('image load failed', e);
-        imgEl.classList.remove('placeholder');
-        imgEl.style.background = 'linear-gradient(90deg,#222,#111)';
-      }
-    }
-
-    /* ========== Fetch tweet (uses token if connected) ========== */
-    async function fetchTweet(id){
+    // Fetch tweet from fxTwitter / fxembed-like endpoints, tolerant of different shapes
+    async function fetchTweet(id) {
       const endpoints = [
         `https://api.fxtwitter.com/${id}`,
         `https://api.fxtwitter.com/i/status/${id}`
       ];
-      for(const url of endpoints){
-        try{
-          const headers = {};
-          const token = localStorage.getItem(STORAGE_KEYS.token);
-          if(token) headers['Authorization'] = 'Bearer ' + token;
-          const res = await fetch(url, {headers});
-          if(!res.ok) continue;
+      for (const url of endpoints) {
+        try {
+          const res = await fetch(url, {
+            headers: { 'User-Agent': 'JagatWire-X-Image/1.0' }
+          });
+          if (!res.ok) continue;
           const data = await res.json();
-          if(data && (data.tweet || data.text || data.id)) return data.tweet || data;
-        }catch(e){ console.warn('fetchTweet err', e) }
+          // Accept either { tweet } or the object itself
+          if (data && (data.tweet || data.id || data.text)) {
+            return data.tweet || data;
+          }
+        } catch (e) {
+          console.warn('fetchTweet error for', url, e);
+        }
       }
-      throw new Error('Could not fetch post. It may be private, deleted, or unavailable.');
+      throw new Error('Could not fetch post. It may be private, deleted, or temporarily unavailable.');
     }
 
-    function isVerified(author = {}){
-      return !!(author.verified || author.is_blue_verified || author.isBlueVerified || author.is_verified || author.blue_verified);
+    function isVerified(author = {}) {
+      return !!(
+        author.verified ||
+        author.is_blue_verified ||
+        author.isBlueVerified ||
+        author.is_verified ||
+        author.blue_verified
+      );
     }
 
-    /* ========== Render card with placeholders and linkify ========== */
-    function renderCard(tweet){
+    // Convert a Blob to dataURL
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    // Try to fetch a resource and return a data URL.
+    // Retries via PROXY_PREFIX if the direct fetch fails (and proxy is enabled).
+    async function fetchAsDataUrlWithProxy(url, options = {}) {
+      // Normalise URL
+      const origUrl = url || '';
+      // First try direct fetch
+      try {
+        const r = await fetch(origUrl, { mode: 'cors', cache: 'force-cache' });
+        if (!r.ok) throw new Error('Failed fetch direct: ' + r.status);
+        const blob = await r.blob();
+        return await blobToDataURL(blob);
+      } catch (firstErr) {
+        // If proxy prefix configured, try proxy
+        if (PROXY_PREFIX) {
+          try {
+            const proxyUrl = PROXY_PREFIX + encodeURIComponent(origUrl);
+            const r2 = await fetch(proxyUrl, { mode: 'cors' });
+            if (!r2.ok) throw new Error('Proxy fetch failed: ' + r2.status);
+            const blob2 = await r2.blob();
+            return await blobToDataURL(blob2);
+          } catch (proxyErr) {
+            console.warn('Both direct and proxy fetch failed for', origUrl, firstErr, proxyErr);
+            throw new Error('Image fetch failed (direct + proxy).');
+          }
+        }
+        console.warn('Direct fetch failed and no proxy configured for', origUrl, firstErr);
+        throw new Error('Image fetch failed (direct).');
+      }
+    }
+
+    // Replace an <img data-src="..."> element's src with a data URL fetched via fetchAsDataUrlWithProxy.
+    // Adds .loaded class on success, leaves placeholder on failure.
+    async function replaceImgDataSrc(imgEl) {
+      if (!imgEl || !imgEl.dataset) return;
+      const src = imgEl.dataset.src;
+      if (!src) return;
+      // keep placeholder class while loading
+      imgEl.classList.add('placeholder');
+      // optional spinner element inside img wrapper (absolute positioned)
+      const wrapper = imgEl.parentElement;
+      let spinner;
+      if (wrapper) {
+        spinner = wrapper.querySelector('.img-spinner');
+        if (!spinner) {
+          spinner = document.createElement('span');
+          spinner.className = 'img-spinner';
+          spinner.setAttribute('aria-hidden', 'true');
+          wrapper.style.position = 'relative';
+          wrapper.appendChild(spinner);
+        }
+      }
+
+      try {
+        const dataUrl = await fetchAsDataUrlWithProxy(src);
+        imgEl.src = dataUrl;
+        // wait a tick for load event to fire
+        await new Promise((resolve, reject) => {
+          if (imgEl.complete && imgEl.naturalWidth) return resolve();
+          imgEl.onload = () => resolve();
+          imgEl.onerror = () => reject(new Error('Image element failed to load after setting src.'));
+        });
+        imgEl.classList.remove('placeholder');
+        imgEl.classList.add('loaded');
+      } catch (err) {
+        console.warn('replaceImgDataSrc failed for', src, err);
+        // Leave a subtle "broken" background (fallback)
+        imgEl.classList.remove('placeholder');
+        imgEl.style.background = 'linear-gradient(90deg,#222,#111)';
+      } finally {
+        if (spinner && spinner.parentElement) spinner.remove();
+      }
+    }
+
+    // Render the card with placeholders for images (data-src used).
+    function renderCard(tweet) {
       const author = tweet.author || {};
-      const media = tweet.media || {};
+      const media  = tweet.media || {};
       const photos = Array.isArray(media.photos) ? media.photos : [];
       const verified = isVerified(author);
 
+      // Build media HTML with data-src attributes; wrappers used for spinner positioning
       let mediaHTML = '';
-      if(photos.length){
-        const cls = photos.length===1?'one':photos.length===2?'two':'four';
+      if (photos.length > 0) {
+        const cls = photos.length === 1 ? 'one' :
+                    photos.length === 2 ? 'two' : 'four';
         mediaHTML = `<div class="media-grid ${cls}">
-          ${photos.slice(0,4).map((p,i)=>{
-            const u = escapeHtml(p.url || p.media_url || '');
-            return `<div style="position:relative"><img data-src="${u}" alt="Media ${i+1}"></div>`;
+          ${photos.slice(0, 4).map((p, i) => {
+            const url = escapeHtml(p.url || p.media_url || '');
+            return `<div style="position:relative;">
+                      <img data-src="${url}" alt="Media ${i+1}" class="placeholder" crossorigin="anonymous" loading="eager">
+                    </div>`;
           }).join('')}
         </div>`;
       }
 
-      const avatar = escapeHtml(author.avatar_url || author.profile_image_url || '');
-      const likes = tweet.likes ?? tweet.favorite_count ?? 0;
+      // author avatar as data-src placeholder
+      const avatarUrl = escapeHtml(author.avatar_url || author.profile_image_url || '');
+
+      const likes    = tweet.likes ?? tweet.favorite_count ?? 0;
       const retweets = tweet.retweets ?? tweet.retweet_count ?? 0;
-      const replies = tweet.replies ?? tweet.reply_count ?? 0;
-      const views = tweet.views ?? tweet.view_count ?? null;
+      const replies  = tweet.replies ?? tweet.reply_count ?? 0;
+      const views    = tweet.views ?? tweet.view_count ?? null;
 
       tweetCard.innerHTML = `
         <div class="header">
-          <div style="width:48px;height:48px;position:relative">
-            <img data-src="${ava 
+          <div style="width:48px; height:48px; position:relative;">
+            <img data-src="${avatarUrl}" src="" alt="" class="avatar placeholder" crossorigin="anonymous">
+          </div>
+          <div class="author-info">
+            <div class="name-row">
+              <span>${escapeHtml(author.name || 'Unknown')}</span>
+              ${verified ? `
+                <span class="verified-badge" title="Verified / Premium">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                </span>
+              ` : ''}
+            </div>
+            <div class="handle">@${escapeHtml(author.screen_name || author.username || 'unknown')}</div>
+          </div>
+        </div>
+
+        <div class="text">${linkifyText(tweet.text || tweet.full_text || '')}</div>
+
+        ${mediaHTML}
+
+        <div class="meta">${escapeHtml(formatDate(tweet.created_at || tweet.created_at_raw || ''))}</div>
+        <div class="metrics" aria-hidden="true">
+          <span><strong>${formatNumber(replies)}</strong> Replies</span>
+          <span><strong>${formatNumber(retweets)}</strong> Reposts</span>
+          <span><strong>${formatNumber(likes)}</strong> Likes</span>
+          ${views !== null ? `<span><strong>${formatNumber(views)}</strong> Views</span>` : ''}
+        </div>
+      `;
+
+      // apply current B&W
+      tweetCard.classList.toggle('bw', bwToggle.checked);
+      cardContainer.style.display = 'block';
+
+      // Start replacing images (avatar + media)
+      const imgs 
