@@ -3,297 +3,121 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>X Post → Image Generator | JagatWire</title>
+  <title>X Post → Image | JagatWire</title>
   <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
     :root {
-      --bg: #0f1419;
-      --card: #15202b;
-      --border: #38444d;
-      --text: #e7e9ea;
-      --muted: #8b98a5;
-      --accent: #1d9bf0;
-      --green: #00ba7c;
+      --bg: #0f1419; --card: #15202b; --border: #38444d;
+      --text: #e7e9ea; --muted: #8b98a5; --accent: #1d9bf0; --green: #00ba7c;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(160deg, #0a0f14 0%, #15202b 50%, #0f1419 100%);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 2rem 1rem;
+      background: linear-gradient(160deg, #0a0f14, #15202b 50%, #0f1419);
+      color: var(--text); min-height: 100vh; padding: 2rem 1rem;
     }
-
     .wrapper { max-width: 760px; margin: 0 auto; }
-
     h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
+      font-size: 1.75rem; font-weight: 700; margin-bottom: 0.4rem;
       background: linear-gradient(90deg, #fff, #1d9bf0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
     .subtitle { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
-
-    .input-group {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
+    .input-group { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; }
     input[type="url"] {
-      flex: 1;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 9999px;
-      padding: 0.85rem 1.25rem;
-      color: var(--text);
-      font-size: 1rem;
-      outline: none;
+      flex: 1; background: var(--card); border: 1px solid var(--border);
+      border-radius: 9999px; padding: 0.85rem 1.25rem; color: var(--text); font-size: 1rem; outline: none;
     }
     input:focus { border-color: var(--accent); }
-
     button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 9999px;
-      padding: 0.85rem 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      white-space: nowrap;
+      background: var(--accent); color: white; border: none; border-radius: 9999px;
+      padding: 0.85rem 1.5rem; font-weight: 600; cursor: pointer;
     }
-    button:hover { opacity: 0.9; }
-    button:active { transform: scale(0.97); }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
-
     .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+      margin-bottom: 1.25rem; padding: 1rem; background: rgba(255,255,255,0.03);
+      border-radius: 12px; border: 1px solid var(--border);
     }
-
-    .control-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-
+    .control-group { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
     select {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 0.45rem 0.7rem;
-      font-size: 0.9rem;
-      outline: none;
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      border-radius: 8px; padding: 0.45rem 0.7rem; font-size: 0.9rem;
     }
-
-    .status {
-      min-height: 1.5rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+    .status { min-height: 1.5rem; margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--muted); }
     .status.error { color: #f4212e; }
     .status.success { color: var(--green); }
-
     #card-container { display: none; margin: 0 auto 2rem; }
-
     .tweet-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
-      width: 100%;
-      max-width: 560px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      transition: filter 0.3s;
-      color: var(--text);
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.25rem 1.5rem; max-width: 560px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
-
     .tweet-card.bw { filter: grayscale(100%); }
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #333;
-      flex-shrink: 0;
-    }
-
-    .author-info { flex: 1; min-width: 0; }
-
-    .name-row {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-weight: 700;
-      font-size: 1.05rem;
-    }
-
+    .header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #333; }
+    .name-row { display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 1.05rem; }
     .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
+      display: inline-flex; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); align-items: center; justify-content: center;
     }
     .verified-badge svg { width: 12px; height: 12px; fill: white; }
-
-    .handle { color: var(--muted); font-size: 0.95rem; margin-top: 1px; }
-
-    .text {
-      font-size: 1.15rem;
-      line-height: 1.45;
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin-bottom: 0.85rem;
-    }
+    .handle { color: var(--muted); font-size: 0.95rem; }
+    .text { font-size: 1.15rem; line-height: 1.45; white-space: pre-wrap; margin-bottom: 0.85rem; }
     .text a { color: var(--accent); text-decoration: none; }
-    .text a:hover { text-decoration: underline; }
-
-    .media-grid {
-      display: grid;
-      gap: 4px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 0.85rem;
-    }
+    .media-grid { display: grid; gap: 4px; border-radius: 12px; overflow: hidden; margin-bottom: 0.85rem; }
     .media-grid.one { grid-template-columns: 1fr; }
     .media-grid.two { grid-template-columns: 1fr 1fr; }
-    .media-grid.three, .media-grid.four { grid-template-columns: 1fr 1fr; }
-
-    .media-grid img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      max-height: 280px;
-      background: #000;
-      display: block;
-      transition: opacity 250ms ease;
-      opacity: 0;
-    }
-    .media-grid img.loaded { opacity: 1; }
-
+    .media-grid.four { grid-template-columns: 1fr 1fr; }
+    .media-grid img { width: 100%; max-height: 280px; object-fit: cover; background: #000; }
     .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
-
-    .metrics {
-      display: flex;
-      gap: 1.5rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-      flex-wrap: wrap;
-    }
-    .metrics strong { color: var(--text); font-weight: 600; }
-
-    .actions {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
-
+    .metrics { display: flex; gap: 1.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); }
+    .metrics strong { color: var(--text); }
+    .actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
     .info-box {
-      margin-top: 3rem;
-      padding: 1.25rem;
-      background: rgba(29, 155, 240, 0.08);
-      border: 1px solid rgba(29, 155, 240, 0.25);
-      border-radius: 12px;
-      font-size: 0.85rem;
-      line-height: 1.55;
-      color: var(--muted);
+      margin-top: 3rem; padding: 1.25rem; background: rgba(29,155,240,0.08);
+      border: 1px solid rgba(29,155,240,0.25); border-radius: 12px; font-size: 0.85rem; color: var(--muted);
     }
-    .info-box strong { color: var(--text); }
-
     .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+      border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 600px) {
-      .input-group { flex-direction: column; }
-      button { width: 100%; }
-      .controls { flex-direction: column; align-items: flex-start; }
-    }
   </style>
 </head>
 <body>
   <div class="wrapper">
     <h1>X Post → Image</h1>
-    <p class="subtitle">Paste any X/Twitter post link • Verification badges • Custom ratio • B&W • JagatWire watermark</p>
+    <p class="subtitle">Paste any public X post link • Verification • Ratio • B&W • JagatWire watermark</p>
 
     <div class="input-group">
-      <input type="url" id="urlInput" placeholder="https://x.com/username/status/1234567890" autocomplete="off" />
+      <input type="url" id="urlInput" placeholder="https://x.com/username/status/1234567890123456789" />
       <button id="generateBtn">Generate</button>
     </div>
 
     <div class="controls">
       <div class="control-group">
-        <label for="ratioSelect">Ratio:</label>
+        <label>Ratio:</label>
         <select id="ratioSelect">
           <option value="original">Original</option>
           <option value="1/1">1:1 Square</option>
-          <option value="4/5">4:5 Portrait</option>
-          <option value="16/9">16:9 Landscape</option>
-          <option value="9/16">9:16 Story</option>
+          <option value="4/5">4:5</option>
+          <option value="16/9">16:9</option>
+          <option value="9/16">9:16</option>
         </select>
       </div>
-
       <div class="control-group">
         <input type="checkbox" id="bwToggle" />
-        <label for="bwToggle">Black &amp; White</label>
+        <label for="bwToggle">Black & White</label>
       </div>
     </div>
 
     <div class="status" id="status"></div>
 
-    <div id="card-container" aria-live="polite">
-      <div class="tweet-card" id="tweetCard" role="region" aria-label="Post preview"></div>
-
+    <div id="card-container">
+      <div class="tweet-card" id="tweetCard"></div>
       <div class="actions">
         <button id="downloadBtn">Download PNG</button>
         <button class="btn-secondary" id="copyBtn">Copy Image</button>
@@ -301,348 +125,209 @@
     </div>
 
     <div class="info-box">
-      <strong>Features & Credits</strong><br><br>
-      • Shows <strong>Premium / Blue verification</strong> badge when available.<br>
-      • Adjustable aspect ratio + Black &amp; White mode.<br>
-      • Every download is watermarked with <strong>JagatWire</strong>.<br>
-      • Powered by free open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxTwitter / FxEmbed</a> + html-to-image.
+      <strong>Important:</strong> Do <u>not</u> open this file directly (file://).  
+      Use a local server or host it online, otherwise Generate will fail due to browser security (CORS).
     </div>
   </div>
 
   <script>
-    // Optional CORS proxy (helps with some images)
-    const PROXY_PREFIX = 'https://corsproxy.io/?';
-
-    const urlInput      = document.getElementById('urlInput');
-    const generateBtn   = document.getElementById('generateBtn');
-    const statusEl      = document.getElementById('status');
+    const urlInput = document.getElementById('urlInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusEl = document.getElementById('status');
     const cardContainer = document.getElementById('card-container');
-    const tweetCard     = document.getElementById('tweetCard');
-    const downloadBtn   = document.getElementById('downloadBtn');
-    const copyBtn       = document.getElementById('copyBtn');
-    const ratioSelect   = document.getElementById('ratioSelect');
-    const bwToggle      = document.getElementById('bwToggle');
+    const tweetCard = document.getElementById('tweetCard');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const ratioSelect = document.getElementById('ratioSelect');
+    const bwToggle = document.getElementById('bwToggle');
 
-    function setStatus(text, kind = '') {
-      statusEl.textContent = text || '';
-      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    function setStatus(msg, type = '') {
+      statusEl.innerHTML = msg;
+      statusEl.className = 'status ' + type;
     }
 
     bwToggle.addEventListener('change', () => {
       tweetCard.classList.toggle('bw', bwToggle.checked);
     });
 
-    function extractTweetId(url) {
-      const patterns = [
-        /(?:x\.com|twitter\.com)\/(?:#!\/)?(?:\w+\/)?status\/(\d+)/i,
-        /\/status\/(\d+)/i,
-        /^(\d{6,20})$/
-      ];
-      for (const p of patterns) {
-        const m = url.match(p);
-        if (m) return m[1];
-      }
-      return null;
+    function extractId(url) {
+      const m = url.match(/(?:status\/|^)(\d{10,20})/);
+      return m ? m[1] : null;
     }
 
-    function escapeHtml(s = '') {
-      return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function linkifyText(text = '') {
-      let t = escapeHtml(text);
-      t = t.replace(/((https?:\/\/|www\.)[^\s<]+)/gi, (match) => {
-        let url = match;
-        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-        return `<a href="\( {escapeHtml(url)}" target="_blank" rel="noopener noreferrer"> \){escapeHtml(match)}</a>`;
-      });
-      t = t.replace(/(^|\s)@([a-zA-Z0-9_]{1,25})/g, (m, prefix, handle) => {
-        return `\( {prefix}<a href="https://x.com/ \){handle}" target="_blank" rel="noopener noreferrer">@${escapeHtml(handle)}</a>`;
-      });
-      t = t.replace(/(^|\s)#([^\s#]+)/g, (m, prefix, tag) => {
-        return `\( {prefix}<a href="https://x.com/hashtag/ \){encodeURIComponent(tag)}" target="_blank" rel="noopener noreferrer">#${escapeHtml(tag)}</a>`;
-      });
-      return t;
-    }
-
-    function formatNumber(n) {
+    function formatNum(n) {
       n = Number(n) || 0;
-      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-      return n.toString();
-    }
-
-    function formatDate(dateStr) {
-      try {
-        const d = new Date(dateStr);
-        if (isNaN(d)) return dateStr;
-        return d.toLocaleString('en-US', {
-          hour: 'numeric', minute: '2-digit',
-          month: 'short', day: 'numeric', year: 'numeric'
-        });
-      } catch {
-        return dateStr;
-      }
+      if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
+      if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
+      return n;
     }
 
     async function fetchTweet(id) {
-      const endpoints = [
+      const urls = [
         `https://api.fxtwitter.com/${id}`,
+        `https://api.fxtwitter.com/status/${id}`,
         `https://api.fxtwitter.com/i/status/${id}`
       ];
-      for (const url of endpoints) {
+
+      for (const url of urls) {
         try {
-          const res = await fetch(url, {
-            headers: { 'User-Agent': 'JagatWire-X-Image/1.0' }
-          });
-          if (!res.ok) continue;
+          console.log('Trying:', url);
+          const res = await fetch(url);
           const data = await res.json();
-          if (data && (data.tweet || data.id || data.text)) {
-            return data.tweet || data;
-          }
-        } catch (e) {
-          console.warn(e);
+          console.log('Response:', data);
+
+          if (data.code === 200 && data.tweet) return data.tweet;
+          if (data.tweet) return data.tweet;
+          if (data.id && data.text) return data;
+        } catch (err) {
+          console.warn('Failed:', url, err);
         }
       }
-      throw new Error('Could not fetch post. It may be private, deleted, or temporarily unavailable.');
+      throw new Error('Could not fetch the post. Make sure the link is public and try again.');
     }
 
-    function isVerified(author = {}) {
-      return !!(
-        author.verified ||
-        author.is_blue_verified ||
-        author.isBlueVerified ||
-        author.is_verified ||
-        author.blue_verified
-      );
-    }
-
-    function blobToDataURL(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = reject;
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    async function fetchAsDataUrl(url) {
-      try {
-        const r = await fetch(url, { mode: 'cors', cache: 'force-cache' });
-        if (!r.ok) throw new Error('direct fail');
-        return await blobToDataURL(await r.blob());
-      } catch {
-        if (PROXY_PREFIX) {
-          const r2 = await fetch(PROXY_PREFIX + encodeURIComponent(url));
-          if (!r2.ok) throw new Error('proxy fail');
-          return await blobToDataURL(await r2.blob());
-        }
-        throw new Error('Image fetch failed');
-      }
-    }
-
-    async function loadAllImages() {
-      const imgs = tweetCard.querySelectorAll('img[data-src]');
-      const promises = Array.from(imgs).map(async (img) => {
-        try {
-          const dataUrl = await fetchAsDataUrl(img.dataset.src);
-          img.src = dataUrl;
-          img.classList.add('loaded');
-          img.removeAttribute('data-src');
-        } catch (e) {
-          console.warn('Image failed:', img.dataset.src);
-          img.style.background = '#222';
-        }
-      });
-      await Promise.allSettled(promises);
-    }
-
-    function renderCard(tweet) {
+    function render(tweet) {
       const author = tweet.author || {};
-      const media  = tweet.media || {};
-      const photos = Array.isArray(media.photos) ? media.photos : [];
-      const verified = isVerified(author);
+      const verified = author.verified || author.is_blue_verified || author.isBlueVerified;
+      const photos = (tweet.media && tweet.media.photos) || [];
 
-      let mediaHTML = '';
-      if (photos.length > 0) {
-        const cls = photos.length === 1 ? 'one' :
-                    photos.length === 2 ? 'two' : 'four';
-        mediaHTML = `<div class="media-grid ${cls}">
-          ${photos.slice(0, 4).map((p, i) => {
-            const url = escapeHtml(p.url || p.media_url || '');
-            return `<img data-src="${url}" alt="Media ${i+1}" crossorigin="anonymous">`;
-          }).join('')}
+      let mediaHtml = '';
+      if (photos.length) {
+        const cls = photos.length === 1 ? 'one' : photos.length === 2 ? 'two' : 'four';
+        mediaHtml = `<div class="media-grid ${cls}">
+          \( {photos.slice(0,4).map(p => `<img src=" \){p.url}" crossorigin="anonymous">`).join('')}
         </div>`;
       }
 
-      const avatarUrl = escapeHtml(author.avatar_url || author.profile_image_url || '');
-
       tweetCard.innerHTML = `
         <div class="header">
-          <img data-src="${avatarUrl}" class="avatar" alt="" crossorigin="anonymous">
-          <div class="author-info">
+          <img class="avatar" src="${author.avatar_url || ''}" crossorigin="anonymous">
+          <div>
             <div class="name-row">
-              <span>${escapeHtml(author.name || 'Unknown')}</span>
-              ${verified ? `
-                <span class="verified-badge" title="Verified / Premium">
-                  <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                </span>
-              ` : ''}
+              ${escapeHtml(author.name || 'Unknown')}
+              ${verified ? `<span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>` : ''}
             </div>
-            <div class="handle">@${escapeHtml(author.screen_name || author.username || 'unknown')}</div>
+            <div class="handle">@${escapeHtml(author.screen_name || 'unknown')}</div>
           </div>
         </div>
-
-        <div class="text">${linkifyText(tweet.text || tweet.full_text || '')}</div>
-        ${mediaHTML}
-        <div class="meta">${escapeHtml(formatDate(tweet.created_at || ''))}</div>
+        <div class="text">${escapeHtml(tweet.text || '')}</div>
+        ${mediaHtml}
+        <div class="meta">${new Date(tweet.created_at).toLocaleString()}</div>
         <div class="metrics">
-          <span><strong>${formatNumber(tweet.replies ?? 0)}</strong> Replies</span>
-          <span><strong>${formatNumber(tweet.retweets ?? 0)}</strong> Reposts</span>
-          <span><strong>${formatNumber(tweet.likes ?? 0)}</strong> Likes</span>
-          \( {tweet.views != null ? `<span><strong> \){formatNumber(tweet.views)}</strong> Views</span>` : ''}
+          <span><strong>${formatNum(tweet.replies)}</strong> Replies</span>
+          <span><strong>${formatNum(tweet.retweets)}</strong> Reposts</span>
+          <span><strong>${formatNum(tweet.likes)}</strong> Likes</span>
+          \( {tweet.views ? `<span><strong> \){formatNum(tweet.views)}</strong> Views</span>` : ''}
         </div>
       `;
-
       tweetCard.classList.toggle('bw', bwToggle.checked);
       cardContainer.style.display = 'block';
     }
 
-    generateBtn.addEventListener('click', async () => {
+    generateBtn.onclick = async () => {
       const url = urlInput.value.trim();
-      if (!url) {
-        setStatus('Please paste a post link.', 'error');
-        return;
-      }
-      const id = extractTweetId(url);
-      if (!id) {
-        setStatus('Could not find a valid post ID.', 'error');
-        return;
-      }
+      if (!url) return setStatus('Please paste a post link', 'error');
+
+      const id = extractId(url);
+      if (!id) return setStatus('Invalid link – could not find post ID', 'error');
 
       generateBtn.disabled = true;
-      setStatus('Fetching post…');
+      setStatus('<span class="spinner"></span> Fetching post...');
       cardContainer.style.display = 'none';
 
       try {
         const tweet = await fetchTweet(id);
-        renderCard(tweet);
-        setStatus('Loading images…');
-        await loadAllImages();
-        setStatus('Ready — choose options and download.', 'success');
+        render(tweet);
+        setStatus('Post loaded successfully. You can now download.', 'success');
       } catch (err) {
+        console.error(err);
         setStatus(err.message, 'error');
       } finally {
         generateBtn.disabled = false;
       }
-    });
+    };
 
-    urlInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') generateBtn.click();
-    });
-
-    // ========== Final image with ratio + watermark ==========
-    async function createFinalImage() {
-      await new Promise(r => setTimeout(r, 300)); // small safety delay
+    async function makeImage() {
+      // Wait a bit for images
+      await new Promise(r => setTimeout(r, 600));
 
       const dataUrl = await htmlToImage.toPng(tweetCard, {
         quality: 1,
         pixelRatio: 2,
-        backgroundColor: '#15202b',
-        style: { margin: '0' }
+        backgroundColor: '#15202b'
       });
 
       const img = new Image();
-      img.crossOrigin = 'anonymous';
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = dataUrl;
-      });
+      await new Promise(r => { img.onload = r; img.src = dataUrl; });
 
+      let w = img.width, h = img.height;
       const ratio = ratioSelect.value;
-      let targetW = img.width;
-      let targetH = img.height;
 
       if (ratio !== 'original') {
         const [rw, rh] = ratio.split('/').map(Number);
         const targetRatio = rw / rh;
-        const currentRatio = img.width / img.height;
-
-        if (currentRatio > targetRatio) {
-          targetH = img.height;
-          targetW = Math.round(img.height * targetRatio);
+        if (w / h > targetRatio) {
+          w = Math.round(h * targetRatio);
         } else {
-          targetW = img.width;
-          targetH = Math.round(img.width / targetRatio);
+          h = Math.round(w / targetRatio);
         }
       }
 
       const canvas = document.createElement('canvas');
-      canvas.width = targetW;
-      canvas.height = targetH;
+      canvas.width = w;
+      canvas.height = h;
       const ctx = canvas.getContext('2d');
+      const sx = (img.width - w) / 2;
+      const sy = (img.height - h) / 2;
+      ctx.drawImage(img, sx, sy, w, h, 0, 0, w, h);
 
-      const sx = (img.width - targetW) / 2;
-      const sy = (img.height - targetH) / 2;
-      ctx.drawImage(img, sx, sy, targetW, targetH, 0, 0, targetW, targetH);
-
-      // JagatWire watermark
-      const fontSize = Math.max(14, Math.round(targetW * 0.032));
-      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      // Watermark
+      const size = Math.max(14, Math.round(w * 0.032));
+      ctx.font = `600 ${size}px Inter, sans-serif`;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
-      const padding = Math.round(fontSize * 0.85);
-
-      // subtle shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.45)';
-      ctx.fillText('JagatWire', targetW - padding + 1, targetH - padding + 1);
-
-      // main text
-      ctx.fillStyle = 'rgba(255,255,255,0.62)';
-      ctx.fillText('JagatWire', targetW - padding, targetH - padding);
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.fillText('JagatWire', w - 12, h - 10);
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.fillText('JagatWire', w - 13, h - 11);
 
       return canvas.toDataURL('image/png');
     }
 
-    downloadBtn.addEventListener('click', async () => {
+    downloadBtn.onclick = async () => {
       downloadBtn.disabled = true;
-      downloadBtn.textContent = 'Generating…';
+      downloadBtn.textContent = 'Generating...';
       try {
-        const dataUrl = await createFinalImage();
+        const url = await makeImage();
         const a = document.createElement('a');
-        a.href = dataUrl;
-        a.download = `jagatwire-x-post-${Date.now()}.png`;
+        a.href = url;
+        a.download = `jagatwire-${Date.now()}.png`;
         a.click();
       } catch (e) {
-        alert('Failed to generate image: ' + e.message);
+        alert('Download failed: ' + e.message);
       } finally {
         downloadBtn.disabled = false;
         downloadBtn.textContent = 'Download PNG';
       }
-    });
+    };
 
-    copyBtn.addEventListener('click', async () => {
-      copyBtn.disabled = true;
-      copyBtn.textContent = 'Copying…';
+    copyBtn.onclick = async () => {
       try {
-        const dataUrl = await createFinalImage();
-        const blob = await (await fetch(dataUrl)).blob();
-        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        const url = await makeImage();
+        const blob = await (await fetch(url)).blob();
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
         copyBtn.textContent = 'Copied!';
         setTimeout(() => copyBtn.textContent = 'Copy Image', 2000);
       } catch (e) {
         alert('Copy failed: ' + e.message);
-        copyBtn.textContent = 'Copy Image';
-      } finally {
-        copyBtn.disabled = false;
       }
-    });
+    };
   </script>
 </body>
-</html>
+                </html>
