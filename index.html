@@ -196,25 +196,10 @@
       max-height: 280px;
       background: #000;
       display: block;
-      transition: opacity 250ms ease, transform 250ms ease;
+      transition: opacity 250ms ease;
       opacity: 0;
     }
-    .media-grid img.loaded { opacity: 1; transform: none; }
-
-    .avatar.placeholder, .media-grid img.placeholder {
-      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      position: relative;
-      filter: blur(0.2px);
-    }
-    .img-spinner {
-      width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,0.15);
-      border-top-color: rgba(255,255,255,0.6);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      position: absolute;
-      right: 8px; top: 8px;
-    }
+    .media-grid img.loaded { opacity: 1; }
 
     .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
 
@@ -307,9 +292,7 @@
     <div class="status" id="status"></div>
 
     <div id="card-container" aria-live="polite">
-      <div class="tweet-card" id="tweetCard" role="region" aria-label="Post preview">
-        <!-- Filled dynamically -->
-      </div>
+      <div class="tweet-card" id="tweetCard" role="region" aria-label="Post preview"></div>
 
       <div class="actions">
         <button id="downloadBtn">Download PNG</button>
@@ -319,40 +302,32 @@
 
     <div class="info-box">
       <strong>Features & Credits</strong><br><br>
-      • Shows <strong>Premium / Blue verification</strong> badge when available from the post data.<br>
+      • Shows <strong>Premium / Blue verification</strong> badge when available.<br>
       • Adjustable aspect ratio + Black &amp; White mode.<br>
       • Every download is watermarked with <strong>JagatWire</strong>.<br>
-      • Powered by free open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxTwitter / FxEmbed</a> API + html-to-image library.
+      • Powered by free open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxTwitter / FxEmbed</a> + html-to-image.
     </div>
   </div>
 
   <script>
-    // CONFIG: if you run into CORS issues, set a proxy prefix here (e.g. 'https://corsproxy.io/?')
-    // Leave as empty string to disable automatic proxy attempts.
+    // Optional CORS proxy (helps with some images)
     const PROXY_PREFIX = 'https://corsproxy.io/?';
 
-    const urlInput     = document.getElementById('urlInput');
-    const generateBtn  = document.getElementById('generateBtn');
-    const statusEl     = document.getElementById('status');
-    const cardContainer= document.getElementById('card-container');
-    const tweetCard    = document.getElementById('tweetCard');
-    const downloadBtn  = document.getElementById('downloadBtn');
-    const copyBtn      = document.getElementById('copyBtn');
-    const ratioSelect  = document.getElementById('ratioSelect');
-    const bwToggle     = document.getElementById('bwToggle');
+    const urlInput      = document.getElementById('urlInput');
+    const generateBtn   = document.getElementById('generateBtn');
+    const statusEl      = document.getElementById('status');
+    const cardContainer = document.getElementById('card-container');
+    const tweetCard     = document.getElementById('tweetCard');
+    const downloadBtn   = document.getElementById('downloadBtn');
+    const copyBtn       = document.getElementById('copyBtn');
+    const ratioSelect   = document.getElementById('ratioSelect');
+    const bwToggle      = document.getElementById('bwToggle');
 
-    // small helper: update status
     function setStatus(text, kind = '') {
       statusEl.textContent = text || '';
       statusEl.className = 'status' + (kind ? ' ' + kind : '');
     }
 
-    // Notify if html-to-image didn't load
-    if (typeof htmlToImage === 'undefined') {
-      console.warn('html-to-image library not loaded — image export will fail.');
-    }
-
-    // Toggle B&W live
     bwToggle.addEventListener('change', () => {
       tweetCard.classList.toggle('bw', bwToggle.checked);
     });
@@ -373,43 +348,32 @@
     function escapeHtml(s = '') {
       return String(s)
         .replace(/&/g, '&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
 
-    // Linkify URLs, @handles, #hashtags — returns HTML (safe-escaped first)
     function linkifyText(text = '') {
       let t = escapeHtml(text);
-
-      // URLs (simple)
-      const urlRegex = /((https?:\/\/|www\.)[^\s<]+)/gi;
-      t = t.replace(urlRegex, function (match) {
+      t = t.replace(/((https?:\/\/|www\.)[^\s<]+)/gi, (match) => {
         let url = match;
         if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-        return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(match)}</a>`;
+        return `<a href="\( {escapeHtml(url)}" target="_blank" rel="noopener noreferrer"> \){escapeHtml(match)}</a>`;
       });
-
-      // handles
-      t = t.replace(/(^|\s)@([a-zA-Z0-9_]{1,25})/g, function (m, prefix, handle) {
-        const href = `https://x.com/${handle}`;
-        return `${prefix}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(handle)}</a>`;
+      t = t.replace(/(^|\s)@([a-zA-Z0-9_]{1,25})/g, (m, prefix, handle) => {
+        return `\( {prefix}<a href="https://x.com/ \){handle}" target="_blank" rel="noopener noreferrer">@${escapeHtml(handle)}</a>`;
       });
-
-      // hashtags
-      t = t.replace(/(^|\s)#([^\s#]+)/g, function (m, prefix, tag) {
-        const href = `https://x.com/hashtag/${encodeURIComponent(tag)}`;
-        return `${prefix}<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">#${escapeHtml(tag)}</a>`;
+      t = t.replace(/(^|\s)#([^\s#]+)/g, (m, prefix, tag) => {
+        return `\( {prefix}<a href="https://x.com/hashtag/ \){encodeURIComponent(tag)}" target="_blank" rel="noopener noreferrer">#${escapeHtml(tag)}</a>`;
       });
-
       return t;
     }
 
     function formatNumber(n) {
       n = Number(n) || 0;
-      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
       return n.toString();
     }
 
@@ -426,7 +390,6 @@
       }
     }
 
-    // Fetch tweet from fxTwitter / fxembed-like endpoints, tolerant of different shapes
     async function fetchTweet(id) {
       const endpoints = [
         `https://api.fxtwitter.com/${id}`,
@@ -439,12 +402,11 @@
           });
           if (!res.ok) continue;
           const data = await res.json();
-          // Accept either { tweet } or the object itself
           if (data && (data.tweet || data.id || data.text)) {
             return data.tweet || data;
           }
         } catch (e) {
-          console.warn('fetchTweet error for', url, e);
+          console.warn(e);
         }
       }
       throw new Error('Could not fetch post. It may be private, deleted, or temporarily unavailable.');
@@ -460,7 +422,6 @@
       );
     }
 
-    // Convert a Blob to dataURL
     function blobToDataURL(blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -470,87 +431,43 @@
       });
     }
 
-    // Try to fetch a resource and return a data URL.
-    // Retries via PROXY_PREFIX if the direct fetch fails (and proxy is enabled).
-    async function fetchAsDataUrlWithProxy(url, options = {}) {
-      // Normalise URL
-      const origUrl = url || '';
-      // First try direct fetch
+    async function fetchAsDataUrl(url) {
       try {
-        const r = await fetch(origUrl, { mode: 'cors', cache: 'force-cache' });
-        if (!r.ok) throw new Error('Failed fetch direct: ' + r.status);
-        const blob = await r.blob();
-        return await blobToDataURL(blob);
-      } catch (firstErr) {
-        // If proxy prefix configured, try proxy
+        const r = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+        if (!r.ok) throw new Error('direct fail');
+        return await blobToDataURL(await r.blob());
+      } catch {
         if (PROXY_PREFIX) {
-          try {
-            const proxyUrl = PROXY_PREFIX + encodeURIComponent(origUrl);
-            const r2 = await fetch(proxyUrl, { mode: 'cors' });
-            if (!r2.ok) throw new Error('Proxy fetch failed: ' + r2.status);
-            const blob2 = await r2.blob();
-            return await blobToDataURL(blob2);
-          } catch (proxyErr) {
-            console.warn('Both direct and proxy fetch failed for', origUrl, firstErr, proxyErr);
-            throw new Error('Image fetch failed (direct + proxy).');
-          }
+          const r2 = await fetch(PROXY_PREFIX + encodeURIComponent(url));
+          if (!r2.ok) throw new Error('proxy fail');
+          return await blobToDataURL(await r2.blob());
         }
-        console.warn('Direct fetch failed and no proxy configured for', origUrl, firstErr);
-        throw new Error('Image fetch failed (direct).');
+        throw new Error('Image fetch failed');
       }
     }
 
-    // Replace an <img data-src="..."> element's src with a data URL fetched via fetchAsDataUrlWithProxy.
-    // Adds .loaded class on success, leaves placeholder on failure.
-    async function replaceImgDataSrc(imgEl) {
-      if (!imgEl || !imgEl.dataset) return;
-      const src = imgEl.dataset.src;
-      if (!src) return;
-      // keep placeholder class while loading
-      imgEl.classList.add('placeholder');
-      // optional spinner element inside img wrapper (absolute positioned)
-      const wrapper = imgEl.parentElement;
-      let spinner;
-      if (wrapper) {
-        spinner = wrapper.querySelector('.img-spinner');
-        if (!spinner) {
-          spinner = document.createElement('span');
-          spinner.className = 'img-spinner';
-          spinner.setAttribute('aria-hidden', 'true');
-          wrapper.style.position = 'relative';
-          wrapper.appendChild(spinner);
+    async function loadAllImages() {
+      const imgs = tweetCard.querySelectorAll('img[data-src]');
+      const promises = Array.from(imgs).map(async (img) => {
+        try {
+          const dataUrl = await fetchAsDataUrl(img.dataset.src);
+          img.src = dataUrl;
+          img.classList.add('loaded');
+          img.removeAttribute('data-src');
+        } catch (e) {
+          console.warn('Image failed:', img.dataset.src);
+          img.style.background = '#222';
         }
-      }
-
-      try {
-        const dataUrl = await fetchAsDataUrlWithProxy(src);
-        imgEl.src = dataUrl;
-        // wait a tick for load event to fire
-        await new Promise((resolve, reject) => {
-          if (imgEl.complete && imgEl.naturalWidth) return resolve();
-          imgEl.onload = () => resolve();
-          imgEl.onerror = () => reject(new Error('Image element failed to load after setting src.'));
-        });
-        imgEl.classList.remove('placeholder');
-        imgEl.classList.add('loaded');
-      } catch (err) {
-        console.warn('replaceImgDataSrc failed for', src, err);
-        // Leave a subtle "broken" background (fallback)
-        imgEl.classList.remove('placeholder');
-        imgEl.style.background = 'linear-gradient(90deg,#222,#111)';
-      } finally {
-        if (spinner && spinner.parentElement) spinner.remove();
-      }
+      });
+      await Promise.allSettled(promises);
     }
 
-    // Render the card with placeholders for images (data-src used).
     function renderCard(tweet) {
       const author = tweet.author || {};
       const media  = tweet.media || {};
       const photos = Array.isArray(media.photos) ? media.photos : [];
       const verified = isVerified(author);
 
-      // Build media HTML with data-src attributes; wrappers used for spinner positioning
       let mediaHTML = '';
       if (photos.length > 0) {
         const cls = photos.length === 1 ? 'one' :
@@ -558,32 +475,22 @@
         mediaHTML = `<div class="media-grid ${cls}">
           ${photos.slice(0, 4).map((p, i) => {
             const url = escapeHtml(p.url || p.media_url || '');
-            return `<div style="position:relative;">
-                      <img data-src="${url}" alt="Media ${i+1}" class="placeholder" crossorigin="anonymous" loading="eager">
-                    </div>`;
+            return `<img data-src="${url}" alt="Media ${i+1}" crossorigin="anonymous">`;
           }).join('')}
         </div>`;
       }
 
-      // author avatar as data-src placeholder
       const avatarUrl = escapeHtml(author.avatar_url || author.profile_image_url || '');
-
-      const likes    = tweet.likes ?? tweet.favorite_count ?? 0;
-      const retweets = tweet.retweets ?? tweet.retweet_count ?? 0;
-      const replies  = tweet.replies ?? tweet.reply_count ?? 0;
-      const views    = tweet.views ?? tweet.view_count ?? null;
 
       tweetCard.innerHTML = `
         <div class="header">
-          <div style="width:48px; height:48px; position:relative;">
-            <img data-src="${avatarUrl}" src="" alt="" class="avatar placeholder" crossorigin="anonymous">
-          </div>
+          <img data-src="${avatarUrl}" class="avatar" alt="" crossorigin="anonymous">
           <div class="author-info">
             <div class="name-row">
               <span>${escapeHtml(author.name || 'Unknown')}</span>
               ${verified ? `
                 <span class="verified-badge" title="Verified / Premium">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
                 </span>
               ` : ''}
             </div>
@@ -592,21 +499,150 @@
         </div>
 
         <div class="text">${linkifyText(tweet.text || tweet.full_text || '')}</div>
-
         ${mediaHTML}
-
-        <div class="meta">${escapeHtml(formatDate(tweet.created_at || tweet.created_at_raw || ''))}</div>
-        <div class="metrics" aria-hidden="true">
-          <span><strong>${formatNumber(replies)}</strong> Replies</span>
-          <span><strong>${formatNumber(retweets)}</strong> Reposts</span>
-          <span><strong>${formatNumber(likes)}</strong> Likes</span>
-          ${views !== null ? `<span><strong>${formatNumber(views)}</strong> Views</span>` : ''}
+        <div class="meta">${escapeHtml(formatDate(tweet.created_at || ''))}</div>
+        <div class="metrics">
+          <span><strong>${formatNumber(tweet.replies ?? 0)}</strong> Replies</span>
+          <span><strong>${formatNumber(tweet.retweets ?? 0)}</strong> Reposts</span>
+          <span><strong>${formatNumber(tweet.likes ?? 0)}</strong> Likes</span>
+          \( {tweet.views != null ? `<span><strong> \){formatNumber(tweet.views)}</strong> Views</span>` : ''}
         </div>
       `;
 
-      // apply current B&W
       tweetCard.classList.toggle('bw', bwToggle.checked);
       cardContainer.style.display = 'block';
+    }
 
-      // Start replacing images (avatar + media)
-      const imgs 
+    generateBtn.addEventListener('click', async () => {
+      const url = urlInput.value.trim();
+      if (!url) {
+        setStatus('Please paste a post link.', 'error');
+        return;
+      }
+      const id = extractTweetId(url);
+      if (!id) {
+        setStatus('Could not find a valid post ID.', 'error');
+        return;
+      }
+
+      generateBtn.disabled = true;
+      setStatus('Fetching post…');
+      cardContainer.style.display = 'none';
+
+      try {
+        const tweet = await fetchTweet(id);
+        renderCard(tweet);
+        setStatus('Loading images…');
+        await loadAllImages();
+        setStatus('Ready — choose options and download.', 'success');
+      } catch (err) {
+        setStatus(err.message, 'error');
+      } finally {
+        generateBtn.disabled = false;
+      }
+    });
+
+    urlInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') generateBtn.click();
+    });
+
+    // ========== Final image with ratio + watermark ==========
+    async function createFinalImage() {
+      await new Promise(r => setTimeout(r, 300)); // small safety delay
+
+      const dataUrl = await htmlToImage.toPng(tweetCard, {
+        quality: 1,
+        pixelRatio: 2,
+        backgroundColor: '#15202b',
+        style: { margin: '0' }
+      });
+
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
+
+      const ratio = ratioSelect.value;
+      let targetW = img.width;
+      let targetH = img.height;
+
+      if (ratio !== 'original') {
+        const [rw, rh] = ratio.split('/').map(Number);
+        const targetRatio = rw / rh;
+        const currentRatio = img.width / img.height;
+
+        if (currentRatio > targetRatio) {
+          targetH = img.height;
+          targetW = Math.round(img.height * targetRatio);
+        } else {
+          targetW = img.width;
+          targetH = Math.round(img.width / targetRatio);
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+
+      const sx = (img.width - targetW) / 2;
+      const sy = (img.height - targetH) / 2;
+      ctx.drawImage(img, sx, sy, targetW, targetH, 0, 0, targetW, targetH);
+
+      // JagatWire watermark
+      const fontSize = Math.max(14, Math.round(targetW * 0.032));
+      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      const padding = Math.round(fontSize * 0.85);
+
+      // subtle shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillText('JagatWire', targetW - padding + 1, targetH - padding + 1);
+
+      // main text
+      ctx.fillStyle = 'rgba(255,255,255,0.62)';
+      ctx.fillText('JagatWire', targetW - padding, targetH - padding);
+
+      return canvas.toDataURL('image/png');
+    }
+
+    downloadBtn.addEventListener('click', async () => {
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = 'Generating…';
+      try {
+        const dataUrl = await createFinalImage();
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = `jagatwire-x-post-${Date.now()}.png`;
+        a.click();
+      } catch (e) {
+        alert('Failed to generate image: ' + e.message);
+      } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download PNG';
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      copyBtn.disabled = true;
+      copyBtn.textContent = 'Copying…';
+      try {
+        const dataUrl = await createFinalImage();
+        const blob = await (await fetch(dataUrl)).blob();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy Image', 2000);
+      } catch (e) {
+        alert('Copy failed: ' + e.message);
+        copyBtn.textContent = 'Copy Image';
+      } finally {
+        copyBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
