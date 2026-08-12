@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>X Post → Image Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Post → Image Generator | JagatWire</title>
   <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -28,33 +28,26 @@
       padding: 2rem 1rem;
     }
 
-    .wrapper {
-      max-width: 720px;
-      margin: 0 auto;
-    }
+    .wrapper { max-width: 760px; margin: 0 auto; }
 
     h1 {
       font-size: 1.75rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       background: linear-gradient(90deg, #fff, #1d9bf0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .subtitle {
-      color: var(--muted);
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
-    }
+    .subtitle { color: var(--muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
 
     .input-group {
       display: flex;
       gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
-    input {
+    input[type="url"] {
       flex: 1;
       background: var(--card);
       border: 1px solid var(--border);
@@ -63,9 +56,7 @@
       color: var(--text);
       font-size: 1rem;
       outline: none;
-      transition: border-color 0.2s;
     }
-
     input:focus { border-color: var(--accent); }
 
     button {
@@ -79,10 +70,38 @@
       transition: opacity 0.2s, transform 0.15s;
       white-space: nowrap;
     }
-
     button:hover { opacity: 0.9; }
     button:active { transform: scale(0.97); }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.9rem;
+      outline: none;
+    }
 
     .status {
       min-height: 1.5rem;
@@ -90,25 +109,23 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
-
     .status.error { color: #f4212e; }
     .status.success { color: var(--green); }
 
-    /* ===== Tweet Card ===== */
-    #card-container {
-      display: none;
-      margin: 0 auto 2rem;
-    }
+    #card-container { display: none; margin: 0 auto 2rem; }
 
     .tweet-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 1.25rem 1.5rem;
-      max-width: 560px;
       width: 100%;
+      max-width: 560px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: filter 0.3s;
     }
+
+    .tweet-card.bw { filter: grayscale(100%); }
 
     .header {
       display: flex;
@@ -135,17 +152,19 @@
       font-size: 1.05rem;
     }
 
-    .verified {
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 18px;
       height: 18px;
-      fill: var(--accent);
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
     }
+    .verified-badge svg { width: 12px; height: 12px; fill: white; }
 
-    .handle {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-top: 1px;
-    }
+    .handle { color: var(--muted); font-size: 0.95rem; margin-top: 1px; }
 
     .text {
       font-size: 1.15rem;
@@ -162,11 +181,9 @@
       overflow: hidden;
       margin-bottom: 0.85rem;
     }
-
     .media-grid.one { grid-template-columns: 1fr; }
     .media-grid.two { grid-template-columns: 1fr 1fr; }
-    .media-grid.three { grid-template-columns: 1fr 1fr; }
-    .media-grid.four { grid-template-columns: 1fr 1fr; }
+    .media-grid.three, .media-grid.four { grid-template-columns: 1fr 1fr; }
 
     .media-grid img {
       width: 100%;
@@ -176,11 +193,7 @@
       background: #000;
     }
 
-    .meta {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 0.75rem;
-    }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
 
     .metrics {
       display: flex;
@@ -190,11 +203,7 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
-
-    .metrics strong {
-      color: var(--text);
-      font-weight: 600;
-    }
+    .metrics strong { color: var(--text); font-weight: 600; }
 
     .actions {
       display: flex;
@@ -209,10 +218,7 @@
       border: 1px solid var(--border);
       color: var(--text);
     }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.05);
-    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
 
     .info-box {
       margin-top: 3rem;
@@ -224,7 +230,6 @@
       line-height: 1.55;
       color: var(--muted);
     }
-
     .info-box strong { color: var(--text); }
 
     .spinner {
@@ -238,30 +243,48 @@
       vertical-align: middle;
       margin-right: 8px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 600px) {
       .input-group { flex-direction: column; }
       button { width: 100%; }
+      .controls { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
   <div class="wrapper">
     <h1>X Post → Image</h1>
-    <p class="subtitle">Paste any X/Twitter post link and generate a clean shareable image instantly.</p>
+    <p class="subtitle">Paste any X/Twitter post link • Verification badges • Custom ratio • B&W • JagatWire watermark</p>
 
     <div class="input-group">
       <input type="url" id="urlInput" placeholder="https://x.com/username/status/1234567890" autocomplete="off">
       <button id="generateBtn">Generate</button>
     </div>
 
+    <div class="controls">
+      <div class="control-group">
+        <label for="ratioSelect">Ratio:</label>
+        <select id="ratioSelect">
+          <option value="original">Original</option>
+          <option value="1/1">1:1 Square</option>
+          <option value="4/5">4:5 Portrait</option>
+          <option value="16/9">16:9 Landscape</option>
+          <option value="9/16">9:16 Story</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <input type="checkbox" id="bwToggle">
+        <label for="bwToggle">Black &amp; White</label>
+      </div>
+    </div>
+
     <div class="status" id="status"></div>
 
     <div id="card-container">
       <div class="tweet-card" id="tweetCard">
-        <!-- Dynamically filled -->
+        <!-- filled dynamically -->
       </div>
 
       <div class="actions">
@@ -271,23 +294,29 @@
     </div>
 
     <div class="info-box">
-      <strong>How it works (open-source + X / xAI context)</strong><br><br>
-      • Data is fetched live from the free community <strong>FxTwitter API</strong> (part of the open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxEmbed / FixTweet</a> project – MIT licensed).<br>
-      • Official X API is currently pay-per-use with no free read tier for new developers (2026). This tool avoids paid keys so anyone can use it.<br>
-      • Image generation uses the open-source library <strong>html-to-image</strong>.<br>
-      • Grok (by xAI) has deep native X integration. This site uses the same public post data layer that many community and research tools rely on when free official access is limited.<br>
-      • Everything is dynamic — no static/hard-coded posts. Just paste a link.
+      <strong>Features & Credits</strong><br><br>
+      • Shows <strong>Premium / Blue verification</strong> badge when available from the post data.<br>
+      • Adjustable aspect ratio + Black &amp; White mode.<br>
+      • Every download is watermarked with <strong>JagatWire</strong>.<br>
+      • Powered by free open-source <a href="https://github.com/FxEmbed/FxEmbed" target="_blank" style="color:#1d9bf0">FxTwitter / FxEmbed</a> API + html-to-image library.
     </div>
   </div>
 
   <script>
-    const urlInput = document.getElementById('urlInput');
-    const generateBtn = document.getElementById('generateBtn');
-    const statusEl = document.getElementById('status');
-    const cardContainer = document.getElementById('card-container');
-    const tweetCard = document.getElementById('tweetCard');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const copyBtn = document.getElementById('copyBtn');
+    const urlInput     = document.getElementById('urlInput');
+    const generateBtn  = document.getElementById('generateBtn');
+    const statusEl     = document.getElementById('status');
+    const cardContainer= document.getElementById('card-container');
+    const tweetCard    = document.getElementById('tweetCard');
+    const downloadBtn  = document.getElementById('downloadBtn');
+    const copyBtn      = document.getElementById('copyBtn');
+    const ratioSelect  = document.getElementById('ratioSelect');
+    const bwToggle     = document.getElementById('bwToggle');
+
+    // Toggle B&W live
+    bwToggle.addEventListener('change', () => {
+      tweetCard.classList.toggle('bw', bwToggle.checked);
+    });
 
     function extractTweetId(url) {
       const patterns = [
@@ -303,101 +332,99 @@
     }
 
     function formatNumber(n) {
-      const num = Number(n) || 0;
-      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-      return num.toString();
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return (n ?? 0).toString();
     }
 
     function formatDate(dateStr) {
       try {
-        const d = new Date(dateStr);
-        return d.toLocaleString('en-US', {
+        return new Date(dateStr).toLocaleString('en-US', {
           hour: 'numeric', minute: '2-digit',
           month: 'short', day: 'numeric', year: 'numeric'
         });
-      } catch {
-        return dateStr;
-      }
+      } catch { return dateStr; }
     }
 
     async function fetchTweet(id) {
-      // Primary endpoint (works with or without username)
       const endpoints = [
         `https://api.fxtwitter.com/${id}`,
         `https://api.fxtwitter.com/i/status/${id}`
       ];
-
       for (const url of endpoints) {
         try {
           const res = await fetch(url, {
-            headers: { 'User-Agent': 'X-Post-Image-Generator/1.0' }
+            headers: { 'User-Agent': 'JagatWire-X-Image/1.0' }
           });
           if (!res.ok) continue;
           const data = await res.json();
-
-          // Accept several possible shapes returned by community APIs
-          if (data?.tweet) return data.tweet;
-          if (data?.id || data?.tweet_id) return data;
-          if (data?.data && (data.data.id || data.data.tweet)) return data.data;
-        } catch (e) {
-          console.warn('Endpoint failed', url, e);
-        }
+          if (data.code === 200 && data.tweet) return data.tweet;
+        } catch (e) { console.warn(e); }
       }
-      throw new Error('Could not fetch post. It may be private, deleted, or the service is temporarily unavailable.');
+      throw new Error('Could not fetch post. It may be private, deleted, or temporarily unavailable.');
+    }
+
+    function isVerified(author = {}) {
+      return !!(
+        author.verified ||
+        author.is_blue_verified ||
+        author.isBlueVerified ||
+        author.is_verified ||
+        author.blue_verified
+      );
     }
 
     function renderCard(tweet) {
       const author = tweet.author || {};
-      const media = tweet.media || {};
+      const media  = tweet.media || {};
       const photos = media.photos || [];
-      const isVerified = author.verified || author.is_blue_verified || false;
+      const verified = isVerified(author);
 
       let mediaHTML = '';
       if (photos.length > 0) {
         const cls = photos.length === 1 ? 'one' :
-                    photos.length === 2 ? 'two' :
-                    photos.length === 3 ? 'three' : 'four';
-        const imgs = photos.slice(0, 4).map(p => {
-          // p.url or p.media_url_https depending on API
-          const src = p.url || p.media_url_https || p.media_url || '';
-          // crossorigin attribute helps html-to-image avoid tainting when server provides CORS
-          return `<img src="${src}" alt="Media" crossorigin="anonymous" loading="eager">`;
-        }).join('');
-        mediaHTML = `<div class="media-grid ${cls}">${imgs}</div>`;
+                    photos.length === 2 ? 'two' : 'four';
+        mediaHTML = `<div class="media-grid ${cls}">
+          ${photos.slice(0, 4).map(p => 
+            `<img src="${p.url}" alt="Media" crossorigin="anonymous" loading="eager">`
+          ).join('')}
+        </div>`;
       }
 
-      const likes = tweet.likes ?? tweet.favorite_count ?? 0;
-      const retweets = tweet.retweets ?? tweet.retweet_count ?? 0;
-      const replies = tweet.replies ?? tweet.reply_count ?? 0;
-      const views = tweet.views ?? null;
+      const likes    = tweet.likes ?? 0;
+      const retweets = tweet.retweets ?? 0;
+      const replies  = tweet.replies ?? 0;
+      const views    = tweet.views ?? null;
 
       tweetCard.innerHTML = `
         <div class="header">
-          <img class="avatar" src="${author.avatar_url || author.profile_image_url || ''}" alt="" crossorigin="anonymous">
+          <img class="avatar" src="${author.avatar_url || ''}" alt="" crossorigin="anonymous">
           <div class="author-info">
             <div class="name-row">
-              <span>${(author.name || 'Unknown')}</span>
-              ${isVerified ? `<svg class="verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.849-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.056-.75-1.69-.882-.633-.13-1.29-.083-1.897.14-.273-.589-.705-1.084-1.246-1.438-.54-.354-1.17-.552-1.816-.57-.647-.016-1.299.13-1.879.43-.577.297-1.07.74-1.42 1.28-.353.54-.55 1.17-.568 1.817-.016.646.13 1.298.43 1.878.297.577.74 1.07 1.28 1.42.54.353 1.17.55 1.817.568.647.018 1.298-.13 1.878-.43.58-.3 1.07-.74 1.42-1.28.35-.54.55-1.17.57-1.816z" fill="currentColor"/></svg>` : ''}
+              <span>${author.name || 'Unknown'}</span>
+              ${verified ? `
+                <span class="verified-badge" title="Verified / Premium">
+                  <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                </span>
+              ` : ''}
             </div>
             <div class="handle">@${author.screen_name || author.username || 'unknown'}</div>
           </div>
         </div>
 
-        <div class="text">${(tweet.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-
+        <div class="text">${(tweet.text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
         ${mediaHTML}
-
         <div class="meta">${formatDate(tweet.created_at)}</div>
-
         <div class="metrics">
           <span><strong>${formatNumber(replies)}</strong> Replies</span>
           <span><strong>${formatNumber(retweets)}</strong> Reposts</span>
           <span><strong>${formatNumber(likes)}</strong> Likes</span>
-          ${views ? `<span><strong>${formatNumber(views)}</strong> Views</span>` : ''}
+          \( {views !== null ? `<span><strong> \){formatNumber(views)}</strong> Views</span>` : ''}
         </div>
       `;
 
+      // Apply current B&W state
+      tweetCard.classList.toggle('bw', bwToggle.checked);
       cardContainer.style.display = 'block';
     }
 
@@ -408,10 +435,9 @@
         statusEl.className = 'status error';
         return;
       }
-
       const id = extractTweetId(url);
       if (!id) {
-        statusEl.textContent = 'Could not find a valid post ID in that link.';
+        statusEl.textContent = 'Could not find a valid post ID.';
         statusEl.className = 'status error';
         return;
       }
@@ -424,44 +450,99 @@
       try {
         const tweet = await fetchTweet(id);
         renderCard(tweet);
-        statusEl.textContent = 'Ready — download or copy the image below.';
+        statusEl.textContent = 'Ready — choose options and download.';
         statusEl.className = 'status success';
       } catch (err) {
-        statusEl.textContent = err.message || 'Something went wrong.';
+        statusEl.textContent = err.message;
         statusEl.className = 'status error';
       } finally {
         generateBtn.disabled = false;
       }
     });
 
-    // Allow Enter key
-    urlInput.addEventListener('keydown', (e) => {
+    urlInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') generateBtn.click();
     });
 
-    async function generateImage() {
-      // Wait a moment for images to load
-      await new Promise(r => setTimeout(r, 400));
+    // ========== Image generation with ratio + watermark ==========
+    async function createFinalImage() {
+      // Wait for images
+      await new Promise(r => setTimeout(r, 500));
 
-      const dataUrl = await htmlToImage.toPng(tweetCard, {
+      // 1. Capture the card
+      let dataUrl = await htmlToImage.toPng(tweetCard, {
         quality: 1,
         pixelRatio: 2,
         backgroundColor: '#15202b',
-        style: { margin: '0' },
-        // Use CORS so external images with proper CORS headers won't taint the canvas
-        useCORS: true
+        style: { margin: '0' }
       });
-      return dataUrl;
+
+      // 2. Load into canvas for ratio + watermark
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
+
+      const ratio = ratioSelect.value;
+      let targetW = img.width;
+      let targetH = img.height;
+
+      if (ratio !== 'original') {
+        const [rw, rh] = ratio.split('/').map(Number);
+        const targetRatio = rw / rh;
+        const currentRatio = img.width / img.height;
+
+        if (currentRatio > targetRatio) {
+          // too wide → crop sides
+          targetH = img.height;
+          targetW = Math.round(img.height * targetRatio);
+        } else {
+          // too tall → crop top/bottom
+          targetW = img.width;
+          targetH = Math.round(img.width / targetRatio);
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+
+      // Center crop
+      const sx = (img.width - targetW) / 2;
+      const sy = (img.height - targetH) / 2;
+      ctx.drawImage(img, sx, sy, targetW, targetH, 0, 0, targetW, targetH);
+
+      // 3. Add "JagatWire" watermark
+      const fontSize = Math.max(14, Math.round(targetW * 0.035));
+      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+
+      const padding = Math.round(fontSize * 0.8);
+      ctx.fillText('JagatWire', targetW - padding, targetH - padding);
+
+      // subtle shadow for readability
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.fillText('JagatWire', targetW - padding + 1, targetH - padding + 1);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.fillText('JagatWire', targetW - padding, targetH - padding);
+
+      return canvas.toDataURL('image/png');
     }
 
     downloadBtn.addEventListener('click', async () => {
       downloadBtn.disabled = true;
       downloadBtn.textContent = 'Generating…';
       try {
-        const dataUrl = await generateImage();
+        const dataUrl = await createFinalImage();
         const a = document.createElement('a');
         a.href = dataUrl;
-        a.download = `x-post-${Date.now()}.png`;
+        a.download = `jagatwire-x-post-${Date.now()}.png`;
         a.click();
       } catch (e) {
         alert('Failed to generate image: ' + e.message);
@@ -475,15 +556,13 @@
       copyBtn.disabled = true;
       copyBtn.textContent = 'Copying…';
       try {
-        const dataUrl = await generateImage();
+        const dataUrl = await createFinalImage();
         const blob = await (await fetch(dataUrl)).blob();
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
-        ]);
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
         copyBtn.textContent = 'Copied!';
-        setTimeout(() => { copyBtn.textContent = 'Copy Image'; }, 2000);
+        setTimeout(() => copyBtn.textContent = 'Copy Image', 2000);
       } catch (e) {
-        alert('Copy failed (browser may require HTTPS or permission): ' + (e.message || e));
+        alert('Copy failed: ' + e.message);
         copyBtn.textContent = 'Copy Image';
       } finally {
         copyBtn.disabled = false;
