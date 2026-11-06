@@ -1,394 +1,206 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanhaiya Expenditure, Inc. — Executive Expense Suite</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <meta name="description" content="A simple private expense tracker that stores data in this browser.">
+  <title>Kanhaiya Expenditure — Expense Tracker</title>
   <script>
-    tailwind.config = {
-      darkMode: 'class'
-    };
+    tailwind = { config: { darkMode: 'class' } };
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --brand-accent: #059669;
+    :root { color-scheme: light; }
+    .dark { color-scheme: dark; }
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #059669; outline-offset: 2px; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    @media print {
+      #expense-form, #toolbar, .delete-button, #notice, header p { display: none !important; }
+      body { background: white !important; color: black !important; padding: 0 !important; }
+      main { max-width: none !important; }
+      .print-card { box-shadow: none !important; border: 1px solid #ddd !important; }
     }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    }
-    .tabular-nums {
-      font-variant-numeric: tabular-nums;
-    }
-    #upi-qr-container img,
-    #upi-qr-container canvas {
-      margin: 0 auto;
-      border-radius: 0.5rem;
-    }
-    @keyframes slideUpFade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-item-in {
-      animation: slideUpFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible {
-      outline: 2px solid #059669;
-      outline-offset: 1px;
-    }
-    button:active:not(:disabled) {
-      transform: translateY(0.5px);
-    }
-    .commercial-card {
-      box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, ::before, ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-
-    /* STEP 14: ULTIMATE AUTHENTICATION, OTP & COMMERCIAL UI/UX ENHANCEMENTS */
-    .otp-digit-input {
-      width: 2.85rem;
-      height: 3.25rem;
-      text-align: center;
-      font-size: 1.25rem;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      border-radius: 0.75rem;
-      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @media (min-width: 640px) {
-      .otp-digit-input {
-        width: 3.15rem;
-        height: 3.5rem;
-        font-size: 1.35rem;
-      }
-    }
-    .otp-digit-input:focus {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.28);
-      border-color: #4f46e5 !important;
-      outline: 2px solid rgba(79, 70, 229, 0.35);
-    }
-    .otp-digit-filled {
-      border-color: #10b981 !important;
-      background-color: rgba(16, 185, 129, 0.06);
-    }
-    .dark .otp-digit-filled {
-      border-color: #34d399 !important;
-      background-color: rgba(16, 185, 129, 0.12);
-    }
-    @keyframes gmailBannerSlideIn {
-      from {
-        opacity: 0;
-        transform: translate3d(0, -16px, 0) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-    }
-    .animate-gmail-push {
-      animation: gmailBannerSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .gcloud-mesh-bg {
-      background-image: radial-gradient(at 15% 15%, rgba(79, 70, 229, 0.18) 0px, transparent 55%),
-                        radial-gradient(at 85% 85%, rgba(16, 185, 129, 0.15) 0px, transparent 55%);
-    }
-
   </style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen py-6 px-4 transition-colors duration-300">
-  <!-- PAY-BEFORE-USE UPI SUBSCRIPTION PAYWALL GATE (NO DEMO BYPASS + SINGLE-DEVICE MOBILE LOCK + RBI BROCHURE PDF) -->
-  <div id="subscription-gate-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 my-8">
-      <!-- Corporate Header inside Paywall -->
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-900 via-emerald-900 to-emerald-700 flex items-center justify-center shadow-sm ring-1 ring-amber-400/50">
-            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5"/>
-              <path d="M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white leading-tight">
-              Kanhaiya <span class="text-emerald-600 dark:text-emerald-400">Expenditure</span>, Inc.
-            </h2>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-              Mandatory Single-Device UPI Subscription Gate
-            </p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold">
-            🇮🇳 RBI &amp; NPCI Compliant
-          </span>
-          <button
-            type="button"
-            id="close-paywall-btn"
-            class="hidden text-slate-400 hover:text-slate-600 dark:hover:text-white text-sm px-2 py-1 rounded-lg cursor-pointer"
-            title="Close"
-          >
-            ✕
-          </button>
-        </div>
+<body class="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+  <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+    <header class="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[.18em] text-emerald-700 dark:text-emerald-400">Kanhaiya Expenditure</p>
+        <h1 class="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">Expense Tracker</h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Record and review expenses in this browser.</p>
       </div>
+      <button id="theme-button" type="button" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800" aria-label="Toggle dark mode">Toggle theme</button>
+    </header>
 
-      <!-- PROMINENT RBI & GOVT OF INDIA COMPLIANCE BROCHURE BANNER (BEFORE BUYING SUBSCRIPTION) -->
-      <div class="bg-gradient-to-r from-amber-50 via-emerald-50 to-slate-50 dark:from-slate-800 dark:via-emerald-950/40 dark:to-slate-800 rounded-2xl p-4 mb-5 border-2 border-amber-300/80 dark:border-amber-600/60 shadow-xs">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/15 dark:bg-amber-400/15 border border-amber-400/40 flex items-center justify-center text-amber-700 dark:text-amber-300 font-extrabold text-xs shrink-0 mt-0.5">
-              PDF
-            </div>
-            <div>
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 text-[10px] font-extrabold uppercase tracking-wider">
-                  Read Before Subscribing
-                </span>
-                <span class="text-xs font-bold text-slate-900 dark:text-white">
-                  Official Tariff Brochure &amp; RBI / Govt. of India Compliance Charter
-                </span>
-              </div>
-              <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                Download our official PDF brochure detailing all <strong>3 Subscription Tiers (₹19 / ₹99 / ₹499)</strong>, single-user device binding policy, and full compliance with <strong>Reserve Bank of India (RBI) Payment &amp; Settlement Systems Act, 2007</strong> and <strong>NPCI UPI guidelines</strong>.
-              </p>
-            </div>
-          </div>
+    <section class="mb-5 grid gap-4 sm:grid-cols-3" aria-label="Expense summary">
+      <article class="print-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total expenses</p>
+        <p id="total-value" class="tabular mt-2 text-2xl font-extrabold">₹0.00</p>
+      </article>
+      <article class="print-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">This month</p>
+        <p id="month-value" class="tabular mt-2 text-2xl font-extrabold">₹0.00</p>
+      </article>
+      <article class="print-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Number of records</p>
+        <p id="count-value" class="tabular mt-2 text-2xl font-extrabold">0</p>
+      </article>
+    </section>
 
-          <button
-            type="button"
-            id="download-brochure-pdf-btn"
-            class="shrink-0 inline-flex items-center justify-center gap-1.5 bg-slate-900 dark:bg-amber-500 hover:bg-slate-800 dark:hover:bg-amber-400 text-amber-400 dark:text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm transition cursor-pointer"
-          >
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="12" y1="18" x2="12" y2="12"/>
-              <line x1="9" y1="15" x2="15" y2="15"/>
-            </svg>
-            📄 Download Tariff &amp; RBI Brochure PDF
-          </button>
+    <section class="print-card mb-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <h2 class="mb-4 text-lg font-bold">Add an expense</h2>
+      <form id="expense-form" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5" novalidate>
+        <div class="lg:col-span-2">
+          <label for="description" class="mb-1 block text-sm font-semibold">Description</label>
+          <input id="description" name="description" maxlength="100" required placeholder="e.g. Office supplies" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-950">
         </div>
-        <p id="brochure-download-feedback" class="hidden text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold mt-2">
-          ✓ Official Kanhaiya Expenditure, Inc. Tariff &amp; RBI Compliance Brochure PDF downloaded!
-        </p>
-      </div>
-
-      <!-- STEP 1: MANDATORY PERSONAL MOBILE NUMBER & SUBSCRIBER NAME (SINGLE-DEVICE LOCK) -->
-      <div class="mb-4 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
-        <div class="flex items-center justify-between mb-2">
-          <p class="text-xs font-bold text-slate-800 dark:text-slate-100">
-            1. Mandatory Subscriber Identity &amp; Single-Device Lock <span class="text-rose-500">*</span>
-          </p>
-          <span id="device-hardware-id-badge" class="text-[10px] font-mono font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded">
-            Device ID: DEV-...
-          </span>
+        <div>
+          <label for="amount" class="mb-1 block text-sm font-semibold">Amount (₹)</label>
+          <input id="amount" name="amount" type="number" min="0.01" max="100000000" step="0.01" required inputmode="decimal" placeholder="0.00" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-950">
         </div>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3">
-          Enter your personal mobile number before paying. Your subscription license is permanently bound to <strong>this mobile number + this device browser</strong> so only one person can use it on this device.
-        </p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <div>
-            <label for="sub-holder-name-input" class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Subscriber Full Name <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="sub-holder-name-input"
-              placeholder="e.g., Kanhaiya Sharma"
-              required
-              class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
-            >
-          </div>
-          <div>
-            <label for="sub-mobile-lock-input" class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Personal Mobile Number (10 Digits) <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="tel"
-              id="sub-mobile-lock-input"
-              placeholder="e.g., 9876543210"
-              maxlength="14"
-              required
-              class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
-            >
-          </div>
+        <div>
+          <label for="category" class="mb-1 block text-sm font-semibold">Category</label>
+          <select id="category" name="category" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-950">
+            <option>Office</option><option>Travel</option><option>Meals</option><option>Utilities</option><option>Equipment</option><option>Other</option>
+          </select>
         </div>
-        <p id="sub-identity-error" class="hidden text-xs text-rose-600 dark:text-rose-400 font-semibold mt-2">
-          ⚠️ Please enter your Full Name and a valid 10-digit Indian Mobile Number before initiating UPI payment.
-        </p>
-      </div>
-
-      <!-- STEP 2: SELECT SUBSCRIPTION PLAN -->
-      <div class="mb-4">
-        <p class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-2">
-          2. Choose Your Subscription Plan (Inclusive of GST • Zero Hidden Charges):
-        </p>
-        <div class="grid grid-cols-3 gap-2">
-          <button
-            type="button"
-            data-plan="Daily Pass"
-            data-amount="19"
-            data-days="1"
-            class="sub-plan-btn p-2.5 rounded-xl border text-left transition cursor-pointer border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60"
-          >
-            <span class="block text-[10px] font-bold uppercase text-slate-400">24 Hours</span>
-            <span class="block text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">₹19</span>
-            <span class="block text-[10px] text-slate-500 dark:text-slate-400">Daily Pass</span>
-          </button>
-
-          <button
-            type="button"
-            data-plan="Monthly Pro"
-            data-amount="99"
-            data-days="30"
-            class="sub-plan-btn p-2.5 rounded-xl border-2 text-left transition cursor-pointer border-emerald-600 bg-emerald-50/70 dark:bg-emerald-950/50 relative"
-          >
-            <span class="block text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Popular</span>
-            <span class="block text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">₹99</span>
-            <span class="block text-[10px] text-slate-600 dark:text-slate-300">Monthly Pro</span>
-          </button>
-
-          <button
-            type="button"
-            data-plan="Annual VIP"
-            data-amount="499"
-            data-days="365"
-            class="sub-plan-btn p-2.5 rounded-xl border text-left transition cursor-pointer border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60"
-          >
-            <span class="block text-[10px] font-bold uppercase text-amber-600 dark:text-amber-400">Best Value</span>
-            <span class="block text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">₹499</span>
-            <span class="block text-[10px] text-slate-500 dark:text-slate-400">Annual VIP</span>
-          </button>
+        <div>
+          <label for="date" class="mb-1 block text-sm font-semibold">Date</label>
+          <input id="date" name="date" type="date" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-950">
         </div>
-      </div>
-
-      <!-- STEP 3: DIRECT UPI PAY & AUTO-REOPEN / AUTO-UNLOCK IN BROWSER -->
-      <div class="bg-slate-900 text-white rounded-2xl p-4 mb-4 border border-slate-800">
-        <div class="flex items-center justify-between text-xs mb-2">
-          <span class="font-semibold text-amber-400 uppercase tracking-wider">3. Direct UPI Pay &amp; Auto-Unlock</span>
-          <span id="selected-plan-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md font-bold text-[11px]">
-            Monthly Pro • ₹99
-          </span>
+        <div class="flex items-end sm:col-span-2 lg:col-span-5">
+          <button type="submit" class="w-full rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-800 sm:w-auto">Add expense</button>
         </div>
-
-        <div class="flex flex-col sm:flex-row items-center gap-4 my-3">
-          <!-- Live Dynamic QR Code Box -->
-          <div class="bg-white p-2.5 rounded-xl shadow-md shrink-0">
-            <div id="upi-qr-container" class="w-28 h-28 flex items-center justify-center"></div>
-          </div>
-
-          <!-- Merchant UPI Details & Direct Pay Auto-Unlock Button -->
-          <div class="flex-1 text-center sm:text-left space-y-2.5 w-full">
-            <div>
-              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Receiver Merchant UPI ID</p>
-              <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-0.5">
-                <code id="receiver-upi-id" class="text-xs font-mono font-bold text-emerald-400 bg-slate-800 px-2 py-1 rounded">9142595543@upi</code>
-                <button
-                  type="button"
-                  id="copy-upi-btn"
-                  class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 px-2 py-1 rounded font-semibold transition cursor-pointer"
-                >
-                  Copy
-                </button>
-              </div>
-              <p id="upi-copy-feedback" class="hidden text-[10px] text-amber-300 font-medium mt-1">✓ Copied 9142595543@upi</p>
-            </div>
-
-            <!-- Direct Pay & Auto-Reopen Button -->
-            <button
-              type="button"
-              id="direct-upi-pay-btn"
-              class="w-full text-center bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-xs font-extrabold py-2.5 px-3 rounded-xl shadow-md transition cursor-pointer"
-            >
-              ⚡ Pay Now via UPI &amp; Auto-Open Suite
-            </button>
-
-            <!-- Hidden anchor used to launch native UPI intent after mobile validation -->
-            <a
-              id="upi-deeplink-anchor"
-              href="upi://pay?pa=9142595543@upi&pn=Kanhaiya%20Expenditure%20Inc&am=99&cu=INR"
-              class="hidden"
-            >Open UPI</a>
-
-            <p id="upi-auto-status" class="text-[11px] text-amber-300 font-medium leading-tight">
-              Requires your mobile number in Step 1. Launches UPI app (`9142595543@upi`) and automatically unlocks &amp; reopens the system when you return to this browser tab.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Optional Manual UTR Verification Form -->
-      <form id="upi-verify-form" class="space-y-2.5 pt-2 border-t border-slate-200 dark:border-slate-800">
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-2">
-          <div class="flex-1">
-            <label for="upi-utr-input" class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Paid by scanning QR on another phone? Enter 12-Digit UPI Ref / UTR No.:
-            </label>
-            <input
-              type="text"
-              id="upi-utr-input"
-              placeholder="e.g., 429812349876"
-              maxlength="16"
-              class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
-            >
-          </div>
-          <button
-            type="submit"
-            class="bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition cursor-pointer shrink-0"
-          >
-            ✓ Verify UPI Payment &amp; Unlock Suite
-          </button>
-        </div>
-        <p id="utr-error-msg" class="hidden text-xs text-rose-600 dark:text-rose-400 font-medium">
-          Please enter your Name &amp; 10-digit Mobile Number in Step 1 and a valid UPI Reference / UTR number (minimum 8 characters).
-        </p>
       </form>
-    </div>
-  </div>
+      <p id="notice" class="mt-3 min-h-5 text-sm text-rose-600 dark:text-rose-400" role="status" aria-live="polite"></p>
+    </section>
 
-  <div class="max-w-2xl mx-auto">
-    <!-- Top Utility Bar: Brand Lockup + Subscription Status + Brochure PDF + Currency Switcher + Dark Mode Toggle -->
-    <header class="mb-5">
-      <div class="flex items-center justify-between gap-2 bg-white dark:bg-slate-900 px-4 py-3 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 mb-3">
-        <!-- Brand Logo Lockup -->
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 via-emerald-900 to-emerald-700 flex items-center justify-center shadow-sm ring-1 ring-amber-400/50 shrink-0">
-            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5"/>
-              <path d="M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <div class="text-left">
-            <div class="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">
-              Kanhaiya <span class="text-emerald-600 dark:text-emerald-400">Expenditure</span><span class="text-slate-400 font-semibold text-xs">, Inc.</span>
-            </div>
-            <div class="text-[10px] font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 mt-1">
-              Executive Expense Suite
-            </div>
-          </div>
+    <section class="print-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-lg font-bold">Expense records</h2>
+        <div id="toolbar" class="flex flex-wrap gap-2">
+          <label class="sr-only" for="search">Search expenses</label>
+          <input id="search" type="search" placeholder="Search records" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-950">
+          <button id="export-button" type="button" class="rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Export CSV</button>
+          <button id="print-button" type="button" class="rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Print</button>
         </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[600px] text-left text-sm">
+          <thead><tr class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400"><th class="px-3 py-3">Date</th><th class="px-3 py-3">Description</th><th class="px-3 py-3">Category</th><th class="px-3 py-3 text-right">Amount</th><th class="px-3 py-3 text-right">Action</th></tr></thead>
+          <tbody id="expense-rows"></tbody>
+        </table>
+      </div>
+      <p id="empty-state" class="py-10 text-center text-sm text-slate-500 dark:text-slate-400">No expenses yet. Add your first record above.</p>
+    </section>
+    <p class="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">Data is stored locally in this browser and is not synced or backed up. This page does not process or verify payments.</p>
+  </main>
 
-        <!-- Right Controls: License Button, Brochure Button, Currency Selector & Dark Mode Button -->
-        <div class="flex items-center gap-
+  <script>
+    (() => {
+      'use strict';
+      const STORAGE_KEY = 'kanhaiya-expenses-v1';
+      const THEME_KEY = 'kanhaiya-expenses-theme-v1';
+      const form = document.getElementById('expense-form');
+      const rows = document.getElementById('expense-rows');
+      const notice = document.getElementById('notice');
+      const search = document.getElementById('search');
+      const dateInput = document.getElementById('date');
+      let expenses = loadExpenses();
+
+      function loadExpenses() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+          return Array.isArray(parsed) ? parsed.filter(item => item && typeof item.id === 'string' && typeof item.description === 'string' && Number.isFinite(Number(item.amount)) && typeof item.date === 'string') : [];
+        } catch (error) {
+          console.warn('Could not read saved expenses:', error);
+          return [];
+        }
+      }
+
+      function saveExpenses() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+          notice.textContent = '';
+          return true;
+        } catch (error) {
+          notice.textContent = 'Could not save your changes. Check browser storage settings or available space.';
+          console.error(error);
+          return false;
+        }
+      }
+
+      function money(value) {
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(value) || 0);
+      }
+
+      function render() {
+        const query = search.value.trim().toLocaleLowerCase();
+        const visible = expenses.filter(item => [item.description, item.category, item.date].some(value => String(value).toLocaleLowerCase().includes(query)))
+          .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+        rows.replaceChildren();
+        for (const item of visible) {
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-slate-100 last:border-0 dark:border-slate-800';
+          const dateCell = document.createElement('td'); dateCell.className = 'px-3 py-3 tabular'; dateCell.textContent = item.date;
+          const descriptionCell = document.createElement('td'); descriptionCell.className = 'px-3 py-3 font-semibold'; descriptionCell.textContent = item.description;
+          const categoryCell = document.createElement('td'); categoryCell.className = 'px-3 py-3'; categoryCell.textContent = item.category;
+          const amountCell = document.createElement('td'); amountCell.className = 'px-3 py-3 text-right font-semibold tabular'; amountCell.textContent = money(item.amount);
+          const actionCell = document.createElement('td'); actionCell.className = 'px-3 py-3 text-right';
+          const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'delete-button rounded-lg px-2 py-1 font-semibold text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950'; remove.textContent = 'Delete'; remove.setAttribute('aria-label', `Delete ${item.description}`); remove.dataset.deleteId = item.id;
+          actionCell.append(remove); tr.append(dateCell, descriptionCell, categoryCell, amountCell, actionCell); rows.append(tr);
+        }
+        document.getElementById('empty-state').classList.toggle('hidden', visible.length !== 0);
+        document.getElementById('total-value').textContent = money(expenses.reduce((sum, item) => sum + Number(item.amount), 0));
+        const now = new Date();
+        const monthTotal = expenses.filter(item => { const d = new Date(`${item.date}T00:00:00`); return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth(); }).reduce((sum, item) => sum + Number(item.amount), 0);
+        document.getElementById('month-value').textContent = money(monthTotal);
+        document.getElementById('count-value').textContent = String(expenses.length);
+      }
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const description = document.getElementById('description').value.trim();
+        const amount = Number(document.getElementById('amount').value);
+        const category = document.getElementById('category').value;
+        const date = dateInput.value;
+        if (!description || description.length > 100 || !Number.isFinite(amount) || amount <= 0 || amount > 100000000 || !date || Number.isNaN(Date.parse(`${date}T00:00:00`))) {
+          notice.textContent = 'Enter a description, a positive amount up to ₹100,000,000, and a valid date.';
+          return;
+        }
+        expenses.push({ id: (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`, description, amount: Math.round(amount * 100) / 100, category, date });
+        if (saveExpenses()) { form.reset(); dateInput.value = new Date().toISOString().slice(0, 10); render(); document.getElementById('description').focus(); }
+      });
+
+      rows.addEventListener('click', event => {
+        const button = event.target.closest('[data-delete-id]');
+        if (!button) return;
+        expenses = expenses.filter(item => item.id !== button.dataset.deleteId);
+        if (saveExpenses()) render();
+      });
+      search.addEventListener('input', render);
+      document.getElementById('export-button').addEventListener('click', () => {
+        const quote = value => `"${String(value).replace(/"/g, '""')}"`;
+        const csv = ['Date,Description,Category,Amount (INR)', ...expenses.map(item => [item.date, item.description, item.category, Number(item.amount).toFixed(2)].map(quote).join(','))].join('\r\n');
+        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a'); link.href = url; link.download = 'kanhaiya-expenses.csv'; link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+      document.getElementById('print-button').addEventListener('click', () => window.print());
+      document.getElementById('theme-button').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem(THEME_KEY, document.documentElement.classList.contains('dark') ? 'dark' : 'light'); } catch (_) {}
+      });
+      try { if (localStorage.getItem(THEME_KEY) === 'dark') document.documentElement.classList.add('dark'); } catch (_) {}
+      dateInput.value = new Date().toISOString().slice(0, 10);
+      render();
+    })();
+  </script>
+</body>
+</html>
